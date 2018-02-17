@@ -1,0 +1,11 @@
+[24-Jan-2018 08:43:57 UTC] This Error Happen (require(C:/wamp64/www\seshat/private\App\Layout\Header.Layout.php): failed to open stream: No such file or directory) From Ip: ::1  His\Her ID:  Anoyoumus User Create This Error   His\Her UserName :  Can Not Detect The User Name That Cause This Error  This Error Happen At File C:\wamp64\www\seshat\private\App\Framework\Shared\ViewHandler.php At Line 86 Number Of Error Is 2
+[24-Jan-2018 08:43:57 UTC] PHP Fatal error:  require(): Failed opening required 'C:/wamp64/www\seshat/private\App\Layout\Header.Layout.php' (include_path='.;C:\php\pear') in C:\wamp64\www\seshat\private\App\Framework\Shared\ViewHandler.php on line 86
+[24-Jan-2018 08:43:57 UTC] PHP Stack trace:
+[24-Jan-2018 08:43:57 UTC] PHP   1. {main}() C:\wamp64\www\seshat\index.php:0
+[24-Jan-2018 08:43:57 UTC] PHP   2. App\Router\Router->dispatch() C:\wamp64\www\seshat\index.php:15
+[24-Jan-2018 08:43:57 UTC] PHP   3. App\Router\Router->__pass() C:\wamp64\www\seshat\private\App\Router\Router.php:85
+[24-Jan-2018 08:43:57 UTC] PHP   4. Framework\Shared\Controller->findIt() C:\wamp64\www\seshat\private\App\Router\Router.php:99
+[24-Jan-2018 08:43:57 UTC] PHP   5. Framework\Shared\Controller->methodToCall() C:\wamp64\www\seshat\private\App\Framework\Shared\Controller.php:63
+[24-Jan-2018 08:43:57 UTC] PHP   6. App\Controller\Index->defaultAction() C:\wamp64\www\seshat\private\App\Framework\Shared\Controller.php:90
+[24-Jan-2018 08:43:57 UTC] PHP   7. Framework\Shared\Controller->renderLayout() C:\wamp64\www\seshat\private\App\Controller\Index.php:22
+[24-Jan-2018 08:43:57 UTC] PHP   8. Framework\Shared\ViewHandler->renderLayout() C:\wamp64\www\seshat\private\App\Framework\Shared\Controller.php:129

@@ -1,0 +1,75 @@
+<?php
+        namespace App\Controller;
+        use Framework\Shared;
+        use App\DomainHelper\FrontEndHelper; 
+        
+
+    /**
+     * AppShared Controller Have All Logic That Can Be Shared Via All App.
+     */
+    Abstract Class AppShared extends Shared\Controller
+    {
+            protected $error = [];
+            /**
+            * @method generateTwitterLoginUrl.
+            */
+
+            protected function generateTwitterLoginUrl():string{
+                $cmd = Shared\CommandFactory::getCommand('twitterApi');
+                $generateUrl = $cmd->execute(['ModelClass'=>"TwitterLogin",'Method'=>['Name'=>"generateUrl",'parameter'=>[],'user_auth'=>['status'=>false]]]);
+                if(isset($generateUrl['error'])){
+                           $return = $generateUrl['error'];// I Must Think For A method to notify User About Any Error In Th App.
+                }else if(isset($generateUrl['url'])){
+                           /**
+                            * 1-save Token In session To Use It In Call Back.
+                            * 2-Return the generated Url.
+                            */
+                           $this->saveToken($generateUrl['oauth_token'],$generateUrl['oauth_token_secret']);
+                           $return = $generateUrl['url'];
+                }
+                return $return;
+        }
+
+        /**
+          * @method redirectToWizard redirect User To Wizard If Needed.
+        */
+        protected function redirectToWizard(){
+                $redirectToWizard = (bool)$this->session->getSession('wizard');
+                $tw_id = (bool)$this->session->getSession("tw_id");
+                if($redirectToWizard === true && $tw_id === true){
+                            $this->rIn('tw_id','seshat/createProfile');
+                }
+        }
+
+
+
+        protected function saveToken(string $oauth_token ='no_token',string $oauth_token_secret='no_secret_token'){
+                $this->session->setSession('oauth_token',$oauth_token);
+                $this->session->setSession('oauth_token_secret',$oauth_token_secret);  
+        }
+
+        protected function anyAppError(){
+                    if(!empty($this->error)){
+                            return true;
+                    }
+                    return false;
+        }
+
+        /**
+         * @method reauthUser This Method Check If User Need Reauthinaction Again Beacause He/She Revoked App.
+         * @param error&&ajax = false =>Check If Response Must Me Json Encoded Beacuse It Come From Ajax Request.
+         * @return json|bool|array
+         */
+        protected function reauthUser($error,bool $ajax = false){
+                  if(is_array($error[0])&&array_key_exists('reauth',$error[0])){
+                                if($ajax === true){
+                                        echo json_encode($error);//Helper Must Be Used Here reauthUserModal.
+                                        exit;
+                                }else{
+                                        return [FrontEndHelper::reauthUserModal($this->generateTwitterLoginUrl(),$error[0]['reauth'])]; 
+                                }
+                  } 
+                return false;       
+        }
+
+    }

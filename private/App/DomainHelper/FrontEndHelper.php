@@ -1,0 +1,28 @@
+<?php
+        namespace App\DomainHelper;
+
+
+
+        /**
+         * This Class Provide All Static Function That App Need For FrontEnd Like Create Modal For Specific Condation.
+         */
+
+        Class FrontEndHelper 
+        {
+             /**
+              * @method reauthUserModal Resonsaible For Return Model Style For User To Authincate With Twitter Again.
+              * @param url&&msg
+              */
+              public static function reauthUserModal(string $url,string $msg){
+                $re_oauth = REAOUTH_SESHAT;
+                   return <<<MODAL
+$.sweetModal({
+content:"$msg<br><a href='$url' class='btn btn-block btn-social btn-twitter'>$re_oauth</a>",
+theme: $.sweetModal.THEME_DARK,
+showCloseButton: false,
+blocking:true	
+});                                     
+MODAL;
+            }
+
+        }
