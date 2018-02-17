@@ -41,7 +41,7 @@
                             if($this->moveFile()){
                                     return ['successUpload'=>$successMsg,'fileName'=>$this->fileName.'.'.$this->extension];
                             }else{
-                                $this->webError['webErrorView@CannotUploadFile'] = "Your File Cannot Uploaded Please Try It Again Later";
+                                $this->webError['webErrorView@CannotUploadFile'] = UPLOAD_ERROR;
                             }    
                        }
                        return $this->webError;
@@ -83,10 +83,10 @@
                 protected function checkSize():bool{
                        
                        if($this->size == 0){
-                                $this->webError['webViewError@NoFileSelected'] = 'Please Select A File To Upload';
+                                $this->webError['webViewError@NoFileSelected'] = SELECT_FILE_TO_UPLOAD;
                        }
                        if($this->size > $this->maxSize){
-                                $this->webError['webViewError@MAX_SIZE']       = 'This File ' . $this->fileName . ' Is Too Big Please Do Not  Exceeds ' . $this->useHelper();
+                                $this->webError['webViewError@MAX_SIZE']       = FILE . $this->fileName . MAX_SIZE_EXCEEDS . $this->useHelper();
                        }
                        return true;
                 }
@@ -98,7 +98,7 @@
 
                 protected function checkType():bool{
                           if(!in_array($this->uploadType,$this->allowableType)){
-                                $this->webError['webViewError@UnknownFileExtension'] = "Unknown File Type Allowable Type Is: " . implode(',',$this->allowableType);
+                                $this->webError['webViewError@UnknownFileExtension'] = INVAILED_TYPE . implode(',',$this->allowableType);
                                 return false;
                           }
                           return true;  
@@ -126,16 +126,16 @@
                         
                         switch ($this->error) {
                             case 1 || 2:
-                                $this->webError['webViewError@MaxSize'] = 'This File ' . $this->fileName . ' Is Too Big Please Do Not  Exceeds ' . $this->useHelper();
+                                $this->webError['webViewError@MaxSize'] = FILE . $this->fileName . MAX_SIZE_EXCEEDS . $this->useHelper();
                                 break;
                             case 3:
-                                $this->webError['webViewError@PartiallyUploaded'] = "The File Partailly Uploaded ";
+                                $this->webError['webViewError@PartiallyUploaded'] = UPLOAD_PARTIALLY;
                                 break;    
                             case 4:
-                                $this->webError['webViewError@NoFileUploaded'] = 'Please Select A File To Upload ';
+                                $this->webError['webViewError@NoFileUploaded'] = SELECT_FILE_TO_UPLOAD;
                                 break;
                             default:
-                                $this->webError['webViewError@CanNotUploadFile'] = "Sorry Your File " . $this->fileName . " CanNot Upload To Our System Please Try Again Latter ";
+                                $this->webError['webViewError@CanNotUploadFile'] = SORRY_FILE . $this->fileName . GLOBAL_ERROR;
                                 break;
                         }    
                     

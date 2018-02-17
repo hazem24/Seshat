@@ -31,7 +31,7 @@
         define('PS',PATH_SEPARATOR);
         define('LINK_SIGN','!');
         define('MAIL',''); //This Will Be The Mail Setting In Which All Mail Of The App Will Send From It
-        define('COMPANY_MAIL','');//Company Name To Be Used In Mailer System
+        define('COMPANY_MAIL','Seshat');//Company Name To Be Used In Mailer System
         define('PRODUCTION' , false);
         define('Geo_Location_Server_Access' , 'SAKYW592M92ER296B78Z'); // Uses eurekapi.com As Geolocation Service
         define('APP_FOLDER_PATH' , "seshat/private" . DS);
@@ -44,8 +44,8 @@
         define("LAYOUT_PATH",BASE_URI."App".DS."Layout".DS);
         define("LANG_PATH",BASE_URI.DS."lang".DS);
         define("ATTACKER_SALT",'socialservice'); //Provide A Salt To Be Used In Any Session Attacker But it False To Disable The Feature
-        define("UPLOAD_IMAGE_FOLDER_RELATIVE",ROOT  . APP_FOLDER_PATH . DS  . 'App'. DS .'DomainFiles'.DS .'Images');
         define("UPLOAD_CONTENT_FOLDER" ,  BASE_URI .DS  . 'App'.DS.'DomainFiles'.DS); //This Must Be In SubDomain (Images And Videos (Content) Must Be In SubDomains)
+        define("UPLOAD_IMAGE_FOLDER_RELATIVE",UPLOAD_CONTENT_FOLDER . 'Media'. DS. 'Images'.DS);
         define("UPLOAD_VIDEO_FOLDER_RELATIVE",ROOT  . APP_FOLDER_PATH .DS  . 'App'.DS.'DomainFiles'.DS .'Videos');
 
         // Require AutoLoad 

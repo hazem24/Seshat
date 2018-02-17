@@ -5,6 +5,7 @@
         use Framework\Error\WebViewError;
         use App\DomainHelper\FrontEndHelper;
         use App\DomainHelper\Helper;
+        use App\DomainHelper\DateTrait;
         use Framework\Request\RequestHandler;
         use Framework\Lib\Upload\UploadImage;
         use Framework\Lib\Security\Data\FilterDataFactory;
@@ -16,7 +17,9 @@
 
         Class TwitterAction extends AppShared
         {
-                
+           use DateTrait;
+           
+           
            private $twitter_action_command;
 
            public function __construct(){
@@ -45,7 +48,6 @@
 
                         if($publishNow === true){
                                 //Publish Now Logic=>Table seshat_publish.
-                                        
                                 $publishNow = $this->publishNewTweet($category,$tweetContent,$seshatPublicAccess);
                                 if($this->anyAppError() === false){
                                      $response = $publishNow;           
@@ -55,6 +57,8 @@
                                 }
                         }elseif($schedule === true){
                                 //Schedule Logic=>Table seshat_schedule.
+                                var_dump($this->validDate("02/20/2018 10:50 PM"),$this->date,$_POST['scehduleTime']);
+                                exit;
                         }
                          echo json_encode($response);
                          exit;           
@@ -82,11 +86,10 @@
                     }else{
                         $oauth_token = $this->session->getSession('oauth_token');
                         $oauth_token_secret = $this->session->getSession('oauth_token_secret');
-
                         if(isset($_FILES['tweetMedia']) && !empty($_FILES['tweetMedia']['name']) && !empty($_FILES['tweetMedia']['tmp_name'])){
                                 //Image + Text.
-                                $tweet = $this->twitter_action_command->execute(['Method'=>['name'=>"publishTweetWithMedia",'parameters'=>['status'=>$filter[TWEET_CONTENT],
-                                'media'=>,
+                                $tweet = $this->twitter_action_command->execute(['Method'=>['name'=>"publishTweet",'parameters'=>['status'=>$filter[TWEET_CONTENT],
+                                'media'=>true,
                                 'oauth_token'=>$oauth_token,'oauth_token_secret'=>$oauth_token_secret,
                                 'user_id'=>(int)$this->session->getSession('id'),'category'=>$categoryType,'publicAccess'=>$seshatPublicAccess]]]);
 
@@ -95,16 +98,22 @@
                                  $tweet = $this->twitter_action_command->execute(['Method'=>['name'=>"publishTweet",'parameters'=>['status'=>$filter[TWEET_CONTENT],
                                 'oauth_token'=>$oauth_token,'oauth_token_secret'=>$oauth_token_secret,
                                 'user_id'=>(int)$this->session->getSession('id'),'category'=>$categoryType,'publicAccess'=>$seshatPublicAccess]]]);
-                                if(array_key_exists('error',$tweet)){
-                                        if($tweet['error'] === true){
-                                                $this->error[] = TWEET_NOT_SAVED;
-                                        }else{
-                                                $this->error[] = $tweet['error'];
-                                        }
-                                }else if(array_key_exists('success',$tweet)){
-                                                return ['success'=>TWEET_UPLOAD_SUCCESS];
-                                }
                         }
+                        
+                        //Response Logic Same For Two Types.
+                        if(array_key_exists('error',$tweet)){
+                                if($tweet['error'] === true){
+                                        $this->error[] = TWEET_NOT_SAVED;
+                                }else{
+                                        $this->error[] = $tweet['error'];
+                                }
+                        }else if (array_key_exists('uploadError',$tweet)){
+                                $uploadError   =  WebViewError::anyError('upload',$tweet);
+                                $this->error[] =  WebViewError::userErrorMsg($uploadError);
+                        }else if(array_key_exists('success',$tweet)){
+                                        return ['success'=>TWEET_UPLOAD_SUCCESS];
+                        }      
+
                     }
                     
 

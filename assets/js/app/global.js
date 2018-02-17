@@ -26,7 +26,6 @@ $(document).ready(function(){
         $('#datetimepicker').parent().css('position', 'relative');
         $("#datetimepicker").datetimepicker({
             minDate : new Date(),
-            stepping : 5
         });
 
         //Check The Vaildation Of The Form.
@@ -78,7 +77,7 @@ $(document).ready(function(){
                                 "type": "POST",            
                                 "data": new FormData(this),
                                 "contentType": false,
-                                "dataType":"json",
+                                "dataType":"",
                                 "cache": false,
                                 "processData":false,                    
                                 "success": function(data)  { 

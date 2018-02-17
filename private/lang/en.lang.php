@@ -14,7 +14,15 @@ define("REAOUTH_SESHAT",'Re-authentication With Seshat.');
 define("TWEET_NOT_SAVED",'I Publish Your Tweet In Twitter But I Can not Save It.');
 
 
-
+//Upload Library.
+define("UPLOAD_ERROR","Your File Cannot Uploaded Please Try It Again Later");
+define("SELECT_FILE_TO_UPLOAD",'Please Select A File To Upload');
+define("MAX_SIZE_EXCEEDS"," Is Too Big Please Do Not  Exceeds ");
+define("FILE","This File ");
+define("INVAILED_TYPE","Unknown File Type Allowable Type Is: ");
+define("UPLOAD_PARTIALLY", "The File Partailly Uploaded ");
+define("SORRY_FILE","Sorry Your File ");
+//End Upload Library.
 
 
 
@@ -70,7 +78,7 @@ define("NOT_FOUND_404_TWITTER","i Cannot Find Anything Here.");
 define("SESHAT_NEED_TIME","Leave Me Alone For 30 Minute To Organize All This Data And Try Again After That.");
 define("TWITTER_DOWN","Twitter Down Now Please Try Again Later.");
 define("REVOKED_SESHAT","You revoked access for me to your twitter account , please let me enter your account again to return back to my job.");
-define("DEFAULT_TWITTER_HTTP_ERROR","Something Error I Try To Solve It Try After Some Time.");
+define("DEFAULT_TWITTER_HTTP_ERROR","Something Error I Will Try To Solve It Try Again Later.");
 define("SYSTEM_CLOCK_INVAILED","Please check your system clock.");
 define("WRONG_TWEET_ID","No Tweet With This ID.");
 define("MIN_TWEET_LENGTH","Tweet Length Must Be Shorter Than That.");
