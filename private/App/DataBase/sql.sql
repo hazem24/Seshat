@@ -38,3 +38,11 @@ ALTER TABLE seshat_publish add column (user_id int not null),
   alter table seshat_publish add column (category_id int not null default 0);
 
   alter table seshat_publish add column (public_access bool default false);
+
+create table tasks (id int auto_increment primary key,task_id int not null,
+details longtext not null,expected_finish datetime not null,
+is_finished bool default 0,progress int(3) default 0,
+task_name varchar(50) not null);
+
+ALTER TABLE tasks add column (user_id int not null), 
+  ADD CONSTRAINT tasks FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE

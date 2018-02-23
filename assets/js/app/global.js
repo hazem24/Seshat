@@ -77,7 +77,7 @@ $(document).ready(function(){
                                 "type": "POST",            
                                 "data": new FormData(this),
                                 "contentType": false,
-                                "dataType":"",
+                                "dataType":"json",
                                 "cache": false,
                                 "processData":false,                    
                                 "success": function(data)  { 

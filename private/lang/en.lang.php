@@ -1,17 +1,23 @@
 <?php
-//Global
-define("CANCEL","Cancel");
-
-//Name Ai 
+//Name Ai.
 define("NAME","Seshat");
 
-//AppError
+
+//Global.
+define("CANCEL","Cancel");
+
+
+
+//AppError.
 define("GLOBAL_ERROR","Sorry There's An Error In Our Server Please Try Again later.");
 define("EMPTY_FEILD","Please You Can Not Leave The Field Empty Or You Put Illegal Characters.");
 define("EMAIL_EXISTS","This Email Used Please Try With Another Email Address.");
 define("BOT_ACCESS",'Seshat Not Love To Work With Bots.');
 define("REAOUTH_SESHAT",'Re-authentication With Seshat.');
 define("TWEET_NOT_SAVED",'I Publish Your Tweet In Twitter But I Can not Save It.');
+//End AppError.
+
+define("INVAILD_DATE","You Enter Invaild Date.");
 
 
 //Upload Library.
@@ -28,8 +34,6 @@ define("SORRY_FILE","Sorry Your File ");
 
 //Form Information.
 define("REQUIRED_FIELD",'required');
-
-
 //End Form Information.
 
 
@@ -116,4 +120,16 @@ define("TWEET_CONTENT","Tweet Content");
 define("IMAGE_CONENT","Image Content");
 define("TWEET_UPLOAD_SUCCESS","Your Tweet Was Sent To Twitter.");
 //End Header.
+
+
+//Tasks.
+define("SC","Schedule.");
+define("ARL","Auto Replay,Like.");
+define("FANS","Search Fans For Your Tweet.");
+define("UNFOLLOW","Unfollow People Not Follow You.");
+define("INACTIVE_ACCOUNTS","Inactive Accounts In Your Account.");
+define("TASK_SCHEDULE_SAVED","Your Tweet Scheduled successfully !.");
+define("TASK_NOT_SCHEDULE_SAVED","Error I Cannot Save This Schedule Now Try Again Later.");
+define("HAVE_SCHEDULE_AT_SAME_TIME","You Have Scheduled Tweet At This Time I Cannot Schedule More Than Tweet At Same Date  Please Change The Date.");
+//End Tasks.
 

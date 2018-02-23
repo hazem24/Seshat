@@ -10,10 +10,8 @@
         *This Class Have All Commands That Do Action In Twitter.
         */
 
-        Class TwitterActionCommand extends Shared\AbstractCommand
+        Class TwitterActionCommand extends TwitterCommand
         {
-            CONST UPLOAD_IMAGE_PATH = UPLOAD_IMAGE_FOLDER_RELATIVE;    
-            CONST MAX_IMAGE_SIZE = 5242880;//5MB.
             private $twitter_api_command;
 
             public function __construct(){
@@ -28,14 +26,14 @@
                 }  
             }
             /**
-             * @method publishTweet Responsable For Publish Tweet Without Media.
-             * @return array
+             * @method publishTweet Responsable For Publish Tweet.
+             * @return array.
              */
             private function publishTweet(array $parameters=[]){
                     $tweetContent = $parameters['status'];
                     $oauth_token = $parameters['oauth_token'];
                     $oauth_token_secret = $parameters['oauth_token_secret'];
-                    $category =  array_keys($parameters['category'])[0];
+                    $category =  $parameters['category'];
                     $user_id = $parameters['user_id'];
                     $publicAccess = $parameters['publicAccess'];
                     if(isset($parameters['media']) && $parameters['media'] === true){
@@ -62,21 +60,6 @@
                             return $publish_tweet;
                     }
                     
-            }
-            /**
-             * @method uploadMedia This Method Handle Image Media Only.
-             * @return array If Error Occur. || string of file name at success.
-             */
-            private function uploadMedia(int $user_id){
-                    $uploadMedia = new UploadImage(self::UPLOAD_IMAGE_PATH);
-                    $uploadMedia->setMaxSize(self::MAX_IMAGE_SIZE);
-                    $uploadMedia = $uploadMedia->intelligentUpload("Seshat",$user_id,'');
-                    if(array_key_exists('successUpload',$uploadMedia)){
-                              return $uploadMedia['fileName'];  
-                    }else{
-                              return $uploadMedia;  
-                    }
-
             }
 
             private function saveTweet(int $user_id,int $category,string $tweet_id,bool $publicAccess){

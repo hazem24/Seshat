@@ -24,9 +24,6 @@
         *@param array argumnets
         */
         public function __construct(array $arguments = []){
-
-
-
         }
         /**
         *@method
@@ -57,18 +54,18 @@
 
         }
         /**
-        *@method
+        *@method This Method Must Be Re-build Or Depercate It Soon @Writtern 22/02/2018 @10:16PM
         * This Function Prevent Call For innaccessiable Method And AutoMatic Call To Accessaible One
         * @return Mixed    
         */
-        public function __call(string $method , array $arguments = null){
+        /*public function __call(string $method , array $arguments = null){
             $methodEncapsulate = stripos($method , $this->encapsulateSign[0] , 0);
             if(method_exists($this,$method) && is_int($methodEncapsulate) !== true){
                     return $this->$method($arguments);
             }
                 // If Method Not Found Return Exception 
                 throw new CoreException("You Don't Have Permission To Call  This Method :  $method");
-        }
+        }*/
 
         public function setProperty(string $propertyName,$value){
             if(property_exists($this,$propertyName)){
