@@ -36,12 +36,14 @@
              */
             public function seshatConnectorAction(){
                    $this->detectLang();
-                   $oauth_token = $this->session->getSession('oauth_token'); 
+                   $oauth_token = $this->session->getSession('oauth_token');
+                 
                    if(RequestHandler::getRequest() && $oauth_token !== false){
                            
                         $oauth_token_get = (string)RequestHandler::get('oauth_token'); 
                         $oauth_token_secret = $this->session->getSession('oauth_token_secret');      
                         $oauth_verifier = (string)RequestHandler::get('oauth_verifier');
+                        
                         $this->checkAuthnication($oauth_token_get,$oauth_token,$oauth_verifier,$oauth_token_secret);
                         
                    }
@@ -58,7 +60,6 @@
             private function checkAuthnication(string $oauth_token_get,string $oauth_token,string $oauth_verifier,string $oauth_token_secret){
                 if(!empty($oauth_token_get) && $oauth_token == $oauth_token_get){
                         $confirmUser = $this->confirmUser($oauth_token_get,$oauth_token_secret,$oauth_verifier);
-
                                 if($this->anyAppError() === false){
                                                 /**
                                                  * 'oauth_token' => string '747262122229436416-v4U8oBrfTQjAzLzHMvkmi94PgNncwC9' (length=50)

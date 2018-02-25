@@ -110,11 +110,13 @@
                         }else if(array_key_exists('success',$tweet)){
                                         return ['success'=>TWEET_UPLOAD_SUCCESS];
                         }else if(array_key_exists('task_save',$tweet)){
-                                        return ['success'=>TASK_SCHEDULE_SAVED];//schedule
+                                        return ['success'=>TASK_SCHEDULE_SAVED];//scheduled.
                         }else if (array_key_exists('task_not_save',$tweet)){
                                 $this->error[] = TASK_NOT_SCHEDULE_SAVED;
                         }else if (array_key_exists("scheduleExist",$tweet)){
                                 $this->error[] = HAVE_SCHEDULE_AT_SAME_TIME;
+                        }else{
+                                $this->error[] = GLOBAL_ERROR;
                         }      
 
                     }

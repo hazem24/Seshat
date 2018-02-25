@@ -2,6 +2,7 @@
         namespace App\Controller;
         use Framework\Shared;
         use App\DomainHelper\FrontEndHelper; 
+        use App\DomainHelper\FastCache;
         
 
     /**
@@ -9,6 +10,10 @@
      */
     Abstract Class AppShared extends Shared\Controller
     {
+            /**
+             * @property cache Save And Instance Of Fast Cache Class.
+             */
+            protected $cache = null;
             protected $error = [];
             /**
             * @method generateTwitterLoginUrl.
@@ -24,6 +29,8 @@
                             * 1-save Token In session To Use It In Call Back.
                             * 2-Return the generated Url.
                             */
+                           //Clear All Session Rstore It to empty Data.
+                           $this->session->clear();
                            $this->saveToken($generateUrl['oauth_token'],$generateUrl['oauth_token_secret']);
                            $return = $generateUrl['url'];
                 }
@@ -40,12 +47,14 @@
                             $this->rIn('tw_id','seshat/createProfile');
                 }
         }
-
+        
 
 
         protected function saveToken(string $oauth_token ='no_token',string $oauth_token_secret='no_secret_token'){
+
+                //Set New Pair Of oauth_token.
                 $this->session->setSession('oauth_token',$oauth_token);
-                $this->session->setSession('oauth_token_secret',$oauth_token_secret);  
+                $this->session->setSession('oauth_token_secret',$oauth_token_secret);
         }
 
         protected function anyAppError(){
@@ -70,6 +79,16 @@
                                 }
                   } 
                 return false;       
+        }
+        /**
+         * @method fastCache get An Instance of FastCache Class And Prevent dupicate of FastCache Method.
+         * @return FastCache.
+         */
+        protected function fastCache():FastCache{
+              if(is_null($this->cache) === true){
+                        $this->cache = new FastCache();
+              }
+              return $this->cache;
         }
 
     }

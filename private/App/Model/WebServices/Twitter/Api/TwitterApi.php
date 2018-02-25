@@ -134,7 +134,10 @@
                                         break;
                                     case 187:
                                         $error = DUPLICATE_TWEET;
-                                        break;                                           
+                                        break; 
+                                    case 220:
+                                        $error = NOT_ACCESS_RESOURCE;
+                                        break;                                              
                                     default:
                                         $error = DEFAULT_TWITTER_HTTP_ERROR;
                                         break;

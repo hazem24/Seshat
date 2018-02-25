@@ -5,7 +5,7 @@
 
 
             /**
-             *Class Manage Responsable For Read,Update a user's Account And Profile Settings. 
+             *Class Action Responsable For Do Actions in Twitter User Account. 
              */
             Class Action extends TwitterApi
             {

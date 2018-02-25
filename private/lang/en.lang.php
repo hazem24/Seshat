@@ -92,6 +92,7 @@ define("NOT_FOUND","Not Found.");
 define("FOLLOW_TO_DIRECT","This User Must Follow You To Send Message Via Direct.");
 define("LIMIT_FOLLOW","You Cannot Follow More People At This Time Leave Me Some Time To organize and analysis Your Data I Will Back With Great Detials.");
 define("DUPLICATE_TWEET","You Forget That You Tweet This Tweet Before .. Don't Worry I Remembered That For You.");
+define("NOT_ACCESS_RESOURCE","Seshat Can not Access This Resource From Twitter Please Try Again Later .. Sorry About That.");
 //End Response.
 
 
@@ -132,4 +133,11 @@ define("TASK_SCHEDULE_SAVED","Your Tweet Scheduled successfully !.");
 define("TASK_NOT_SCHEDULE_SAVED","Error I Cannot Save This Schedule Now Try Again Later.");
 define("HAVE_SCHEDULE_AT_SAME_TIME","You Have Scheduled Tweet At This Time I Cannot Schedule More Than Tweet At Same Date  Please Change The Date.");
 //End Tasks.
+
+//TimeLine
+define("NO_TWEET_TIME_LINE","I think your account is new great to start with me.
+<br>first we need to follow some persons with same interset.<br>
+you can do this by follow tree feature or of course you can do this manually from twitter website or here also bellow some links important to you to start great media  journey.<br>
+");
+//End TimeLine.
 

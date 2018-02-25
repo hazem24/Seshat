@@ -42,15 +42,16 @@
 <script src="<?=ASSESTS_URI."js"?>/lib/sweetAlert/jquery.sweet-modal.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/global.js" type="text/javascript"></script>
 <?php
+
 //Check If User Need Reauthincate or any Error Exists.
-if(isset($user['error']) && is_object($user) === false && is_array($user['error']) && !empty($user['error'])):
+if(isset($error) && is_object($error) === false && is_array($error) && !empty($error)):
 ?>
 <script>
 <?php    
-    foreach ($user['error'] as $key => $value) :
+    foreach ($error['error'] as $key => $value) :  
 ?>
 
-        <?=$value;?>
+    <?=$value;?>
 
 <?php
     endforeach;

@@ -76,7 +76,6 @@
                             return true;
                         }
                         throw new SessionException("Cannot Destroy The Session");
- 
                 }
 
                 public function close(){
@@ -118,7 +117,9 @@
                         if($this->getSession($sessionName)){
                                    unset($_SESSION[$sessionName]);             
                         }
-                        
+                }
 
+                public function clear(){
+                        $_SESSION = [];
                 }
         }

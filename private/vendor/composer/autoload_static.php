@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
 {
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpFastCache\\' => 13,
+        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -21,7 +25,9 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
         ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Container\\' => 14,
+            'Psr\\Cache\\' => 10,
             'PhpMailer\\' => 10,
             'PhantomInstaller\\Test\\' => 22,
         ),
@@ -43,6 +49,10 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpFastCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpfastcache/phpfastcache/src/phpFastCache',
+        ),
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
@@ -67,9 +77,17 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
         array (
             0 => __DIR__ . '/..' . '/symfony/config',
         ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'PhpMailer\\' => 
         array (
