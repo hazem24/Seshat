@@ -7,12 +7,6 @@
         use App\DomainHelper\Twitter;
         use App\DomainHelper\FrontEndHelper;
          
-        
-        
-        
-
-
-
         /**
          * SeshatTimeLine Class Which Resposanble To Read From Twitter.
          */
@@ -27,7 +21,8 @@
                 $this->rOut("tw_id","index/signin");
                 $this->redirectToWizard();
                 $this->renderLayout("HeaderApp");  
-                $timeLineData  = $this->getUserTimeLine();  
+                $timeLineData  = $this->getUserTimeLine(); 
+                
                 //Return Reponse To User.
                 if($this->anyAppError() === false){
                         $toView = $timeLineData;          

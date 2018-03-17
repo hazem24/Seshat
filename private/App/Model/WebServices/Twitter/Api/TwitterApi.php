@@ -146,6 +146,19 @@
                                     $error = false;
                         }
                      return $error;
-            } 
+            }
+            
+            /**
+             * @method getResponse repsonsable for return the response to user.
+             * @return array|object.
+             */
+            protected function getResponse($response){
+                $anyApiError  = $this->anyApiError($response);
+                if($anyApiError === false){
+                        return $response;
+                }
+                        return ['error'=>$anyApiError];
+
+            }
 
         } 

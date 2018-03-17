@@ -62,6 +62,37 @@
                     echo json_encode(["code"=>403,'error'=>"Protected Area You Cannot Access."]);
                     exit;
             }
+            /**
+             * @method do Responsable for do action in twitter.
+             * action type =>(retweet,like,relay)
+             * @return json.
+             */
+            public function doAction(){
+                $this->detectLang();
+                $this->rOut('tw_id','index/signin');
+                $this->redirectToWizard();
+                if(RequestHandler::postRequest()){
+                        $action_type = strtolower((string)RequestHandler::post('type'));
+                        $tweet_id = (string)RequestHandler::post('tweet_id');
+                        $key = (int)RequestHandler::post("key");//To Update The Cache Key of tweet items in the cache.
+                        $twitter_response = $this->doTypeLogic($action_type,$tweet_id,$key);
+                        //Return Reponse To User.
+                        if($this->anyAppError() === false){
+                                $response = $twitter_response;           
+                        }else{
+                                $user_need_reauth = $this->reauthUser($this->error);
+                                $response = ['error'=>($user_need_reauth === false) ? $this->error : ['reauth'=>$user_need_reauth[0]]];//reauth Index To Can Be Supplied By Javascript Can Know the type of error notify.
+                        }
+                        
+                        if(isset($response)){
+                                echo json_encode($response);
+                                exit;
+                        }
+
+                }
+                echo json_encode(["code"=>403,'error'=>"Protected Area You Cannot Access."]);
+                exit;
+            }
 
 
 
@@ -143,6 +174,67 @@
                 }
                 return $class->do($method,$data);  
             }
+
+
+            /**
+             * @method doTypeLogic do right logic based on user chooses.
+             * @return ||void.
+             */
+
+             private function doTypeLogic(string $type,string $tweet_id,int $key){
+                     switch ($type) {
+                             case 'retweet':
+                                $response = $this->newTweetAction('retweet',$tweet_id);
+                                $successMsg = RETWEETED;
+                                break;
+                             case 'unretweet':
+                                $response = $this->newTweetAction('unretweet',$tweet_id);
+                                $successMsg = UNRETWEETED;
+                                break; 
+                             case 'like':
+                                $response = $this->newTweetAction("like",$tweet_id);
+                                $successMsg = LIKED;
+                                break;
+                             case 'unlike':
+                                $response = $this->newTweetAction('unlike',$tweet_id);
+                                $successMsg = UNLIKED; 
+                                break;  
+                             default:
+                                $this->error[] = CANNOT_CREATE_YOUR_ACTION;
+                                break;
+                     }
+               
+                     if(isset($response)){
+                               if(is_object($response)){
+                                        $userId = $this->session->getSession('id');
+                                        $this->fastCache();//set cache instances at cache property in AppShared Controller.
+                                        //Update The Tweet In Cache.
+                                        if($type == 'retweet' || $type == 'like'){
+                                                //increment tweet in cache system.
+                                                $this->cache->incrementTweet($type,$key,'userTimeLine'.$userId,470);
+                                        }else if ($type == 'unretweet' || $type == 'unlike'){
+                                                //decrement tweet in cache system.
+                                                $this->cache->decrementTweet($type,$key,'userTimeLine'.$userId,470);
+                                        }
+                                        return ['success'=>$successMsg];
+                               }else if (is_array($response) && array_key_exists('error',$response)){
+                                        $this->error [] = $response['error'];
+                               } 
+                     }
+             }
+             /**
+              *@method newTweetAction send new action for specific tweet to twitter.
+              *@param type =>type of action (Replay,retweet,like,unretweet,unlike) , tweet_id => id of the tweet.
+              *@return
+              */
+             private function newTweetAction(string $type,string $tweet_id){
+                $data = ['oauth_token'=>$this->session->getSession('oauth_token'),
+                        'oauth_token_secret'=>$this->session->getSession('oauth_token_secret'),'tweet_id'=>$tweet_id,
+                        'type'=>$type];
+                $send_to_twitter = new Twitter\Send;
+                return $send_to_twitter->do('writeToTweet',$data);
+
+             }
 
            
         }

@@ -24,4 +24,9 @@
                     'oauth_token'=>$parameter['oauth_token'],'oauth_token_secret'=>$parameter['oauth_token_secret'],
                     'user_id'=>$parameter["user_id"],'category'=>$parameter['category'],'publicAccess'=>$parameter['seshatPublicAccess']]]]); 
             }
+            protected function writeToTweet(array $parameter){
+                      return $this->command->execute(['Method'=>['name'=>"writeToTweet",'parameters'=>['type'=>$parameter['type'],
+                      'tweet_id'=>$parameter['tweet_id'],
+                      'oauth_token'=>$parameter['oauth_token'],'oauth_token_secret'=>$parameter['oauth_token_secret']]]]);  
+            }
          }

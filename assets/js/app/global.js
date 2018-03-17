@@ -13,11 +13,19 @@ var globalMethod = {
                         align: align
                     }
                 });
-            }        
+            },
+        repsonseError : function(data){
+                if(data.error.reauth !== undefined){
+                        //Reauth Logic.
+                        $("#tweetModal").modal("hide");
+                        $(".navbar").hide();
+                        $("<script>").text(data.error.reauth).appendTo("body");           
+                   }else{
+                         //Simple Error.
+                         globalMethod.showNotification('danger','top','right',data.error[0],'#tweetModal',100000);
+                   }      
+        }            
 };
-
-
-
 var twitterActionUrl = "http://127.0.0.1/seshat/!twitterAction/";
 $(document).ready(function(){
         //By Default Disabled Buttons.
@@ -84,15 +92,7 @@ $(document).ready(function(){
                                         console.log(data);
                                         //Only One Error Come To This Not Need Any Array.
                                         if(data.error != undefined){
-                                                if(data.error.reauth !== undefined){
-                                                     //Reauth Logic.
-                                                     $("#tweetModal").modal("hide");
-                                                     $(".navbar").hide();
-                                                     $("<script>").text(data.error.reauth).appendTo("body");           
-                                                }else{
-                                                      //Simple Error.
-                                                      globalMethod.showNotification('danger','top','right',data.error[0],'#tweetModal',100000);
-                                                }
+                                                        globalMethod.repsonseError(data);
                                         }else if (data.success != undefined){
                                                    //Success.
                                                    $("#tweetModal").modal("hide");

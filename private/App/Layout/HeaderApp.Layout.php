@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,12 +12,12 @@
         <link href="<?=ASSESTS_URI."css"?>/app/paper-kit.css?v=2.1.0" rel="stylesheet" type='text/css'/>
         <link href="<?=ASSESTS_URI."css"?>/app/notifyStyle.css" rel="stylesheet" type='text/css'/>
         <!--     Fonts and icons     -->
-        <link href='http://fonts.googleapis.com/css?family=Montserrat:400,300,700' rel='stylesheet' type='text/css'/>
-        <link href="http://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet" type='text/css'/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />        
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link href='//fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css'/>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link href="//use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet" type='text/css'/>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />        
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+        <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="<?=ASSESTS_URI."css"?>/lib/bootstrap-datetimepicker.min.css" rel="stylesheet" type='text/css'/>
         <link href="<?=ASSESTS_URI."css"?>/app/nucleo-icons.css" rel="stylesheet" type='text/css'/>
         <link href="<?=ASSESTS_URI."css"?>/lib/sweetAlert/jquery.sweet-modal.min.css" rel="stylesheet" type='text/css'/>
@@ -131,7 +129,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" data-placement="bottom" title="Your Profile" href="#paper-kit">
-                            Profie
+                            Profile
                             </a>
                         </li>
                         <li class="nav-item dropdown">

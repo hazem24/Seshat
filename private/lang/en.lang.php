@@ -134,10 +134,20 @@ define("TASK_NOT_SCHEDULE_SAVED","Error I Cannot Save This Schedule Now Try Agai
 define("HAVE_SCHEDULE_AT_SAME_TIME","You Have Scheduled Tweet At This Time I Cannot Schedule More Than Tweet At Same Date  Please Change The Date.");
 //End Tasks.
 
-//TimeLine
+//TimeLine.
 define("NO_TWEET_TIME_LINE","I think your account is new great to start with me.
 <br>first we need to follow some persons with same interset.<br>
 you can do this by follow tree feature or of course you can do this manually from twitter website or here also bellow some links important to you to start great media  journey.<br>
 ");
+define("CANNOT_CREATE_YOUR_ACTION","I cannot create this action to twitter now try again later.");
 //End TimeLine.
+
+//Tweet Actions.
+define("RETWEETED","Tweet retweeted.");
+define("UNRETWEETED","Tweet unretweeted.");
+define("LIKED","Tweet liked.");
+define("UNLIKED","Tweet unliked.");
+//End Tweet Actions.
+
+
 

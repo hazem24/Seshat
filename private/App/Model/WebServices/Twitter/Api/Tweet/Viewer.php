@@ -14,14 +14,8 @@
               * @return array.
               */
               public function readTimeLine(){
-                  $timeLineTweet = $this->connection->get("statuses/home_timeline",["count"=>"200","exclude_replies"=>"false"]);
-                  $anyApiError  = $this->anyApiError($timeLineTweet);
-                  if($anyApiError === false){
-                      
-                           return $timeLineTweet;
-                  }
-                           return ['error'=>$anyApiError];
-                     exit;   
+                  $timeLineTweet = $this->connection->get("statuses/home_timeline",["count"=>"50","exclude_replies"=>"false","include_entities"=>"true","tweet_mode"=>"extended"]);
+                  return $this->getResponse($timeLineTweet);
               }
 
             }
