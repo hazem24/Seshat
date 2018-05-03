@@ -6,7 +6,7 @@
         /**
          * This Class Provide Base Class For All Services Which Will Use Twitter
          */
-        Class TwitterApi extends __Services
+        Class TwitterApi
         {
             CONST CONSUMER_KEY ='aunVGBbtjyWAFiZhp9lZJ2pSD';
             CONST CONSUMER_SECRET ='UcuWgqSaruS8o1NY43gKaBZkMDLrJIfOEfLie0nKaPE7Eteey5';
@@ -31,8 +31,8 @@
                     //Check The Scope.
                     $this->user_auth = (isset($data['user_auth']['status']))?(bool)$data['user_auth']['status']:$this->user_auth;
                     if($this->user_auth === true){
-                            $this->access_token = $data['user_auth']['access_token'];
-                            $this->access_token_secret = $data['user_auth']['access_token_secret'];
+                            $this->access_token = (string) $data['user_auth']['access_token'];
+                            $this->access_token_secret = (string) $data['user_auth']['access_token_secret'];
                     }
                     $this->initilization();
                     if(method_exists($this,$data['method'])){

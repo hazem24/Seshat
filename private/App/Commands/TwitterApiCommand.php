@@ -1,13 +1,12 @@
 <?php
         namespace App\Commands;
-        use Framework\Shared\AbstractCommand;
 
 
         /**
         *This Class Have All Commands That Interact with twitter Api Model.
         */
 
-        Class TwitterApiCommand extends AbstractCommand
+        Class TwitterApiCommand extends BaseCommand
         {
             private static  $TwitterModel = "App\\Model\\WebServices\\Twitter\\Api\\";    
             public function execute(array $data = []){

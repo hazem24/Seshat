@@ -32,7 +32,7 @@
         define('LINK_SIGN','!');
         define('MAIL',''); //This Will Be The Mail Setting In Which All Mail Of The App Will Send From It
         define('COMPANY_MAIL','Seshat');//Company Name To Be Used In Mailer System
-        define('PRODUCTION' , false);
+        define('PRODUCTION' , true);
         define('Geo_Location_Server_Access' , 'SAKYW592M92ER296B78Z'); // Uses eurekapi.com As Geolocation Service
         define('APP_FOLDER_PATH' , "seshat/private" . DS);
         define("BASE_URI" , $_SERVER['DOCUMENT_ROOT'] . DS.APP_FOLDER_PATH);//Can Be Access By Browser
@@ -67,7 +67,7 @@
                 $dbObject =  DbConfig::setup([
                     'setting'=>[
                     'driver' => 'mysql',
-                    'host'=>'localhost',
+                    'host'=>'127.0.0.1',
                     'username' => 'root',
                     'dbname'=> 'seshat',
                     'password' => '5553332',

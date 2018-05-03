@@ -8,6 +8,7 @@
         use Framework\Request\RequestHandler;
         use Framework\Lib\Security\Data\FilterDataFactory;
         use App\DomainHelper\Twitter;
+        use App\Model\WebServices\Twitter\Scarper;
 
 
         /**
@@ -24,9 +25,7 @@
              * @return json. 
              */
             final public function composeTweetAction(){
-                   $this->detectLang();
-                   $this->rOut('tw_id','index/signin');
-                   $this->redirectToWizard();
+                    $this->rule();
                    /**
                     * If Comming Request Is PublishNow  =>User Want To Send Tweet To Twitter.
                     * If Comming Request Is Sechdule => User Want To Scedule.
@@ -40,7 +39,8 @@
 
                         if($publishNow === true){
                                 //Publish Now Logic=>Table seshat_publish.
-                                $publishNow = $this->newTweet($category,$tweetContent,$seshatPublicAccess);
+                                $tweet_id = (string)RequestHandler::post("tweet_id");//Incase of user want to replay to specific tweet.
+                                $publishNow = $this->newTweet($category,$tweetContent,$seshatPublicAccess,false,$tweet_id);
                         }elseif($schedule === true){
                                 //Schedule Logic=>Table seshat_schedule.
                                 $scehduleTime = (string)RequestHandler::post("scehduleTime");
@@ -68,14 +68,13 @@
              * @return json.
              */
             public function doAction(){
-                $this->detectLang();
-                $this->rOut('tw_id','index/signin');
-                $this->redirectToWizard();
+                $this->rule();    
                 if(RequestHandler::postRequest()){
                         $action_type = strtolower((string)RequestHandler::post('type'));
                         $tweet_id = (string)RequestHandler::post('tweet_id');
                         $key = (int)RequestHandler::post("key");//To Update The Cache Key of tweet items in the cache.
-                        $twitter_response = $this->doTypeLogic($action_type,$tweet_id,$key);
+                        $replay_context = (bool)RequestHandler::post("replay_context");//The (like-unlike-retweet-unretweet) not coming from replay context.
+                        $twitter_response = $this->doTypeLogic($action_type,$tweet_id,$key,$replay_context);
                         //Return Reponse To User.
                         if($this->anyAppError() === false){
                                 $response = $twitter_response;           
@@ -94,9 +93,7 @@
                 exit;
             }
 
-
-
-            private function newTweet($category,$tweetContent,$seshatPublicAccess,bool $schedule = false){
+            private function newTweet($category,$tweetContent,$seshatPublicAccess,bool $schedule = false,string $tweet_id = ''){
                 /**
                 * 1 - If Tweet Have Media (Image) Check If Image Is Good And Size Is <= 5MB.
                 * 2 - If Tweet Is Text Only Check The Text Chars <= 280.
@@ -111,10 +108,10 @@
                     if(is_array($anyError)){
                         $this->error[] = WebViewError::userErrorMsg($anyError);
                     }else{
-                        if(isset($_FILES['tweetMedia']) && !empty($_FILES['tweetMedia']['name']) && !empty($_FILES['tweetMedia']['tmp_name'])){
+                        if(isset($_FILES['tweetMedia']) && !empty((string)$_FILES['tweetMedia']['name']) && !empty((string)$_FILES['tweetMedia']['tmp_name'])){
                                 //Image + Text.
                                 if($schedule === false){
-                                        $tweet = $this->newTweetLogic($filter[TWEET_CONTENT],$categoryType,$seshatPublicAccess,false,true);         
+                                        $tweet = $this->newTweetLogic($filter[TWEET_CONTENT],$categoryType,$seshatPublicAccess,false,true,$tweet_id);         
                                 }else{
                                         $tweet = $this->newTweetLogic($filter[TWEET_CONTENT],$categoryType,$seshatPublicAccess,true,true);
                                 }
@@ -122,7 +119,7 @@
                         }else{
                                 //Text Only.
                                 if($schedule === false){
-                                        $tweet = $this->newTweetLogic($filter[TWEET_CONTENT],$categoryType,$seshatPublicAccess,false);
+                                        $tweet = $this->newTweetLogic($filter[TWEET_CONTENT],$categoryType,$seshatPublicAccess,false,false,$tweet_id);
                                 }else{
                                         $tweet = $this->newTweetLogic($filter[TWEET_CONTENT],$categoryType,$seshatPublicAccess,true);
                                 }
@@ -159,10 +156,10 @@
              * @method newTweetLogic Handle Logic Of Send Direct Tweet To Twitter.
              * @return array.
              */
-            private function newTweetLogic(string $tweetContent,int $categoryType,bool $seshatPublicAccess,bool $schedule=false,bool $media = false){
+            private function newTweetLogic(string $tweetContent,int $categoryType,bool $seshatPublicAccess,bool $schedule=false,bool $media = false,string $tweet_id = ''){
                 $data = ['oauth_token'=>$this->session->getSession('oauth_token'),
                 'oauth_token_secret'=>$this->session->getSession('oauth_token_secret'),'tweetContent'=>$tweetContent,'user_id'=>(int)$this->session->getSession('id'),
-                'category'=>$categoryType,'media'=>$media,'seshatPublicAccess'=>$seshatPublicAccess];
+                'category'=>$categoryType,'media'=>$media,'seshatPublicAccess'=>$seshatPublicAccess,'tweet_id'=>$tweet_id];
                 if($schedule === false){
                         $class = new Twitter\Send;
                         $method = "publishNewTweet";
@@ -181,7 +178,7 @@
              * @return ||void.
              */
 
-             private function doTypeLogic(string $type,string $tweet_id,int $key){
+             private function doTypeLogic(string $type,string $tweet_id,int $key,bool $replay_context = false){
                      switch ($type) {
                              case 'retweet':
                                 $response = $this->newTweetAction('retweet',$tweet_id);
@@ -198,7 +195,7 @@
                              case 'unlike':
                                 $response = $this->newTweetAction('unlike',$tweet_id);
                                 $successMsg = UNLIKED; 
-                                break;  
+                                break; 
                              default:
                                 $this->error[] = CANNOT_CREATE_YOUR_ACTION;
                                 break;
@@ -206,16 +203,19 @@
                
                      if(isset($response)){
                                if(is_object($response)){
-                                        $userId = $this->session->getSession('id');
-                                        $this->fastCache();//set cache instances at cache property in AppShared Controller.
-                                        //Update The Tweet In Cache.
-                                        if($type == 'retweet' || $type == 'like'){
+                                     $userId = $this->session->getSession('id');
+                                     $this->fastCache();//set cache instances at cache property in AppShared Controller.
+                                     //Update The Tweet In Cache.
+                                     if((bool)$replay_context == false){
+                                        if(($type === 'retweet') || ($type === 'like')){
                                                 //increment tweet in cache system.
                                                 $this->cache->incrementTweet($type,$key,'userTimeLine'.$userId,470);
-                                        }else if ($type == 'unretweet' || $type == 'unlike'){
+                                        }else if (($type === 'unretweet') || ($type === 'unlike')){
                                                 //decrement tweet in cache system.
                                                 $this->cache->decrementTweet($type,$key,'userTimeLine'.$userId,470);
-                                        }
+                                        }       
+                                     }   
+                                        
                                         return ['success'=>$successMsg];
                                }else if (is_array($response) && array_key_exists('error',$response)){
                                         $this->error [] = $response['error'];
@@ -224,7 +224,7 @@
              }
              /**
               *@method newTweetAction send new action for specific tweet to twitter.
-              *@param type =>type of action (Replay,retweet,like,unretweet,unlike) , tweet_id => id of the tweet.
+              *@param type =>type of action (retweet,like,unretweet,unlike) , tweet_id => id of the tweet.
               *@return
               */
              private function newTweetAction(string $type,string $tweet_id){
@@ -235,6 +235,5 @@
                 return $send_to_twitter->do('writeToTweet',$data);
 
              }
-
            
         }

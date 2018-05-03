@@ -32,8 +32,6 @@ class ResolveInvalidReferencesPass implements CompilerPassInterface
 
     /**
      * Process the ContainerBuilder to resolve invalid references.
-     *
-     * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
@@ -92,9 +90,7 @@ class ResolveInvalidReferencesPass implements CompilerPassInterface
                 $value = array_values($value);
             }
         } elseif ($value instanceof Reference) {
-            $id = (string) $value;
-
-            if ($this->container->has($id)) {
+            if ($this->container->has($value)) {
                 return $value;
             }
             $invalidBehavior = $value->getInvalidBehavior();

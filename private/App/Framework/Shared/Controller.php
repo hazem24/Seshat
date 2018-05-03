@@ -36,6 +36,11 @@
             */
             protected $session;
 
+            /**
+             * @property viewInstance.
+            */
+            protected $viewInstance = null;
+
 
             public function __construct(array $option = []){
 
@@ -63,10 +68,17 @@
                     $this->methodToCall($this->actionToCall,$this->parameters);
             }
 
-            /*public function setLayoutView(string $layoutName){
-                        $this->renderLayoutView = true;
-                        $this->layoutView = DEFAULT_LAYOUT_VIEW_PATH . $layoutName;
-            }*/
+            /**
+             * @method viewInstance.
+             * @return instance of viewHandler Class.
+             */
+            protected function viewInstance(string $viewName = ''){
+                    if(is_null($this->viewInstance)){
+                            $this->viewInstance = new ViewHandler(['file'=>$viewName]);
+                    }
+                    return $this->viewInstance;
+            }
+
 
             protected function setActionView(string $actionView){
                    $this->actionToCall = $this->actionView . "Action"; 
@@ -75,14 +87,12 @@
                              //$className = explode('\\',basename(get_class($this)));//Liunx System $className[2]
                              $className = basename(get_class($this));//Windows System
                              $this->actionView       = self::DEFAULT_ACTION_VIEW_PATH . DS . $className. DS . $actionView . ".View.php";
-
-                        
                    }else{
                         $this->actionToCall     = 'notFoundAction';
                         $this->actionView       = self::DEFAULT_ACTION_VIEW_PATH . 'NotFound'. DS . "notFound.View.php";
                    }
 
-                        $this->actionView       = new ViewHandler(["file"=>$this->actionView]);
+                        $this->actionView       = $this->viewInstance($this->actionView);
                         
             }
 
@@ -125,8 +135,7 @@
             */
 
             protected function renderLayout(string $layoutName , array $dataToLayoutOrError = [] , $ajax = false){
-                      $view = new ViewHandler(['file'=>null]);
-                      $view->renderLayout($layoutName,$dataToLayoutOrError,$ajax);
+                      ViewHandler::renderLayout($layoutName,$dataToLayoutOrError,$ajax);
             }
 
 

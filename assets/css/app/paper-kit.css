@@ -5293,7 +5293,7 @@ video {
   vertical-align: middle;
 }
 .table .th-description {
-  max-width: 150px;
+  max-width: 100%;
 }
 .table .td-price {
   font-size: 26px;

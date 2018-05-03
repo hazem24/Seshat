@@ -6,6 +6,7 @@
         use Framework\Error\WebViewError;
         use Framework\Lib\Security\Forms\CsrfProtection;
         use App\DomainHelper\Helper;
+        use App\DomainHelper\FrontEndHelper;
         
         /**
          * Seshat Class Provide All Action And Method To Interact With Seshat Algorthim.
@@ -14,7 +15,7 @@
         {
 
             public function createProfileAction(){
-                   $this->rOut("tw_id","index/signin");
+                   $this->rule();
                    $isWizard = (bool)$this->session->getSession('wizard');
                    if($isWizard === true){
                                 /**
@@ -25,7 +26,6 @@
                                  *   'finish' => string 'Finish' (length=6)
                                  *   'formToken' => string 'db67c26dcc53014e4dadc7316d731aab' (length=32)
                                  */
-                                $this->detectLang();
                                 if(RequestHandler::postRequest()){
                                         //Check If It Comes From The Form.
                                         $formToken = (string)RequestHandler::post('formToken');
@@ -65,10 +65,50 @@
                                 }
                                 $this->actionView->setDataInView(["user"=>$send_to_view]);
                                 $this->render();
-                   }else{
-                            $this->rIn("tw_id","seshatTimeline"); 
+                   }else{    
+                        $this->rIn("tw_id","seshatTimeline");                        
                    } 
             }
+
+            /**
+             * @method analyticAction this method responsable for create an analytic for specific tweet id and user.
+             * @return 
+             */
+
+             public function analyticAction(array $params = []){
+                     $this->rule();
+                     //Error Handler Api Or App Logic.
+                     $screenName = (isset($params[0]) && !empty($params[0]))?(string) $params[0] : false;
+                     $tweet_id   = (isset($params[1]) && !empty($params[1]))? (string) $params[1] : false;
+                     
+                     if($screenName !== false && $tweet_id !== false){
+                                $getAnalytic = $this->seshatAnalyticData($screenName,$tweet_id);
+                                
+                     }else{
+                                $this->error[] = CANNOT_UNDERSTAND;
+                     }
+
+                     //Check for any error in this request.
+                     if($this->anyAppError() === true){
+                                $user_need_reauth = $this->reauthUser($this->error);
+                                $send_to_view = ['error'=>($user_need_reauth === false) ? FrontEndHelper::notify($this->error,'top','center'): $user_need_reauth];
+                     }else{
+                                $send_to_view = $getAnalytic;
+                     }
+                     
+                     $haveError = (bool)(array_key_exists('error',$send_to_view));
+                     $this->renderLayout("HeaderApp");
+                     
+                     if($haveError === true){
+                                $this->renderLayout('Notfound');
+                     }else{
+                                $this->actionView->setDataInView(["analyticData"=>$send_to_view,'FrontHelperClass'=>new FrontEndHelper]);        
+                                $this->render();
+                     }
+
+                     $this->renderLayout("FooterApp",($haveError === true)?['error'=>$send_to_view]:[]);
+                     
+             }
 
 
             private function filterWizardForm(string $name,string $email,int $account_type,string $account_describe){
@@ -112,21 +152,17 @@
                    } 
            }
            /**
-            *@method verfiyCredentials Get User Email-Name-Image For Wizard Proccess.
-            *@return array. 
+            * @method seshatAnalyticData.
             */
-           private function verfiyCredentials(){
-                   $oauth_token = $this->session->getSession('oauth_token');
-                   $oauth_token_secret = $this->session->getSession('oauth_token_secret');
-                   $cmd = Shared\CommandFactory::getCommand('twitterapi');
-                   $userCredients = $cmd->execute(['ModelClass'=>"Account\\Manage",'Method'=>['Name'=>'verfiyCredentials','parameters'=>[],'user_auth'=>['status'=>true,'access_token'=>$oauth_token
-                   ,'access_token_secret'=>$oauth_token_secret]]]);
-                   //Handle Error Here !
-                   if(array_key_exists('error',$userCredients)){
-                                   $this->error[] = $userCredients['error'];//['reauth'=>"msg"]
-                   }else{
-                            return $userCredients;
-                   }
-                   
+           private function seshatAnalyticData(string $screenName,string $tweet_id){
+                $tokens = $this->getTokens();   
+                $cmd = Shared\CommandFactory::getCommand('seshat');
+                $analyticData =  $cmd->execute(['Method'=>['name'=>"getAnalytic",'parameters'=>['screenName'=>$screenName,
+                      'tweet_id'=>$tweet_id,
+                      'oauth_token'=>$tokens['oauth_token'],'oauth_token_secret'=>$tokens['oauth_token_secret']]]]);
+                if(is_array($analyticData) && is_object($analyticData['tweet']) === false && array_key_exists('error',$analyticData['tweet'])){
+                        $this->error[] = $analyticData['tweet']['error'];
+                } 
+                return $analyticData;
            }
         }

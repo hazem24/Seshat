@@ -53,11 +53,15 @@
                 $tweet_to_increment = $this->get($this->getItem($item)); //Return Data of specific tweet.
                 if(isset($tweet_to_increment[$key]) && is_null($tweet_to_increment) === false){
                          if($type == 'retweet'){
-                                 if(isset($tweet_to_increment[$key]->retweet_count)){
+                                 if(isset($tweet_to_increment[$key]->retweet_count) && !isset($tweet_to_increment[$key]->retweeted_status->retweet_count)){
                                          $tweet_to_increment[$key]->retweet_count = $tweet_to_increment[$key]->retweet_count + 1; //increment the tweet.
                                          $tweet_to_increment[$key]->retweeted  = true; //Tweet Retweeted.
                                          $this->updateExistingItem($item,$tweet_to_increment[$key],$key,$expire);
-                                 }
+                                 }else if(isset($tweet_to_increment[$key]->retweeted_status->retweet_count)){
+                                    $tweet_to_increment[$key]->retweeted_status->retweet_count = $tweet_to_increment[$key]->retweeted_status->retweet_count + 1; //increment the tweet.
+                                    $tweet_to_increment[$key]->retweeted  = true; //Tweet retweeted.
+                                    $this->updateExistingItem($item,$tweet_to_increment[$key],$key,$expire);
+                                }
                          }else if($type=='like'){
                             if(isset($tweet_to_increment[$key]->retweeted_status->favorite_count)){
                                 $tweet_to_increment[$key]->retweeted_status->favorite_count = $tweet_to_increment[$key]->retweeted_status->favorite_count + 1; //increment the tweet.
@@ -81,11 +85,15 @@
                 $tweet_to_decrement = $this->get($this->getItem($item)); //Return Data of specific tweet.
                 if(isset($tweet_to_decrement[$key]) && is_null($tweet_to_decrement) === false){
                          if($type == 'unretweet'){
-                                 if(isset($tweet_to_decrement[$key]->retweet_count)){
+                                 if(isset($tweet_to_decrement[$key]->retweet_count) && !isset($tweet_to_decrement[$key]->retweeted_status->retweet_count)){
                                          $tweet_to_decrement[$key]->retweet_count = $tweet_to_decrement[$key]->retweet_count - 1; //decrement the tweet.
                                          $tweet_to_decrement[$key]->retweeted  = false; //Tweet unRetweeted.
                                          $this->updateExistingItem($item,$tweet_to_decrement[$key],$key,$expire);
-                                 }
+                                 }else if(isset($tweet_to_decrement[$key]->retweeted_status->retweet_count)){
+                                    $tweet_to_decrement[$key]->retweeted_status->retweet_count = $tweet_to_decrement[$key]->retweeted_status->retweet_count - 1; //decrement the tweet.
+                                    $tweet_to_decrement[$key]->retweeted  = false; //Tweet unretweeted.
+                                    $this->updateExistingItem($item,$tweet_to_decrement[$key],$key,$expire);
+                                }
                          }else if($type=='unlike'){
                                 if(isset($tweet_to_decrement[$key]->retweeted_status->favorite_count)){
                                     $tweet_to_decrement[$key]->retweeted_status->favorite_count = $tweet_to_decrement[$key]->retweeted_status->favorite_count - 1; //decrement the tweet.

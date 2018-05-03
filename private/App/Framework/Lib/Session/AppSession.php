@@ -71,8 +71,7 @@
 
                 public function destroy($session_id){
                         if($this->sessionMapper->destroy($session_id)){
-                            session_unset();
-                            $_SESSION = [];
+                            $this->session->clear();     
                             return true;
                         }
                         throw new SessionException("Cannot Destroy The Session");
@@ -120,6 +119,6 @@
                 }
 
                 public function clear(){
-                        $_SESSION = [];
+                        session_unset();
                 }
         }

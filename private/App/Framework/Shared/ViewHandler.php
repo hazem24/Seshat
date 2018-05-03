@@ -7,9 +7,9 @@
         use Framework\Lib\Security\Forms\CsrfProtection;
 
         /**
-        *This Class Handle All Views That Needed By The User Request 
-        *Responsable For Require The Wanted View If Exists
-        *Or NotFound View If Not Exists 
+        *This Class Handle All Views That Needed By The User Request. 
+        *Responsable For Require The Wanted View If Exists.
+        *Or NotFound View If Not Exists. 
         */
 
 
@@ -19,7 +19,7 @@
             private $file;
             private $data = [];
             private $protectFormView;
-            private $session; //Used To Allow Me To Use Session In Any View I Want
+            private $session; //Used To Allow Me To Use Session In Any View I Want.
 
 
 
@@ -59,10 +59,12 @@
             }
 
             public function setDataInView(array $data){
-                   foreach($data as $key =>$val){
-                          $this->data[$key] = $val;
-                   }
-                   return $this;
+                if(!empty($data)){
+                        foreach($data as $key =>$val){
+                                $this->data[$key] = $val;
+                        }
+                }
+                return $this;
             }
 
             public function notFound(){
@@ -75,15 +77,13 @@
            /**
            *Change Log @Written 05/08/2017 @08:43 Pm viewHandler Class Now Responable For render Layout Also
            */ 
-           public function renderLayout(string $layoutName , array $dataToLayoutOrError = [] , $ajax = false){
+           public static function renderLayout(string $layoutName , array $dataToLayoutOrError = [] , $ajax = false){
                 foreach($dataToLayoutOrError as $name => $value){
                         $$name = $value;      
-                }
+                }                
                 if($ajax === true){
                         return file_get_contents(self::DEFAULT_LAYOUT_VIEW_PATH . ucfirst(strtolower($layoutName)) .".Layout.php");
                 }
-                        
-                        require(self::DEFAULT_LAYOUT_VIEW_PATH . ucfirst(strtolower($layoutName)) .".Layout.php");
+                require(self::DEFAULT_LAYOUT_VIEW_PATH . ucfirst(strtolower($layoutName)) .".Layout.php");                       
             }
-
         }

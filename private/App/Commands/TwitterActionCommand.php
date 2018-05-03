@@ -19,23 +19,18 @@
                 $this->twitter_api_command = Shared\CommandFactory::getCommand('twitterApi');
             }
 
-            public function execute(array $data = []){
-                $method = $data['Method']['name']; 
-                if(method_exists($this,$method)){
-                         return call_user_func_array(array($this,"$method") , array($data['Method']['parameters']));
-                }  
-            }
             /**
              * @method publishTweet Responsable For Publish Tweet.
              * @return array.
              */
-            private function publishTweet(array $parameters=[]){
+            protected function publishTweet(array $parameters=[]){
                     $tweetContent = $parameters['status'];
                     $oauth_token = $parameters['oauth_token'];
                     $oauth_token_secret = $parameters['oauth_token_secret'];
                     $category =  $parameters['category'];
                     $user_id = $parameters['user_id'];
                     $publicAccess = $parameters['publicAccess'];
+                    $tweet_id = $parameters['tweet_id'];//incase of user want to replay to specific tweet.
                     if(isset($parameters['media']) && $parameters['media'] === true){
                         //Tweet With Media(image).
                         $uploadMedia = $this->uploadMedia($user_id);
@@ -43,14 +38,14 @@
                                 $publish_tweet = ['uploadError'=>$uploadMedia];//Error At Upload Image To Seshat System.
                         }else if(is_string($uploadMedia)){
                                 $publish_tweet = $this->twitter_api_command->execute(['ModelClass'=>"Tweet\\Action",'Method'=>['Name'=>'postMediaTweet',
-                                'parameters'=>['status'=>$tweetContent,'media'=>self::UPLOAD_IMAGE_PATH.$uploadMedia],
+                                'parameters'=>['status'=>$tweetContent,'tweet_id'=>$tweet_id,'media'=>self::UPLOAD_IMAGE_PATH.$uploadMedia],
                                 'user_auth'=>['status'=>true,'access_token'=>$oauth_token
                                 ,'access_token_secret'=>$oauth_token_secret]]]); 
                         }
                         
                     }else{
                         //Tweet Text Only.
-                        $publish_tweet = $this->twitter_api_command->execute(['ModelClass'=>"Tweet\\Action",'Method'=>['Name'=>'postTextTweet','parameters'=>['status'=>$tweetContent],'user_auth'=>['status'=>true,'access_token'=>$oauth_token
+                        $publish_tweet = $this->twitter_api_command->execute(['ModelClass'=>"Tweet\\Action",'Method'=>['Name'=>'postTextTweet','parameters'=>['status'=>$tweetContent,'tweet_id'=>$tweet_id],'user_auth'=>['status'=>true,'access_token'=>$oauth_token
                         ,'access_token_secret'=>$oauth_token_secret]]]);         
                     }
                     if(is_object($publish_tweet)){
@@ -72,7 +67,7 @@
 
             }
 
-            private function writeToTweet(array $parameters){
+            protected function writeToTweet(array $parameters){
                 $write_type = $parameters['type'];
                 $oauth_token = $parameters['oauth_token'];
                 $oauth_token_secret = $parameters['oauth_token_secret'];

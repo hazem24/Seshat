@@ -42,9 +42,11 @@ $(document).ready(function(){
             //Indentifier. 
             $indentifier = "#retweet_unretweet_"+$tweet_id;            
             
+            $(".retweet_unretweet").attr("disabled",true);
             $type = $($indentifier).attr('data-action').toLowerCase();
             $retweet_counter = $($indentifier).find('.retweet_counter');
             $data_key = $($indentifier).data("key");
+            $replay_context = $($indentifier).attr("data-replay-context");
             
             /**
              * Divided To Two Logic Beacause retweet Can Be Upgrade To Be retweet with Qoutes So Modal Must Appear In It's Logic.
@@ -56,7 +58,7 @@ $(document).ready(function(){
                     $.ajax({
                         "type":"POST",
                         "url":writeToTwitter,
-                        "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key,
+                        "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key+"&replay_context="+$replay_context,
                         "dataType":"json",
                         "success":function(data){
 
@@ -64,6 +66,8 @@ $(document).ready(function(){
                             twitterAction.unDoLogic($indentifier,$retweet_counter,"btn-link retweet_unretweet",'retweet');
                         }
                         twitterAction.twitterResponse(data);
+                        $(".retweet_unretweet").attr("disabled",false);
+
                     }
                 });        
             }else if ($type == 'unretweet'){
@@ -73,7 +77,7 @@ $(document).ready(function(){
                 $.ajax({
                     "type":"POST",
                     "url":writeToTwitter,
-                    "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key,
+                    "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key+"&replay_context="+$replay_context,
                     "dataType":"json",
                     "success":function(data){
 
@@ -81,6 +85,7 @@ $(document).ready(function(){
                             twitterAction.doLogic($indentifier,$retweet_counter,"btn btn-link btn-success retweet_unretweet",'unretweet');
                         }
                             twitterAction.twitterResponse(data);
+                            $(".retweet_unretweet").attr("disabled",false);
                     }
                 });
             }
@@ -94,23 +99,25 @@ $(document).ready(function(){
             $tweet_id = $(this).data("twid");//Tweet Id.
             //Indentifier. 
             $indentifier = "#like_unlike_"+$tweet_id;            
-            
+            $(".like_unlike").attr("disabled",true);
             $type = $($indentifier).attr('data-action').toLowerCase();
             $like_counter = $($indentifier).find('.like_counter');
             $data_key = $($indentifier).data("key");
+            $replay_context = $($indentifier).attr("data-replay-context");
             if($type == 'like'){
                     //Like Logic.
                     twitterAction.doLogic($indentifier,$like_counter,"btn  btn-link  btn-danger like_unlike",'unlike');
                     $.ajax({
                         "type":"POST",
                         "url":writeToTwitter,
-                        "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key,
+                        "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key+"&replay_context="+$replay_context,
                         "dataType":"json",
                         "success":function(data){
                             if(data.success == undefined){
                                 twitterAction.unDoLogic($indentifier,$like_counter,'btn btn-link like_unlike','like');
                             }
                                 twitterAction.twitterResponse(data);
+                                $(".like_unlike").attr("disabled",false);
                         }
                     });
             }else if($type == 'unlike'){
@@ -119,17 +126,32 @@ $(document).ready(function(){
                     $.ajax({
                         "type":"POST",
                         "url":writeToTwitter,
-                        "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key,
+                        "data":"type="+$type+"&tweet_id="+$tweet_id+"&key="+$data_key+"&replay_context="+$replay_context,
                         "dataType":"json",
                         "success":function(data){
                             if(data.success == undefined){
                                 twitterAction.doLogic($indentifier,$like_counter,"btn btn-link btn-danger like_unlike",'unlike');
                             }
                                 twitterAction.twitterResponse(data);
+                                $(".like_unlike").attr("disabled",false);
                         }
                     });
             }
             
         });
         //End like && unlike Section.
+
+        //replay area.
+        $('.tweet_replay').on('click',function(event){
+                    event.preventDefault();
+                    //init screenName.
+                    $replay_to = $(this).data("replay-to");
+                    $tweet_id  = $(this).data("twid");
+                    //create hidden twitter id input.
+                    $("<input>").attr("type","hidden").attr("name","tweet_id").attr("value",$tweet_id).appendTo("#composeTweetForm");        
+                    $(".emojionearea-editor").text($replay_to);
+                    $("#tweetModal").modal();                    
+        });
+        //End replay area.
+
 });

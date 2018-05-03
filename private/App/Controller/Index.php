@@ -29,6 +29,11 @@
                     $this->render();
             }
 
+            public function logoutAction(){
+                   $this->session->clear();
+                   $this->rOut("id","index"); 
+            }
+
             
 
             /**
@@ -37,7 +42,6 @@
             public function seshatConnectorAction(){
                    $this->detectLang();
                    $oauth_token = $this->session->getSession('oauth_token');
-                 
                    if(RequestHandler::getRequest() && $oauth_token !== false){
                            
                         $oauth_token_get = (string)RequestHandler::get('oauth_token'); 
@@ -70,6 +74,7 @@
                                                  */      
                                         $this->userStatus($confirmUser['user_id'],$confirmUser['screen_name'],$confirmUser['oauth_token'],$confirmUser['oauth_token_secret']); 
                                         if($this->anyAppError() === true){        
+                                                //I Must handle this error.
                                                 $this->session->setSession('error',$this->error);
                                                 $this->rOut('tw_id','index/signin');
                                         } 

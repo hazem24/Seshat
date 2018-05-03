@@ -1,26 +1,17 @@
 <?php
         namespace App\Commands;
         use App\Model\App\UserModel;
-        use Framework\Shared\AbstractCommand;
 
 
         /**
         *This Class Have All Commands That Interact with User Model.
         */
 
-        Class UserCommand extends AbstractCommand
+        Class UserCommand extends BaseCommand
         {
             private $userModel;
 
-            public function execute(array $data = []){
-                   $method = $data['Method']['name']; 
-                   if(method_exists($this,$method)){
-                            return call_user_func_array(array($this,"$method") , array($data['Method']['parameters']));
-                   } 
-            }
-
-
-            private function checkUserStatus(array $parameters){
+            protected function checkUserStatus(array $parameters){
                 $tw_id = $parameters['tw_id'];
                 $userExists = UserModel::userExists($tw_id);
                 if($userExists === false){
@@ -79,7 +70,7 @@
              * @return bool|array.
              */
 
-            private function createProfile(array $parameters){
+            protected function createProfile(array $parameters){
                     $createProfile =  UserModel::createProfile($parameters['id'],$parameters['name'],$parameters['email'],$parameters['user_describe'],$parameters['account_type']); 
                     return $createProfile;   
             } 

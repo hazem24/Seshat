@@ -17,9 +17,7 @@
             */    
             public function defaultAction(){
                 //$_SESSION = [];
-                $this->detectLang();
-                $this->rOut("tw_id","index/signin");
-                $this->redirectToWizard();
+                $this->rule();
                 $this->renderLayout("HeaderApp");  
                 $timeLineData  = $this->getUserTimeLine(); 
                 
@@ -30,7 +28,7 @@
                         $user_need_reauth = $this->reauthUser($this->error);
                         $toView = ['error'=>($user_need_reauth === false) ? FrontEndHelper::notify($this->error): $user_need_reauth];
                 }    
-                $this->actionView->setDataInView((array_key_exists('error',$toView) === false)?["userTimeLine"=>$toView]:[]);     
+                $this->actionView->setDataInView((array_key_exists('error',$toView) === false)?["userTimeLine"=>$toView,'FrontEndHelper'=> new FrontEndHelper]:[]);     
                 $this->render();
                 $this->renderLayout("FooterApp",(array_key_exists('error',$toView) === true)?['error'=>$toView]:[]);
             }
@@ -43,7 +41,7 @@
                 if(is_null($this->cache->get($userTimeLine_cache)) === true){
                         //Read Data From Twitter First.
                         $readTimeLine = new Twitter\Read();
-                        $timeLine = $readTimeLine->readTimeLine(["oauth_token"=>$this->session->getSession("oauth_token"),
+                        $timeLine = $readTimeLine->do('readTimeLine',["oauth_token"=>$this->session->getSession("oauth_token"),
                         "oauth_token_secret"=>$this->session->getSession("oauth_token_secret")]);       
                         //error exists.
                         if(is_array($timeLine) && array_key_exists("error",$timeLine)){

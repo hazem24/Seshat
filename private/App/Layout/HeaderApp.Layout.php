@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/png" href="assets/img/favicon.ico">
-        <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
         <title>Paper Kit 2 PRO by Creative Tim</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
@@ -21,8 +19,12 @@
         <link href="<?=ASSESTS_URI."css"?>/lib/bootstrap-datetimepicker.min.css" rel="stylesheet" type='text/css'/>
         <link href="<?=ASSESTS_URI."css"?>/app/nucleo-icons.css" rel="stylesheet" type='text/css'/>
         <link href="<?=ASSESTS_URI."css"?>/lib/sweetAlert/jquery.sweet-modal.min.css" rel="stylesheet" type='text/css'/>
-    </head>
-    <body style="background-color:white;padding-top: 125px;">
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+        <link href="<?=ASSESTS_URI."css"?>/lib/charts.css" rel="stylesheet" type='text/css'>
+        <link rel="stylesheet" href="<?=ASSESTS_URI."css"?>/lib/emojionearea.min.css">
+    </head> 
+    <body style="background-color:#343c55;padding-top: 125px;">
         <div class="modal fade bd-example-modal-lg" id="tweetModal"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" >
                 <div class="modal-content" >
@@ -58,7 +60,7 @@
                                             </div>
                                             <div class="col-md-7 col-sm-7">
                                                 <div class="form-group">
-                                                    <textarea class="form-control textarea-limited" id="tweetContent" name="tweetContent" placeholder="<?=LIMITED_TEXT_AREA?>" rows="13", maxlength="280" ></textarea>
+                                                    <textarea class="form-control textarea-limited quickReplay" id="tweetContent" name="tweetContent" placeholder="<?=LIMITED_TEXT_AREA?>" rows="13", maxlength="280" ></textarea>
                                                     <h5><small><span id="textarea-limited-message" class="pull-right"><?=CHARS_LEFT?></span></small></h5>
                                                 </div>
                                                 <div class="form-check">
@@ -108,9 +110,9 @@
             </div>
         </div>
         <!--         default navbar with notifications     -->
-        <nav class="navbar navbar-expand-sm bg-info fixed-top">
+        <nav class="navbar navbar-expand-sm fixed-top" style='background-color:#485274;'>
             <div class="container">
-                <a class="navbar-brand" href="#paper-kit"><?=NAME?></a>
+                <a class="navbar-brand" href="#paper-kit" style='color:white;'><?=NAME?></a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-bar"></span>
                 <span class="navbar-toggler-bar"></span>
@@ -123,13 +125,18 @@
                     </form>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link btn   btn-round"  data-toggle="modal" data-target=".bd-example-modal-lg" id="composeTweet" style="background-color: #e3f2fd;" data-toggle="tooltip" data-placement="bottom" title="Create Tweet" href="#paper-kit">
-                            Tweet
+                            <button  class="nav-link btn   btn-round"  data-toggle="modal" data-target=".bd-example-modal-lg" id="composeTweet" style="background-color: #e3f2fd;" data-toggle="tooltip" data-placement="bottom" title="Create Tweet" href="#paper-kit">
+                            <?=TWEET;?>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" data-placement="bottom" title="<?=TWITTER_TIME_LINE;?>" href="<?=BASE_URL.LINK_SIGN."seshatTimeline"?>">
+                            <?=TIMELINE;?>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" data-placement="bottom" title="Your Profile" href="#paper-kit">
-                            Profile
+                            <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" data-placement="bottom" title="<?=YOUR_PROFILE?>" href="#paper-kit">
+                            <?=PROFILE;?>
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -215,7 +222,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#paper-kit">Separated link</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#paper-kit">Another separated link</a>
+                                <a class="dropdown-item" href="<?=BASE_URL.LINK_SIGN.'index/logout'?>"><?=LOGOUT;?></a>
                             </ul>
                         </li>
                     </ul>

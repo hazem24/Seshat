@@ -53,7 +53,7 @@
                } 
         }
 
-        public function execute(){
+        public function response(){
                return curl_exec($this->curl); 
         }
 

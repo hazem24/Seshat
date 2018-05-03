@@ -32,23 +32,27 @@
 <!--  Plugins for DateTimePicker -->
 <script src="//momentjs.com/downloads/moment.js"></script>
 <script type="text/javascript" src="<?=ASSESTS_URI."js"?>/lib/bootstrap-datetimepicker.min.js"></script>
-
+<!-- charlist app -->
+<script src="<?=ASSESTS_URI."js"?>/lib/chartist.min.js"></script>
 
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-notify.js" type="text/javascript"></script>
-
-
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/paper-kit.js?v=2.1.0"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/sweetAlert/jquery.sweet-modal.min.js" type="text/javascript"></script>
 <script src="//cdn.jsdelivr.net/npm/afterglowplayer@1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="<?=ASSESTS_URI."js"?>/lib/emojionearea.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/global.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/writeToTwitter.js"></script>
+
 <?php
 
 //Check If User Need Reauthincate or any Error Exists.
 if(isset($error) && is_object($error) === false && is_array($error) && !empty($error)):
 ?>
 <script>
-<?php    
+<?php  
+  
     foreach ($error['error'] as $key => $value) :  
 ?>
 

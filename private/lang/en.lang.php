@@ -5,7 +5,21 @@ define("NAME","Seshat");
 
 //Global.
 define("CANCEL","Cancel");
+define("LOGOUT","Logout");
+define("TWEET_THIS","Tweet this");
+define("SESHAT_ANALYTIC_TWEET","Seshat Analytic");
+define("FOLLOWERS","Followers.");
+define("RETWEET","Retweet");
+define("LIKE",'Like');
+//End Global.
+//Nav.
+define("TWEET","Tweet");
+define("PROFILE","Profile");
+define("TIMELINE","Timeline");
+define("TWITTER_TIME_LINE","TimeLine");
+define("YOUR_PROFILE","Your profile");
 
+//End Nav.
 
 
 //AppError.
@@ -15,6 +29,9 @@ define("EMAIL_EXISTS","This Email Used Please Try With Another Email Address.");
 define("BOT_ACCESS",'Seshat Not Love To Work With Bots.');
 define("REAOUTH_SESHAT",'Re-authentication With Seshat.');
 define("TWEET_NOT_SAVED",'I Publish Your Tweet In Twitter But I Can not Save It.');
+define("CANNOT_UNDERSTAND","I cannot understand what do you want i still learning sorry about that.");
+define("ERROR_404","Well something wrong happen .. i guess that this page not exists if you feel that this is an error 
+in my system i love to learn so here's some important links for you ..");
 //End AppError.
 
 define("INVAILD_DATE","You Enter Invaild Date.");
@@ -84,7 +101,7 @@ define("TWITTER_DOWN","Twitter Down Now Please Try Again Later.");
 define("REVOKED_SESHAT","You revoked access for me to your twitter account , please let me enter your account again to return back to my job.");
 define("DEFAULT_TWITTER_HTTP_ERROR","Something Error I Will Try To Solve It Try Again Later.");
 define("SYSTEM_CLOCK_INVAILED","Please check your system clock.");
-define("WRONG_TWEET_ID","No Tweet With This ID.");
+define("WRONG_TWEET_ID","This Tweet not found and i will deleted it soon from my brain.");
 define("MIN_TWEET_LENGTH","Tweet Length Must Be Shorter Than That.");
 define("VERFIY_LOGIN_WITH_TWITTER","Please Go To Twitter And Verify Your Login And Return Here Back.");
 define("DUPLICATE_RETWEET","You Forget That You Retweet This Tweet Before .. Don't Worry I Remembered That For You.");
@@ -140,6 +157,7 @@ define("NO_TWEET_TIME_LINE","I think your account is new great to start with me.
 you can do this by follow tree feature or of course you can do this manually from twitter website or here also bellow some links important to you to start great media  journey.<br>
 ");
 define("CANNOT_CREATE_YOUR_ACTION","I cannot create this action to twitter now try again later.");
+define("RETWEETED_BY",'retweeted by :');
 //End TimeLine.
 
 //Tweet Actions.
@@ -147,7 +165,37 @@ define("RETWEETED","Tweet retweeted.");
 define("UNRETWEETED","Tweet unretweeted.");
 define("LIKED","Tweet liked.");
 define("UNLIKED","Tweet unliked.");
+define("REPLAYED","Your Replay sent to this tweet.");
+define("FOLLOW_BUTTON","follow");
+define("UNFOLLOW_BUTTON","unfollow");
+define("FOLLOWERS_COUNTER","Followers");
+define("FOLLOWING_COUNTER","Following");
+define("NO_REPLIES_FOR_THIS_TWEET","No replies for this tweet.");
 //End Tweet Actions.
+//Tweet Content.
+define("TWEETS_MENTIONS","mentions in this tweet:");
+//End Tweet Content.
+
+//Seshat view.
+define("NOT_REPLIES_FOR_SHOW","Sorry no replies to show you for this tweet.");
+//End seshat view.
+
+//seshat statics page.
+define("TWEET_STATICS","Tweet Statics");
+define("TOTAL_FOLLOWER","Total Follower of");
+define("ACTIVE_TWEET_USER","Active followers in this tweet");
+define("ACTIVITY_PRECENTAGE","Activity Precent");
+define("STRENGTH",["weak","intermediate","strong"]);
+define("LEGEND","Legend");
+define("ACTIVE_IN_FOLLOWERS_TWEETS","Active followers in this tweet.");
+define("ACTIVE_TWEET_USERS","Top users reacted with this tweet.");
+define("QUICK_REPLAY","Quick Replay");
+define("REACTED_USER_TO_TWEET","Reacted users to this tweet.");
+define("TWEET_REPLIES","What users says about this tweet.");
+define("TWEET_IMPRESSION","Impression");
+define("TOTAL_REACTED_USERS","Total Reacted");
+define("NO_USERS_REACTED","There is no users reacted to this tweet please come again later.");
+//End seshat statics page.
 
 
 

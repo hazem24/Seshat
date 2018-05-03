@@ -11,18 +11,14 @@
             {
             
                 /**
-                 * @method postTextTweet post Text Tweet To Twitter.
+                 * @method postTextTweet post Text Tweet To Twitter || replay to specific tweet in twitter.
                  * @return object|array.
                  */
                 public function postTextTweet(array $parameters){
                        $tweetContent = $parameters['status']; 
-                       $newTweet     = $this->connection->post('statuses/update',['status'=>$tweetContent]);
-                       $anyApiError  = $this->anyApiError($newTweet);
-                       if($anyApiError === false){
-                                return $newTweet;
-                       }
-                                return ['error'=>$anyApiError];
- 
+                       $tweet_id     = $parameters['tweet_id'];//incase of user want to replay to specifc tweet.
+                       $newTweet     = $this->connection->post('statuses/update',['status'=>$tweetContent,'in_reply_to_status_id'=>$tweet_id]);
+                       return $this->getResponse($newTweet); 
                 }
 
                 /**
@@ -33,13 +29,10 @@
                  public function postMediaTweet(array $parameters){
                         $tweetContent = $parameters['status'];
                         $mediaPath    = $parameters['media'];
+                        $tweet_id = $parameters['tweet_id'];//incase of user want to replay to specifc tweet.
                         $media = $this->connection->upload('media/upload', ['media' => $mediaPath]); 
-                        $newTweet     = $this->connection->post('statuses/update',['status'=>$tweetContent,'media_ids'=>implode(',', [$media->media_id_string])]);
-                        $anyApiError  = $this->anyApiError($newTweet);
-                        if($anyApiError === false){
-                                return $newTweet;
-                        }
-                                return ['error'=>$anyApiError];
+                        $newTweet     = $this->connection->post('statuses/update',['status'=>$tweetContent,'in_reply_to_status_id'=>$tweet_id,'media_ids'=>implode(',', [$media->media_id_string])]);
+                        return $this->getResponse($newTweet);
                  }
 
                  /**
@@ -91,7 +84,4 @@
                         $unlike = $this->connection->post("favorites/destroy",['id'=>$tweet_id]);
                         return $this->getResponse($unlike);
                     }
-
-
-
             }
