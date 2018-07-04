@@ -28,8 +28,6 @@ var globalMethod = {
                    }else if (data.AppError != undefined){
                         //AppError.   
                         globalMethod.showNotification('danger','top','right',data.AppError,element,20000);
-                   }else if (){
-                           
                    }else{
                          //Simple Error.
                          globalMethod.showNotification('danger','top','right',data.error[0],element,20000);
