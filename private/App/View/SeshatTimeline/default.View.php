@@ -1,7 +1,7 @@
 <?php
     //var_dump($userTimeLine[2]->entities->urls);
     //exit;
-    $user_screenName = "@".$this->session->getSession("username"); //username eqv. to screenname
+    $user_id_in_session = $this->session->getSession("tw_id"); //user_id
     //var_dump($user_screenName);
     // exit;
     if(isset($userTimeLine) && !empty($userTimeLine)  && is_array($userTimeLine)):
@@ -42,9 +42,16 @@
 
                         </div>         
                         <p  style="color:black; font-family: 'Montserrat', sans-serif;"<?=$dir;?>>
-                                <?=$full_text;?>
+                                <?= nl2br("<span style='font-size:large;'>".$full_text."</span>",false);?>
                         </p> 
-                        <input type="hidden" value="<?=$org_text?>" id ="content<?=$tweet_key?>"> 
+                        
+                        <?php 
+                            //Orginal text for copyTweet Proccess. 
+                            if(!empty($full_text)):
+                                    echo "<a class = 'link-info translateThis' data-from='$lang'  data-key='$tweet_key' href=''><i class='fas fa-globe'></i>".TRANSLATE_THIS_TWEET."</a>";
+                            endif;        
+                        ?>
+                        <input type="hidden" value="<?=$this->htmlSafer($org_text)?>" id ="content<?=$tweet_key?>"> 
                     <?php
 							//Echo media if found.
 							if(is_null($media) === false):
@@ -69,7 +76,7 @@
                                     </button>
                                     <ul class="dropdown-menu" style="background-color:#FFFFF0;overflow:visible;">
                                           <li class="dropdown-item">
-                                              <a href="#paper-kit">
+                                              <a href="">
                                                   <div class="row">
                                                       <div class="col-sm-2">
                                                           <span class="icon-simple"><i class="fas fa-chart-line"></i></span>
@@ -80,7 +87,7 @@
                                           </li>
                                           <div class="dropdown-divider"></div>
                                           <li class="dropdown-item">
-                                              <a href="#paper-kit">
+                                              <a href="">
                                                   <div class="row">
                                                       <div class="col-sm-2">
                                                           <span class="icon-simple"><i class="fab fa-twitter-square"></i></span>
@@ -91,21 +98,21 @@
                                           </li>
                                           <div class="dropdown-divider"></div>
                                           <li class="dropdown-item">
-                                              <a href="#paper-kit">
+                                              <a href="">
                                                   <div class="row">
                                                       <div class="col-sm-2">
-                                                          <span class="icon-simple"><i class="fa fa-exclamation-circle"></i></span>
+                                                          <span class="icon-simple"><i class="fas fa-globe"></i></span>
                                                       </div>
-                                                      <div class="col-sm-9">Report</div>
+                                                      <div class="col-sm-9 TranslateThis">Report</div>
                                                   </div>
                                               </a>
                                           </li>
                                           <?php
-                                            if(strtolower($screenName) == strtolower($user_screenName)):
+                                            if($user_id_in_session == $user_id):
                                           ?>
                                         <div class="dropdown-divider"></div>
                                           <li class="dropdown-item">
-                                              <a href="#paper-kit">
+                                              <a href="">
                                                   <div class="row">
                                                       <div class="col-sm-2">
                                                           <span class="icon-simple"><i class="fa fa-exclamation-circle"></i></span>
@@ -116,7 +123,7 @@
                                           </li>
                                           <div class="dropdown-divider"></div>
                                           <li class="dropdown-item">
-                                              <a href="#paper-kit">
+                                              <a href="">
                                                   <div class="row">
                                                       <div class="col-sm-2">
                                                           <span class="icon-simple"><i class="fa fa-exclamation-circle"></i></span>
@@ -127,7 +134,7 @@
                                           </li>
                                           <div class="dropdown-divider"></div>
                                           <li class="dropdown-item">
-                                              <a href="#paper-kit">
+                                              <a href="">
                                                   <div class="row">
                                                       <div class="col-sm-2">
                                                           <span class="icon-simple"><i class="fa fa-exclamation-circle"></i></span>

@@ -1,5 +1,6 @@
 <?php
         namespace App\DomainHelper;
+        //use Framework\Lib\Security\Data\StringFilter as Filter;
 
 
 
@@ -46,7 +47,6 @@ MODAL;
                 /**
                  * global variables.
                 */
-               
                 $links_in_this_tweet=[];//reset links tweet global array.
                 $mentions_users = [];//Reset global mentions users.
                 $mentions_in_tweet = [];//Reset hashtag global array.
@@ -59,7 +59,8 @@ MODAL;
                         //exit;
                         $like_count = $tweet->retweeted_status->favorite_count;
                         $retweet_count = $tweet->retweeted_status->retweet_count;
-                        $full_text = $org_text = $tweet->retweeted_status->full_text;
+                        $org_text   = $tweet->retweeted_status->full_text;
+                        $full_text  = $tweet->retweeted_status->full_text;
                         $screen_name = $tweet->retweeted_status->user->screen_name;//orgin screenName which tweet specific tweets.
                         $user_retweeted_tweet = " @".$tweet->user->screen_name; //User Which retweeted this tweet.
                         $name = $tweet->retweeted_status->user->name;
@@ -70,11 +71,14 @@ MODAL;
                         $links_in_tweet = (isset($tweet->retweeted_status->entities->urls) && !empty($tweet->retweeted_status->entities->urls))?$tweet->retweeted_status->entities->urls:false;
                         $following = $tweet->retweeted_status->user->following;
                         $tweet_id = $tweet->retweeted_status->id_str;
+                        $user_id  = $tweet->retweeted_status->user->id_str;
+                        $lang = $tweet->retweeted_status->lang;
                         
                 else:  
                         $like_count = $tweet->favorite_count;
                         $retweet_count = $tweet->retweet_count;
-                        $full_text  = $org_text = $tweet->full_text;
+                        $org_text = $tweet->full_text;
+                        $full_text = $tweet->full_text;
                         $screen_name = $tweet->user->screen_name;
                         $name = $tweet->user->name;
                         $user_profile = $tweet->user->profile_image_url;
@@ -84,10 +88,12 @@ MODAL;
                         $links_in_tweet = (isset($tweet->entities->urls) && !empty($tweet->entities->urls)) ? $tweet->entities->urls : false;
                         $following = $tweet->user->following;
                         $tweet_id  = $tweet->id_str;
+                        $user_id   = $tweet->user->id_str;
+                        $lang = $tweet->lang;
 
                 endif;
 
-                $ar = ($tweet->lang == 'ar') ? true : false;  
+                $ar = ($lang == 'ar') ? true : false;  
                 $dir = ($ar)? "dir=rtl" :"";
                 $replay_screen_name = "@" . $screen_name;//For replay logic.
                 $screenName = ($ar) ? $screen_name."@":"@".$screen_name;
@@ -104,8 +110,16 @@ MODAL;
                 //add expanded links if found.
                 if($links_in_tweet !== false):
                         foreach ($links_in_tweet as $key => $link) :
-                                $links_in_this_tweet[] =  [$link->url,"<a class='link-danger' target='_blank' href='$link->expanded_url'>$link->display_url</a>"];//Links In text.
+                                /*if($screen_name == "YinneAdrianaM" && $link->expanded_url != "https://twitter.com/canalspace/status/992539401287684096"){
+                                                var_dump($key,$link);
+                                                exit;
+                                                
+                                }*/
+                                $links_in_this_tweet[] =  [$link->url,"<a class='link-danger' target='_blank' href=\"$link->expanded_url\">$link->display_url</a>"];//Links In text.
                         endforeach;
+
+                       
+                        
                 endif;
                 //End links section.
                 /**
@@ -113,7 +127,7 @@ MODAL;
                  */
                 if($hash_tag_tweets !== false):
                         foreach ($hash_tag_tweets as $key => $hashtag) :
-                                $colored_tag = ($ar) ? $hashtag->text.'#': '#'.$hashtag->text;
+                                $colored_tag = '#'.$hashtag->text;
                                 $hash_tag_in_tweets[] =  [$hashtag->text,"<a href='' style='color:DarkViolet;'>".$colored_tag."</a>"];//hashtag In text.
                         endforeach;
                 endif;
@@ -129,7 +143,13 @@ MODAL;
                         endforeach;
                 endif;
                 //End mentions color sesction.
-
+                //mention section. 
+                if(isset($mentions_in_tweet) && is_array($mentions_in_tweet) && !empty($mentions_in_tweet)):
+                        foreach ($mentions_in_tweet as $key => $user) :
+                                $full_text  = str_ireplace($user[0],$user[1],$full_text);
+                        endforeach;
+                endif;
+                //End mention.
                 //Links.
                 if(isset($links_in_this_tweet) && is_array($links_in_this_tweet) && !empty($links_in_this_tweet)):
                         
@@ -156,13 +176,6 @@ MODAL;
                 endif;
                 //End Hashtags.
 
-                //mention section. 
-                if(isset($mentions_in_tweet) && is_array($mentions_in_tweet) && !empty($mentions_in_tweet)):
-                        foreach ($mentions_in_tweet as $key => $user) :
-                                $full_text  = str_ireplace($user[0],$user[1],$full_text);
-                        endforeach;
-                endif;
-                //End mention.
 
                 //Media section.
                 
@@ -181,7 +194,7 @@ MODAL;
                                 </video>";
                         else:
                         
-                            $media = "<a data-fancybox href=\"$media->media_url\" class=\"fancybox\"  data-caption=\"$full_text\" >
+                            $media = "<a data-fancybox href=\"$media->media_url\" class=\"fancybox\"  data-caption=\"$org_text\" >
                                     <img  src=\"$media->media_url\"    alt=\"twitter_image\" class=\"img-rounded img-tweet\"/>
                                     </a>";
                         //End if of stripos Condition. 
@@ -194,7 +207,7 @@ MODAL;
                 if($following == false):
                         $following =   '<button class="btn btn-just-icon btn-round btn-outline-danger btn-tooltip" rel="tooltip" title="'.FOLLOW_BUTTON.'"><i class="fa fa-plus"></i></button>';
                 else : 
-                        $following = '<button class="btn btn-just-icon btn-round btn-outline-danger btn-tooltip" rel="tooltip" title="'.UNFOLLOW_BUTTON.'"><i class="fas fa-minus-circle"></i></button>';                       
+                        $following =   '<button class="btn btn-just-icon btn-round btn-outline-danger btn-tooltip" rel="tooltip" title="'.UNFOLLOW_BUTTON.'"><i class="fas fa-minus-circle"></i></button>';                       
                 endif;        
 
                 //End Following status.
@@ -215,9 +228,9 @@ MODAL;
                  */
 
                 $statics = (object)['total_reacted'=>$total_reacted,'retweet_precent'=>ceil(($retweet_count/$reacted_times)*100) , 'like_precent'=>floor(($like_count/$reacted_times)*100)];
-                return ['like_count'=>(int)$like_count,'org_text'=>$org_text,'full_text'=>nl2br("<span style='font-size:large;'>".$full_text."</span>",false),'retweeted'=>$retweeted,'screenName'=>$screenName,
+                return ['like_count'=>(int)$like_count,'org_text'=> $org_text,'full_text'=>$full_text,'retweeted'=>$retweeted,'screenName'=>$screenName,
                         'name'=>$name,'screen_name'=>$screen_name,'user_profile'=>$user_profile,'media'=>$media,'retweet_count'=>(int)$retweet_count,
-                        'dir'=>$dir,'following'=>$following,'replay_screen_name'=>$replay_screen_name,'retweet_button_style'=>$retweet_button_style,'retweet_type'=>$retweet_type,'like_status'=>$like_status,
+                        'dir'=>$dir,'lang'=>$lang,'user_id'=>$user_id,'following'=>$following,'replay_screen_name'=>$replay_screen_name,'retweet_button_style'=>$retweet_button_style,'retweet_type'=>$retweet_type,'like_status'=>$like_status,
                         'like_type'=>$like_type,'tweet_id'=>$tweet_id,'links_in_this_tweet'=>$links_in_this_tweet,'hash_tag_in_tweets'=>$hash_tag_in_tweets,
                         'mentions_in_tweet'=>$mentions_in_tweet,'statics'=>$statics,'impression'=>$impression,'followers_count'=>$followers_count,'friends_count'=>$friends_count,'favourites_count'=>$tweet->user->favourites_count,'statuses_count'=>$tweet->user->statuses_count,'user_retweeted_tweet'=>(isset($user_retweeted_tweet))?$user_retweeted_tweet:''];        
             }

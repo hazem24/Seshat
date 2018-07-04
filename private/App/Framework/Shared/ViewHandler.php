@@ -76,8 +76,9 @@
             }
            /**
            *Change Log @Written 05/08/2017 @08:43 Pm viewHandler Class Now Responable For render Layout Also
+           *Change log changes for static to non-static method to uses session in some check in header also.
            */ 
-           public static function renderLayout(string $layoutName , array $dataToLayoutOrError = [] , $ajax = false){
+           public  function renderLayout(string $layoutName , array $dataToLayoutOrError = [] , $ajax = false){
                 foreach($dataToLayoutOrError as $name => $value){
                         $$name = $value;      
                 }                

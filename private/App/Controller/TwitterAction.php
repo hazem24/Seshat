@@ -8,7 +8,6 @@
         use Framework\Request\RequestHandler;
         use Framework\Lib\Security\Data\FilterDataFactory;
         use App\DomainHelper\Twitter;
-        use App\Model\WebServices\Twitter\Scarper;
 
 
         /**
@@ -76,18 +75,8 @@
                         $replay_context = (bool)RequestHandler::post("replay_context");//The (like-unlike-retweet-unretweet) not coming from replay context.
                         $twitter_response = $this->doTypeLogic($action_type,$tweet_id,$key,$replay_context);
                         //Return Reponse To User.
-                        if($this->anyAppError() === false){
-                                $response = $twitter_response;           
-                        }else{
-                                $user_need_reauth = $this->reauthUser($this->error);
-                                $response = ['error'=>($user_need_reauth === false) ? $this->error : ['reauth'=>$user_need_reauth[0]]];//reauth Index To Can Be Supplied By Javascript Can Know the type of error notify.
-                        }
-                        
-                        if(isset($response)){
-                                echo json_encode($response);
-                                exit;
-                        }
-
+                        $response = $this->returnResponseToUser($twitter_response);
+                        $this->encodeResponse($response);
                 }
                 echo json_encode(["code"=>403,'error'=>"Protected Area You Cannot Access."]);
                 exit;

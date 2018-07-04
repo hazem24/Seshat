@@ -1,3 +1,5 @@
+var twitterActionUrl = "http://127.0.0.1/seshat/!twitterAction/";
+var extraFeatures    = "http://127.0.0.1/seshat/!extraFeatures/";
 var globalMethod = {
         //type => ['info', 'success', 'warning', 'danger', 'rose', 'primary']
         showNotification: function(type, from, align, msg,element,timer) {
@@ -23,9 +25,14 @@ var globalMethod = {
                         $("#tweetModal").modal("hide");
                         $(".navbar").hide();
                         $("<script>").text(data.error.reauth).appendTo("body");           
+                   }else if (data.AppError != undefined){
+                        //AppError.   
+                        globalMethod.showNotification('danger','top','right',data.AppError,element,20000);
+                   }else if (){
+                           
                    }else{
                          //Simple Error.
-                         globalMethod.showNotification('danger','top','right',data.error[0],element,100000);
+                         globalMethod.showNotification('danger','top','right',data.error[0],element,20000);
                    }      
         },
         clearInput : function () {
@@ -34,24 +41,107 @@ var globalMethod = {
         onPageLoad : function(){
                 //Spinner Here!.
         },
-        copyTweet : function($selector){
-                $($selector).on("click",function(event){
+        navLocation : function ($navLocation){
+                $navLocation = $navLocation.toLowerCase();
+                //disabled The location which user stop at it.
+                if($navLocation.indexOf("!seshattimeline") > 0){
+                        $("#yourTimeline").remove();
+                }else if ($navLocation.indexOf("yourTimeline") > 0){
+                        //Your Profile Here.
+                }
+
+        },copyTweet : function(){
+                $(".tweetThis").on("click",function(event){
                         event.preventDefault();
                         //Init the editor text.
                         globalMethod.clearInput();
-                        $('.emojionearea-editor').text('');        
+                        $('.emojionearea-editor').first().text('');        
                         //Open Modal.
                         $key = $(this).data("key");
                         $content_to_share = $("#"+$key).val();
-                        $(".emojionearea-editor").text($content_to_share);
+                        $("#tweetModal").modal();
+                        $(".emojionearea-editor").first().focus();
+                        $('.emojionearea-editor').first().typetype($content_to_share);
                         //Focus on editor emojionarea.
-                        $(".emojionearea-editor").focus();
-                        $("#tweetModal").modal();                      
-
                 });
         },
         share : function($selector){
               //Share Logic Here.  
+        },
+        translateTweet : function ($selector){
+              //Translate Logic.
+              $($selector).on("click",function(event){
+                        event.preventDefault();
+                        /**
+                         * 1 - create modal.--Done.
+                         * 2 - Add content style.--Done.
+                         * 3 - Ajax .. To Be Contianed.
+                         */
+
+                        $from = $(this).data("from");
+                        $.sweetModal({
+                                title   : '<div style="overflow:hidden;width:auto;height:auto;"><button value="en" class="btn btn-info translateTo">English</button> <button value="ru" class="btn btn-info translateTo">русский язык</button> <button value="tr" class="btn btn-info translateTo">Türkçe</button> <button value="de"class="btn btn-info translateTo">Deutsch</button> <button value="es"class="btn btn-info translateTo">Español</button> <button value="fr"class="btn btn-info translateTo">Français</button> <button value="ar" class="btn btn-info translateTo">العربية</button></div>',
+                                content : '<div  style="float:left;width: 100%;padding: 10px;"><form><textarea id="translated_tweet" data-org_tweet="'+$("#content"+$(this).data('key')).val()+'" class="form-control border-input"  rows="3"></textarea><button type="button" id="tweet_translated_tweeta" style=" margin-top:10px;width: 50%;padding-top: 5px;" class="btn btn-danger" disabled>'+$tweet_translated_tweet_lang+'</button></div>',
+                                theme: $.sweetModal.THEME_DARK,
+                        });
+                        //init Emoj.
+                        globalMethod.initEmoj("#translated_tweet");
+
+                        //Ajax Button for tweet translated tweeta.
+                        $("#tweet_translated_tweeta").on("click",function(event){
+                                event.preventDefault();
+                                $button_clicked = this;
+                                $button_text = $($button_clicked).text();
+                                spinner.button($button_clicked,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>');
+                                //send Ajax to tweet this tweet.
+                                $.ajax({
+                                        "url": twitterActionUrl+"composeTweet",
+                                        "type": "POST",            
+                                        "data": "publish=true&tweetContent="+$(".emojionearea-editor").last().text(),
+                                        "dataType":"json",
+                                        "success": function(data)  { 
+                                                spinner.remove($button_clicked,$button_text);
+                                                //Only One Error Come To This Not Need Any Array.
+                                                if(data.error != undefined){
+                                                        globalMethod.repsonseError(data);
+                                                }else if (data.success != undefined){
+                                                        //Success.
+                                                        globalMethod.showNotification('success','top','right',data.success,'body',3000);
+                                                }
+                                        }
+                                });
+
+
+                        });
+
+                        //Ajax Button for choose lang to translate to it and send request to server and get the translated response.
+                        $(".translateTo").click(function(event){
+                                event.preventDefault();
+                                
+                                $(".translateTo").attr("disabled",true);
+                                $button_clicked = this;
+                                $button_text = $($button_clicked).text();
+                                //ajaxSpinner Must Be Here.
+                                spinner.button($button_clicked,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>');
+                                $.ajax({
+                                        "url":extraFeatures+'translate',
+                                        "type":"POST",
+                                        "dataType":"json",
+                                        "data":"content_to_translate="+$("#translated_tweet").data("org_tweet")+"&to="+$($button_clicked).val()+"&from="+$from,
+                                        "success":function(data){
+                                               spinner.remove($button_clicked,$button_text); 
+                                               if(data.error != undefined){
+                                                        globalMethod.repsonseError(data);
+                                               }else if (data.translated_content != undefined){
+                                                        $(".emojionearea-editor").text(data.translated_content);
+                                                        $("#tweet_translated_tweeta").attr("disabled",false);
+                                               }
+                                               //enable buttons.
+                                               $('.translateTo').attr("disabled",false);
+                                        } 
+                                });
+                        });
+              });                 
         },
         seshatView : function($selector,$url){
                 /*$($selector).on("click",function(event){
@@ -92,9 +182,17 @@ var globalMethod = {
             };
             Chartist.Pie($chartSelector, dataPreferences, optionsPreferences);
 
+        },initEmoj : function($text_areaSelector){
+                $($text_areaSelector).emojioneArea({
+                        pickerPosition: "bottom"
+                });        
         }          
 };
-var twitterActionUrl = "http://127.0.0.1/seshat/!twitterAction/";
+//Nav Location.
+globalMethod.navLocation(String(document.location));
+//End Nav Location.
+
+
 $(document).ready(function(){
         //By Default Disabled Buttons.
         $("#scheduleButton").attr("disabled",true);
@@ -126,12 +224,17 @@ $(document).ready(function(){
         });
 
         //Share button.
-        globalMethod.copyTweet(".tweetThis");
+        globalMethod.copyTweet();
         //End Share Button.
 
         //seshat analytic view.
         globalMethod.seshatAnalytic("#tweetStatics",[$("#rt_precent").val(),$("#like_precent").val()]);
         //End seshat analytic v view.
+
+
+        //Translate Tweet.
+        globalMethod.translateTweet(".translateThis");
+        //End Translate Tweet.
 
           
         $("#datetimepicker").on('dp.change',function(){
@@ -162,6 +265,15 @@ $(document).ready(function(){
                          * 1 - Loading Style Must Be Here !
                          * 2-  Send Ajax Request To Publish The Content.
                          */
+                        $publish_now_button = $("#publishNow");
+                        $publish_button_text = $publish_now_button.text();
+
+                        $schedule_button    = $("#scheduleButton");
+                        $schedule_button_text = $schedule_button.text();
+
+                        spinner.button($publish_now_button,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>');
+                        spinner.button($schedule_button,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>');
+
                         $.ajax({
                                 "url": twitterActionUrl+"composeTweet",
                                 "type": "POST",            
@@ -171,6 +283,12 @@ $(document).ready(function(){
                                 "cache": false,
                                 "processData":false,                    
                                 "success": function(data)  { 
+                                        spinner.remove($publish_now_button,$publish_button_text);
+                                        if($("#tweetType").attr('name').toLowerCase() == 'publish'){
+                                                spinner.remove($schedule_button,$schedule_button_text,true);
+                                        }else{
+                                                spinner.remove($schedule_button,$schedule_button_text);
+                                        }
                                         //Only One Error Come To This Not Need Any Array.
                                         if(data.error != undefined){
                                                 globalMethod.repsonseError(data,'#tweetModal');
@@ -234,7 +352,5 @@ $(document).ready(function(){
         /**
          * emo Library Box for Quick Replay && Tweet Compose.
          */
-        $(".quickReplay").emojioneArea({
-                pickerPosition: "bottom"
-        });
+       globalMethod.initEmoj(".quickReplay");
 });

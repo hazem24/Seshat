@@ -46,7 +46,7 @@
              * @return string.
              */
             private function taskName(string $tweetContent){
-                    $tweetLength = strlen($tweetContent);
+                    $tweetLength = mb_strlen($tweetContent);
                     if($tweetLength > 10){
                             $taskName = substr($tweetContent,0,9)." ...";
                     }else{

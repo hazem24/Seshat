@@ -23,8 +23,13 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
         <link href="<?=ASSESTS_URI."css"?>/lib/charts.css" rel="stylesheet" type='text/css'>
         <link rel="stylesheet" href="<?=ASSESTS_URI."css"?>/lib/emojionearea.min.css">
+        
     </head> 
-    <body style="background-color:#343c55;padding-top: 125px;">
+    
+    <?php
+            if($this->session->getSession('id') !== false) : 
+    ?>  
+        <body ng-app = "seshatApp" style="background-color:#343c55;padding-top: 125px;">
         <div class="modal fade bd-example-modal-lg" id="tweetModal"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" >
                 <div class="modal-content" >
@@ -130,12 +135,12 @@
                             </button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" data-placement="bottom" title="<?=TWITTER_TIME_LINE;?>" href="<?=BASE_URL.LINK_SIGN."seshatTimeline"?>">
+                            <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" id="yourTimeline" data-placement="bottom" title="<?=TWITTER_TIME_LINE;?>" href="<?=BASE_URL.LINK_SIGN."seshatTimeline"?>">
                             <?=TIMELINE;?>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" data-placement="bottom" title="<?=YOUR_PROFILE?>" href="#paper-kit">
+                            <a class="nav-link btn  btn-round" style="background-color:white;" data-toggle="tooltip" id="yourProfile" data-placement="bottom" title="<?=YOUR_PROFILE?>" href="">
                             <?=PROFILE;?>
                             </a>
                         </li>
@@ -229,3 +234,13 @@
                 </div>
             </div>
         </nav>
+
+<?php
+//Here mean that user not authincation with seshat a button of authication must be here.
+else:
+?> 
+<body ng-app = "seshatApp" style="background-color:#343c55;padding-top: 40px;">
+<div class="col-4" style="margin: auto;width: 50%;border: 3px solid blue;padding: 10px;">
+<a href='<?=BASE_URL.LINK_SIGN.'index/signin'?>' class='btn btn-block btn-social btn-twitter'><?= MAKE_YOUR_OWN_WITH_SESHAT ?></a>
+</div> 
+<?php endif; ?>      

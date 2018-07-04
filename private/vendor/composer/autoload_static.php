@@ -22,6 +22,7 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
             'Symfony\\Component\\Filesystem\\' => 29,
             'Symfony\\Component\\DependencyInjection\\' => 38,
             'Symfony\\Component\\Config\\' => 25,
+            'Statickidz\\' => 11,
         ),
         'P' => 
         array (
@@ -76,6 +77,10 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
         'Symfony\\Component\\Config\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/config',
+        ),
+        'Statickidz\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/statickidz/php-google-translate-free/src',
         ),
         'Psr\\SimpleCache\\' => 
         array (

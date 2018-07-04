@@ -8,8 +8,8 @@
          */
         Class TwitterApi
         {
-            CONST CONSUMER_KEY ='aunVGBbtjyWAFiZhp9lZJ2pSD';
-            CONST CONSUMER_SECRET ='UcuWgqSaruS8o1NY43gKaBZkMDLrJIfOEfLie0nKaPE7Eteey5';
+            CONST CONSUMER_KEY ='w5pCBsgdc7XqJesoY9spBDk8s';
+            CONST CONSUMER_SECRET ='CsWLiATdYL1zpPkyPNeFagkHpWpqNjilBsv0GnYTBMmiA25wyk';
 
             protected $access_token = null;
             protected $access_token_secret = null;

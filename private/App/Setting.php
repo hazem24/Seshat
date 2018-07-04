@@ -45,6 +45,8 @@
         define("LANG_PATH",BASE_URI.DS."lang".DS);
         define("ATTACKER_SALT",'socialservice'); //Provide A Salt To Be Used In Any Session Attacker But it False To Disable The Feature
         define("UPLOAD_CONTENT_FOLDER" ,  BASE_URI .DS  . 'App'.DS.'DomainFiles'.DS); //This Must Be In SubDomain (Images And Videos (Content) Must Be In SubDomains)
+        define("REPORTS_FOLDER",UPLOAD_CONTENT_FOLDER .  'Reports' . DS); //Reports Folder.
+        define("REPORTS_HASH_FOLDER", REPORTS_FOLDER . 'hashtag' . DS);
         define("UPLOAD_IMAGE_FOLDER_RELATIVE",UPLOAD_CONTENT_FOLDER . 'Media'. DS. 'Images'.DS);
         define("UPLOAD_VIDEO_FOLDER_RELATIVE",ROOT  . APP_FOLDER_PATH .DS  . 'App'.DS.'DomainFiles'.DS .'Videos');
 

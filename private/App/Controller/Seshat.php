@@ -1,13 +1,14 @@
 <?php
         namespace App\Controller;
         use Framework\Shared;
+        use App\DomainHelper\ControllerHelper\SeshatHelper;
         use Framework\Request\RequestHandler;
         use Framework\Lib\Security\Data\FilterDataFactory;
         use Framework\Error\WebViewError;
         use Framework\Lib\Security\Forms\CsrfProtection;
         use App\DomainHelper\Helper;
         use App\DomainHelper\FrontEndHelper;
-        
+
         /**
          * Seshat Class Provide All Action And Method To Interact With Seshat Algorthim.
          */
@@ -52,8 +53,7 @@
                                                     $return = ['error'=>BOT_ACCESS];
                                         }
 
-                                        echo json_encode($return);
-                                        exit;
+                                        $this->encodeResponse($return);
                                 }
                                 //Email , And Name , And Image Must Be Taken From Twitter And Send To View Here. --Done.
                                 $userCredients = $this->verfiyCredentials();
@@ -66,7 +66,7 @@
                                 $this->actionView->setDataInView(["user"=>$send_to_view]);
                                 $this->render();
                    }else{    
-                        $this->rIn("tw_id","seshatTimeline");                        
+                        self::rIn("tw_id","seshatTimeline");                        
                    } 
             }
 
@@ -111,9 +111,36 @@
              }
 
 
+             /**
+              * @method createReportAction this method responsable for creating new report (hashtag track , account comparsion).
+              */
+
+              public function createReportAction(array $params = []){
+                      $this->rule();
+                      SeshatHelper::createReportHelper($this,$params);
+              }
+
+              /**
+               * can be reach by Logged user or unLogged User.
+               * @method getReportAction.
+               */
+              public function getReportAction(array $params = []){
+                     $this->detectLang();
+                     SeshatHelper::renderReportView($this,(isset($params[0]) ? $params[0] : 'notFound'));
+              }
+
+              /**
+               * report data of specific report.
+               * @method 
+               * @return json.
+               */
+              public function reportDataAction(array $params = []){
+                     SeshatHelper::getReportHelper($this,$params);   
+              }
+
             private function filterWizardForm(string $name,string $email,int $account_type,string $account_describe){
                     $data = [YOUR_NAME=>['value'=>$name , 'type'=>'string','min'=>3 , 'max'=>'100'],
-                             EMAIL=>['value'=>$email , 'type'=>'email','min'=>3 , 'max'=>'400'],
+                             EMAIL=>['value'=>$email , 'type'=>'email','min'=>3 , 'max'=>400],
                              DESCRIBE_YOUR_ACCOUNT=>['value'=>$account_describe , 'type'=>'string','min'=>20 , 'max'=>400]
                             ];
                     $filter = new FilterDataFactory($data);

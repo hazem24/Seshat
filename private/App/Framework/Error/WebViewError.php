@@ -2,6 +2,7 @@
 
             namespace Framework\Error;
             use Framework\Helper\ArrayHelper;
+            use Framework\Exception\CoreException;
             /**
             *This Class Provide Static Method Which Can Be Used 
             *To Convert The Inside webError Which Provide With The App To Readable Error To Client User Ex:- Bad Data 
@@ -75,7 +76,7 @@
                                   break;    
                               
                               default:
-                                  # code...
+                                  throw new CoreException("Error @class " . get_class(self) . " type of 'error' to check not provided !");
                                   break;
                           }  
 

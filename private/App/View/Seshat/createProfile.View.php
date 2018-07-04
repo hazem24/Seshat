@@ -1,6 +1,6 @@
 <?php
         $name = (isset($user->data->name) && is_null($user->data->name) === false) ? $this->htmlSafer($user->data->name) : '';
-        $email = (isset($user->data->email)&&is_null($user->data->email) === false) ? $this->htmlSafer($user->data->email) : '';
+        $email = (isset($user->data->email)&& is_null($user->data->email) === false) ? $this->htmlSafer($user->data->email) : '';
         $profile_image = (isset($user->data->profile_image_url_https) && is_null($user->data->profile_image_url_https) === false)? $user->data->profile_image_url_https : '';
 ?>
 <!doctype html>
@@ -252,7 +252,7 @@
     <script src="<?=ASSESTS_URI?>js/lib/sweetAlert/jquery.sweet-modal.min.js" type="text/javascript"></script>
     <?php
 //Check If User Need Reauthincate or any Error Exists.
-if(isset($user['error']) && is_object($user) === false  && is_array($user['error']) && !empty($user['error'])):
+if(is_array($user) && isset($user['error']) && is_object($user) === false  && is_array($user['error']) && !empty($user['error'])):
 ?>
 <script>
 <?php    

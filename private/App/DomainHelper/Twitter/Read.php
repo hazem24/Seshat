@@ -1,6 +1,7 @@
 <?php
         namespace App\DomainHelper\Twitter;
         use Framework\Shared\CommandFactory;
+        use App\DomainHelper\Helper;
 
         /**
          * Class Read Responsable For All Logic Of Read Something From Twitter.
@@ -27,9 +28,12 @@
              * @method searchTweets search tweets for specific words.
              */
             protected function searchTweets(array $parameter = []){
-                $since_id = (isset($parameter['since_id']) && !empty($parameter['since_id']))?$parameter['since_id']:null;    
+                $since_id = (isset($parameter['since_id']) && !empty($parameter['since_id']))?$parameter['since_id']:null;
+                $until = (isset($parameter['until']) && !empty($parameter['until']))?$parameter['until']:null; 
+                $result_type = (isset($parameter['result_type']) && !empty($parameter['result_type']))?$parameter['result_type']:'mixed';
+                $max_id = (isset($parameter['max_id']) && !empty($parameter['max_id']))?$parameter['max_id']:null;   
                 return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>
-                ['Name'=>"searchTweets","parameters"=>['q'=>$parameter['search'],'since_id'=>$since_id],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
+                ['Name'=>"searchTweets","parameters"=>['q'=>$parameter['search'],'result_type'=>$result_type,'max_id'=>$max_id,'until'=>$until,'since_id'=>$since_id],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
                 ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
 
             }
@@ -76,20 +80,59 @@
                 $search = "to:$screenName";
                 $data = ['search'=>"$search",'since_id'=>$params['tweet_id'],'oauth_token'=>$params['oauth_token'],'oauth_token_secret'=>$params['oauth_token_secret']];  
                 $mentions =  $this->searchTweets($data);
-                $replies = [];
-
-                if( is_object($mentions) && isset($mentions->statuses)  && is_array($mentions->statuses) && !empty($mentions->statuses)){
-                        foreach ($mentions->statuses as $key => $value) {
-                                if($value->in_reply_to_status_id_str == $params['tweet_id']){
-                                        $replies[] = $value;
-                                }
-                        }
-                }
-                
+                $replies  =  Helper::extractReplies($mentions->statuses,$params['tweet_id']);
                 if(!empty($replies)){
                         return $replies;
                 }else{
                         return ['noReplies'=>true];
                 }  
+            }
+
+            /**
+             * @method getHashtagData.
+             */
+            protected function getHashtagData(array $params){
+                $tweets = $this->searchTweetsSevenDays($params['hashtag'],$params['oauth_token'],$params['oauth_token_secret']);
+                return $tweets;
+            }
+
+            /** 
+             * @note max tweets can be returned by this method = 2000 which is equ. to count($tweet) = 20.
+             * @method searchTweetSevenDays.
+             * @return array.
+                * empty no data found.
+                * !empty with data.
+                * key error .. error returned from twitter Api.
+             */
+            private function searchTweetsSevenDays(string $search, string $oauth_token , string $oauth_token_secret){
+                $tweets = [];
+                $max_id  = null;
+                $repeat  = 20;
+                while ( true ) { 
+                        
+                        $search_tweets = $this->searchTweets(['search'=>$search ,'result_type'=>'recent','max_id'=>$max_id,'oauth_token'=>$oauth_token,'oauth_token_secret'=>$oauth_token_secret]);
+                        if(isset($search_tweets->statuses) && !empty($search_tweets->statuses) && is_array($search_tweets->statuses)){
+                                $tweets[]       = $search_tweets->statuses;
+                                $count_statues  = count($search_tweets->statuses); // Count destroyed  the performance!.
+                                $count_tweets   = count($tweets);
+                                if(  ( $repeat == 0 ) || ( $count_tweets == 20 ) ){ 
+                                        break;                      
+                                }else if ( $count_statues == 100 ){
+                                        //Search  about new interval of tweets.
+                                        $last_tweet = array_pop( $search_tweets->statuses );
+                                        if( isset( $last_tweet->id_str ) ){
+                                                $max_id   = $last_tweet->id_str;
+                                        }  
+                                }
+                        }else if ( is_array($search_tweets) && array_key_exists('error',$search_tweets) && empty($tweets) ){
+                                //Handle the error that can be came from twitter Api as error response.
+                                $tweets  = $search_tweets;
+                                break;
+                        }else {
+                                break;//No data found || empty array response found !.
+                        } 
+                        --$repeat;
+                }
+                return $tweets;
             }
          }

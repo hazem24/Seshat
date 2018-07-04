@@ -7,8 +7,13 @@
         Class StringFilter extends FilterData 
         {
             
-
            
+                
+            public  function removeslashes($string){
+                $string = implode("",explode("\\",$string));
+                return stripSlashes($this->trimData($string));
+            }
+            
 
             protected function validateData(){
                     /**
@@ -23,8 +28,8 @@
                     if(!empty($this->santizeData))
                     {
                             $vailedDataType  = (!is_string($this->santizeData))? $this->errorMsg[$this->htmlAttribute][] = [$this->htmlAttribute.'@error@InvailedData'=>'Please Enter Vailed Data in ' . $this->htmlAttribute . ' Field']:true;
-                            $vailedMaxLength = (strlen($this->santizeData) > $this->maxLength) ? $this->errorMsg[ $this->htmlAttribute][] = [$this->htmlAttribute.'@error@MaxLength'=>'Max Length Required ' . $this->maxLength . ' Characters At ' . $this->htmlAttribute . ' Field']:true;
-                            $vailedMinLength = (strlen($this->santizeData) < $this->minLength) ? $this->errorMsg[ $this->htmlAttribute][] = [$this->htmlAttribute.'@error@MinLength'=>'Min Length Required ' . $this->minLength . ' Characters At ' . $this->htmlAttribute . ' Field']:true;
+                            $vailedMaxLength = ((int)mb_strlen($this->santizeData,'utf8') > $this->maxLength) ? $this->errorMsg[ $this->htmlAttribute][] = [$this->htmlAttribute.'@error@MaxLength'=>'Max Length Required ' . $this->maxLength . ' Characters At ' . $this->htmlAttribute . ' Field']:true;
+                            $vailedMinLength = ((int)mb_strlen($this->santizeData,'utf8') < $this->minLength) ? $this->errorMsg[ $this->htmlAttribute][] = [$this->htmlAttribute.'@error@MinLength'=>'Min Length Required ' . $this->minLength . ' Characters At ' . $this->htmlAttribute . ' Field']:true;
                             // I Think This Pattern Can Be Replaced By The Above
                             //^[a-z](?:_?[a-z0-9]+){"+min+","+max+"}$
                             //$isString = (!preg_match ('/^[A-Z \'.-]{'.$this->minLength.','.$this->maxLength.'}$/i', $this->dirtyData)) ? $this->errorMsg[$this->htmlAttribute][] = [$this->htmlAttribute.'@error@InvailedData'=>'Please Enter Vailed Data in ' . $this->htmlAttribute . ' Field']:true;
@@ -48,6 +53,8 @@
                 $clearData = filter_var($dirtyData , FILTER_SANITIZE_STRING);
                 $this->santizeData=$clearData; //Data That Can Be Used In Vaildation Process
             }
+
+
 
 
         }

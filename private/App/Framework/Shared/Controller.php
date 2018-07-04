@@ -23,6 +23,12 @@
 
             CONST DEFAULT_ACTION_VIEW_PATH = VIEWS_PATH;
 
+            /**
+            *@property session This Property Found To Initilize Session Class With Registry In The 
+            *Constructor Of Each Controller
+            */
+            public $session;
+
             protected $parameters = [];
             //protected $renderLayoutView = false;
             protected $renderActionView = false;
@@ -30,11 +36,6 @@
             protected $actionView;
 
             protected $actionToCall;
-            /**
-            *@property session This Property Found To Initilize Session Class With Registry In The 
-            *Constructor Of Each Controller
-            */
-            protected $session;
 
             /**
              * @property viewInstance.
@@ -104,7 +105,7 @@
                       $this->render();
             }
 
-            protected function render(){
+            public function render(){
                 
                 if($this->renderActionView){
                          $this->actionView->render();   
@@ -134,8 +135,8 @@
             *4-Some Returned Back Or Helper Link 
             */
 
-            protected function renderLayout(string $layoutName , array $dataToLayoutOrError = [] , $ajax = false){
-                      ViewHandler::renderLayout($layoutName,$dataToLayoutOrError,$ajax);
+            public function renderLayout(string $layoutName , array $dataToLayoutOrError = [] , $ajax = false){
+                      $this->viewInstance()->renderLayout($layoutName,$dataToLayoutOrError,$ajax);
             }
 
 
@@ -161,20 +162,13 @@
                      return ['ar','en'];
             }
             /**
-            *@method rOut Create Intelligent Redirect Based On User Status
+            *@method rOut Create Intelligent Redirect Based On User Status.
             */
-            protected function rOut(string $salt ,string $redirectTo){
+            protected static function rOut(string $salt ,string $redirectTo){
                       Helper::redirectOutSide($salt,BASE_URL.LINK_SIGN.$redirectTo);
             }
 
-            protected function rIn(string $salt ,string $redirectTo){
+            protected static function rIn(string $salt ,string $redirectTo){
                      Helper::redirectInside($salt,BASE_URL.LINK_SIGN.$redirectTo);
             }
-
-
-
-
-
-           
-
         }

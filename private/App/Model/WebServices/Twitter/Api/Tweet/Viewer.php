@@ -14,7 +14,7 @@
               * @return array.
               */
               public function readTimeLine(){
-                  $timeLineTweet = $this->connection->get("statuses/home_timeline",["count"=>"50","exclude_replies"=>"true","include_entities"=>"true","tweet_mode"=>"extended"]);
+                  $timeLineTweet = $this->connection->get("statuses/home_timeline",["count"=>"100","exclude_replies"=>"true","include_entities"=>"true","tweet_mode"=>"extended"]);
                   return $this->getResponse($timeLineTweet);
               }
 
@@ -23,8 +23,7 @@
                * @return array.
                */
               public function searchTweets(array $parameters = []){
-                  
-                     $search_tweets = $this->connection->get("search/tweets",["q"=>$parameters['q'],"since_id"=>$parameters['since_id'],"count"=>"100","tweet_mode"=>"extended"]);
+                     $search_tweets = $this->connection->get("search/tweets",["q"=>$parameters['q'],'result_type'=>$parameters['result_type'],"max_id"=>$parameters['max_id'],"until"=>$parameters['until'],"since_id"=>$parameters['since_id'],"count"=>"100","tweet_mode"=>"extended"]);
                      return $this->getResponse($search_tweets);
               }
 

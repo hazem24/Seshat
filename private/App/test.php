@@ -1,4 +1,6 @@
 <?php
+        require("setting.php");
+
         /*session_start();
         require("../vendor/autoload.php");
         $_SESSION = [];
@@ -19,6 +21,11 @@
         echo "<a href=\"$url\">sign With Twitter !</a>";*/
 
 
-        $value = ['datax'=>'data','data2'];
-        var_dump($value);
+        /**
+         * Google Translate Section Tests.
+         */
+
+        var_dump(REPORTS_HASH_FOLDER);
+
+
 

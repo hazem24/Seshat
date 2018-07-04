@@ -109,6 +109,7 @@
 			//Reacted sections.
 			if(is_array($analyticData['reacted_user']) && !empty($analyticData['reacted_user'])) :
 					//There is reacted users.
+					
 					foreach ($analyticData['reacted_user'] as $key => $user) :
 						$reacted_user = (object)$FrontHelperClass::extractTweetData($user,true);
 			?>

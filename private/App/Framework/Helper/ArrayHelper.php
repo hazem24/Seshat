@@ -61,4 +61,25 @@
 
         }
 
+        /**
+         * @method arsortArray.
+         * @param by can be one of the following flags : 
+            *Sorting type flags:
+                *SORT_REGULAR - compare items normally (don't change types)
+                *SORT_NUMERIC - compare items numerically
+                *SORT_STRING - compare items as strings
+                *SORT_LOCALE_STRING - compare items as strings, based on the current locale. It uses the locale, which can be changed using setlocale()
+                *SORT_NATURAL - compare items as strings using "natural ordering" like natsort()
+                *SORT_FLAG_CASE - can be combined (bitwise OR) with SORT_STRING or SORT_NATURAL to sort strings case-insensitively
+         * @return array.
+         */
+        public static function arsortArray(array $array , $by = null):array{
+            if(is_null($by)){
+                    //aSort by number.
+                    $by = SORT_NUMERIC;
+            }
+            arsort($array,$by); 
+            return $array;
+        }
+
     }
