@@ -15,7 +15,7 @@
                    $this->command = $this->initCommand();
             }
             protected function initCommand(){
-                    return CommandFactory::getCommand('twitterAction');
+                return CommandFactory::getCommand('twitterAction');
             }
             /**
              * @method publishNewTweet responsable for create new tweet && replay to specific tweet.
@@ -26,9 +26,13 @@
                     'oauth_token'=>$parameter['oauth_token'],'oauth_token_secret'=>$parameter['oauth_token_secret'],
                     'user_id'=>$parameter["user_id"],'category'=>$parameter['category'],'publicAccess'=>$parameter['seshatPublicAccess']]]]); 
             }
-            protected function writeToTweet(array $parameter){
-                      return $this->command->execute(['Method'=>['name'=>"writeToTweet",'parameters'=>['type'=>$parameter['type'],
-                      'tweet_id'=>$parameter['tweet_id'],
-                      'oauth_token'=>$parameter['oauth_token'],'oauth_token_secret'=>$parameter['oauth_token_secret']]]]);  
+            /**
+             * write some action like (follow-unfollow-retweet-unretweet-like-unlike) to twitter (create an action to twitter).
+             * @method writeToTwitter.
+             */
+            protected function writeToTwitter(array $parameter){
+                return $this->command->execute(['Method'=>['name'=>"writeToTwitter",'parameters'=>['type'=>$parameter['type'],
+                'parameters'=>$parameter['parameters'],
+                'oauth_token'=>$parameter['oauth_token'],'oauth_token_secret'=>$parameter['oauth_token_secret']]]]);  
             }
          }

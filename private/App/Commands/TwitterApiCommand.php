@@ -18,8 +18,6 @@
                                 }else{
                                         $method_to_call = $TwitterApi_object->startProcess(['method'=>$data['Method']['Name'],'user_auth'=>$data['Method']['user_auth']]);
                                 }
-
-
                         return $method_to_call;
                     }
             }

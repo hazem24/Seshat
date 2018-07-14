@@ -16,7 +16,7 @@
         Class SeshatHelper extends BaseHelper
         {
 
-            public static function createReportHelper ( Seshat $seshatController , array $params = []){
+            public static function createReportHelper ( Seshat $seshatController , array $params = [] ){
                     /**
                       * 1- check params[0] if isset or not && check the type of report if allowable.
                         *if true => start logic proccess for this type of report. 
@@ -76,13 +76,13 @@
               * @return int of type report || false.
               */
 
-              private static function reportType(string $report_name){
-                    $report = ['hashtag'=>1];
-                    if(array_key_exists(strtolower($report_name),$report)){
-                        return $report[$report_name];
-                    }   
-                        return false;
-                }
+            private static function reportType(string $report_name){
+                $report = ['hashtag'=>1];
+                if(array_key_exists(strtolower($report_name),$report)){
+                    return $report[$report_name];
+                }   
+                    return false;
+            }
 
             /**
             * responsable for create specific report for specific type.

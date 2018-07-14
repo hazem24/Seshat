@@ -11,6 +11,13 @@ define("SESHAT_ANALYTIC_TWEET","Seshat Analytic");
 define("FOLLOWERS","Followers.");
 define("RETWEET","Retweet");
 define("LIKE",'Like');
+define("TOTAL_NUMBER_OF_FOLLOWERS","Total Number of followers ");
+define("FAKE_FOLLOWERS_NUMBER","Fake followers ");
+define("FAKE_PERCENTAGE","Fake followers %");
+define("SAMPLE","Sample ");
+define("TOLERANCE","Tolerance ");
+define("REPORTED_BY_SESHAT","Report By Seshat.");
+define("THIS_FEATURE_NOT_FOUND","Sorry this feature cannot created by seshat now but will be found sooner.");
 //End Global.
 //Nav.
 define("TWEET","Tweet");
@@ -27,6 +34,7 @@ define("GLOBAL_ERROR","Sorry There's An Error In Our Server Please Try Again lat
 define("EMPTY_FEILD","Please You Can Not Leave The Field Empty Or You Put Illegal Characters.");
 define("EMAIL_EXISTS","This Email Used Please Try With Another Email Address.");
 define("BOT_ACCESS",'Seshat Not Love To Work With Bots.');
+define("INVALIAD_REQUEST","Invailed request.");
 define("REAOUTH_SESHAT",'Re-authentication With Seshat.');
 define("TWEET_NOT_SAVED",'I Publish Your Tweet In Twitter But I Can not Save It.');
 define("CANNOT_UNDERSTAND","I cannot understand what do you want i still learning sorry about that.");
@@ -106,6 +114,10 @@ define("MIN_TWEET_LENGTH","Tweet Length Must Be Shorter Than That.");
 define("VERFIY_LOGIN_WITH_TWITTER","Please Go To Twitter And Verify Your Login And Return Here Back.");
 define("DUPLICATE_RETWEET","You Forget That You Retweet This Tweet Before .. Don't Worry I Remembered That For You.");
 define("NOT_FOUND","Not Found.");
+define("PRIVATE_ACCOUNT","This Account is private i can't process your request.");
+define("USER_NOT_FOUND","User Not Found.");
+define("FOLLOWERS_LIST_ERROR","Can't retrive followers list of ");
+define("SUSPENDED_USER","This User was suspended from twitter.");
 define("FOLLOW_TO_DIRECT","This User Must Follow You To Send Message Via Direct.");
 define("LIMIT_FOLLOW","You Cannot Follow More People At This Time Leave Me Some Time To organize and analysis Your Data I Will Back With Great Detials.");
 define("DUPLICATE_TWEET","You Forget That You Tweet This Tweet Before .. Don't Worry I Remembered That For You.");
@@ -160,7 +172,7 @@ define("CANNOT_CREATE_YOUR_ACTION","I cannot create this action to twitter now t
 define("RETWEETED_BY",'retweeted by :');
 //End TimeLine.
 
-//Tweet Actions.
+//Twitter Actions.
 define("RETWEETED","Tweet retweeted.");
 define("UNRETWEETED","Tweet unretweeted.");
 define("LIKED","Tweet liked.");
@@ -173,7 +185,7 @@ define("FOLLOWING_COUNTER","Following");
 define("NO_REPLIES_FOR_THIS_TWEET","No replies for this tweet.");
 define("TRANSLATE","Translate");
 define("TRANSLATE_THIS_TWEET","Translate this tweet.");
-//End Tweet Actions.
+//End Twitter Actions.
 //Tweet Content.
 define("TWEETS_MENTIONS","mentions in this tweet:");
 //End Tweet Content.

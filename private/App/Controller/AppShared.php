@@ -10,16 +10,19 @@
      */
     Abstract Class AppShared extends Shared\Controller
     {
-            /**
-             * @property cache Save And Instance Of Fast Cache Class.
-             */
-            protected $cache = null;
-            protected $error = [];
-            /**
-            * @method generateTwitterLoginUrl.
-            */
-
-            public function generateTwitterLoginUrl():string{
+        /**
+        * @property cache Save And Instance Of Fast Cache Class.
+        */
+        protected $cache = null;
+        protected $error = [];
+           
+        public function setError (string $error) {
+                $this->error[] = $error; 
+        }
+        /**
+        * @method generateTwitterLoginUrl.
+        */
+        public function generateTwitterLoginUrl():string{
                 $cmd = Shared\CommandFactory::getCommand('twitterApi');
                 $generateUrl = $cmd->execute(['ModelClass'=>"TwitterLogin",'Method'=>['Name'=>"generateUrl",'parameter'=>[],'user_auth'=>['status'=>false]]]);
                 if(isset($generateUrl['error'])){
@@ -96,7 +99,7 @@
             *@method verfiyCredentials Get User Email-Name-Image For Wizard Proccess && seshatTimeLine.
             *@return array. 
             */
-            protected function verfiyCredentials(){
+        protected function verfiyCredentials(){
                 $oauth_token = $this->session->getSession('oauth_token');
                 $oauth_token_secret = $this->session->getSession('oauth_token_secret');
                 $cmd = Shared\CommandFactory::getCommand('twitterapi');

@@ -1,4 +1,4 @@
-<form name="createReport" ng-submit="createHashTagReport(hashtagName)" novalidate>
+<form style="padding-top:120px;" name="createReport" ng-submit="createHashTagReport(hashtagName)" novalidate>
     <div ng-form="createReportForm">
             <input type="text" name = "hashtag_name" ng-model="hashtagName" placeholder="# hashtag" ng-required="true" ng-minlength="2"/><div class='alert alert-danger' role="alert" ng-show="createReportForm.hashtag_name.$error.minlength">Error 2 lenght is required in hashtagName</div><div class='alert alert-danger' role="alert" ng-show="createReportForm.hashtag_name.$dirty && createReportForm.hashtag_name.$error.required">This Field is required</div>
             <br>

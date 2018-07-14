@@ -94,10 +94,10 @@ MODAL;
                 endif;
 
                 $ar = ($lang == 'ar') ? true : false;  
-                $dir = ($ar)? "dir=rtl" :"";
+                $dir = ($ar)? "rtl" :"";
                 $replay_screen_name = "@" . $screen_name;//For replay logic.
                 $screenName = ($ar) ? $screen_name."@":"@".$screen_name;
-                $retweet_button_style  = ($tweet->retweeted)?'class="btn  btn-link btn-success retweet_unretweet"':'class="btn btn-link retweet_unretweet"';//User retweeted This tweet. class="btn  btn-link btn-success tweet_retweet"
+                $retweet_button_style  = ($tweet->retweeted)?'btn  btn-link btn-success retweet_unretweet':'btn btn-link retweet_unretweet';//User retweeted This tweet. class="btn  btn-link btn-success tweet_retweet"
                 $retweet_type = ($tweet->retweeted)?"unretweet":"retweet";
                 $like_status   = ($tweet->favorited)?'btn btn-danger btn-link like_unlike':'btn btn-link  like_unlike';//User Liked This Tweet or not.
                 $like_type = ($tweet->favorited)?"unlike":"like";
@@ -188,15 +188,9 @@ MODAL;
                         if($media->type == 'video'):
                             $video_link = $media->video_info->variants[0]->url;
                             $poster = $media->media_url;
-                             $media = "<video class ='afterglow'  width=\"720\" height=\"400\" class=\"col-md-12\" poster=\"$poster\" controls>
-                                    <source src=\"$video_link\" type=\"video/mp4\">
-                                Your browser does not support HTML5 video.
-                                </video>";
+                             $media = (object)['type'=>'video','src'=>$video_link,'poster'=>$poster];
                         else:
-                        
-                            $media = "<a data-fancybox href=\"$media->media_url\" class=\"fancybox\"  data-caption=\"$org_text\" >
-                                    <img  src=\"$media->media_url\"    alt=\"twitter_image\" class=\"img-rounded img-tweet\"/>
-                                    </a>";
+                            $media = (object)['type'=>'image','src'=>$media->media_url];
                         //End if of stripos Condition. 
                         endif;
                 //End if of media is_null condition.   
@@ -228,11 +222,76 @@ MODAL;
                  */
 
                 $statics = (object)['total_reacted'=>$total_reacted,'retweet_precent'=>ceil(($retweet_count/$reacted_times)*100) , 'like_precent'=>floor(($like_count/$reacted_times)*100)];
-                return ['like_count'=>(int)$like_count,'org_text'=> $org_text,'full_text'=>$full_text,'retweeted'=>$retweeted,'screenName'=>$screenName,
+                return ['created_at'=>$tweet->created_at,'like_count'=>(int)$like_count,'org_text'=> $org_text,'full_text'=>$full_text,'retweeted'=>$retweeted,'screenName'=>$screenName,
                         'name'=>$name,'screen_name'=>$screen_name,'user_profile'=>$user_profile,'media'=>$media,'retweet_count'=>(int)$retweet_count,
                         'dir'=>$dir,'lang'=>$lang,'user_id'=>$user_id,'following'=>$following,'replay_screen_name'=>$replay_screen_name,'retweet_button_style'=>$retweet_button_style,'retweet_type'=>$retweet_type,'like_status'=>$like_status,
                         'like_type'=>$like_type,'tweet_id'=>$tweet_id,'links_in_this_tweet'=>$links_in_this_tweet,'hash_tag_in_tweets'=>$hash_tag_in_tweets,
                         'mentions_in_tweet'=>$mentions_in_tweet,'statics'=>$statics,'impression'=>$impression,'followers_count'=>$followers_count,'friends_count'=>$friends_count,'favourites_count'=>$tweet->user->favourites_count,'statuses_count'=>$tweet->user->statuses_count,'user_retweeted_tweet'=>(isset($user_retweeted_tweet))?$user_retweeted_tweet:''];        
+            }
+            /**
+             * This method responsable for loop through tweets and return all tweets in an array format.
+             * @method tweetsStyle.
+             * @return array.
+             */
+            public static function tweetsStyle ( array $tweets ):array {
+                $styled_tweets = [];
+                $count_tweets = count($tweets);
+                if ($count_tweets >= 1 && isset($tweets[0]->full_text)) { 
+                        for ($i=0;$i<$count_tweets;$i++) {
+                                $styled_tweets[] = self::extractTweetData($tweets[$i]);
+                        }
+                }
+                return $styled_tweets;
+            }
+
+            /**
+             * this method create the modal of fake followers report.
+             * @method fakeFollowersReport.
+             * @return string.
+             */
+            public static function fakeFollowersReport ( array $report_data ) {
+                $profile_img = $report_data['profile_img'];
+                $screen_name = $report_data['screen_name'];
+                $totalFollowers = $report_data['totalFollowers'];
+                $fake_followers = $report_data['fakeNumbers'];
+                $fake_followers_percentage = $report_data['fakePercentage'];
+                $sample = $report_data['sample'];
+                //Translate.
+                $TOTAL_NUMBER_OF_FOLLOWERS = TOTAL_NUMBER_OF_FOLLOWERS;
+                $FAKE_FOLLOWERS_NUMBER     = FAKE_FOLLOWERS_NUMBER;
+                $FAKE_FOLLOWERS_PERCENTAGE = FAKE_PERCENTAGE;
+                $SAMPLE                    = SAMPLE;
+                $CANCEL                    = CANCEL;
+                $TWEET_THIS                = TWEET_THIS;
+                $TOLERANCE                 = TOLERANCE;
+return <<<FAKE_FOLLOWERS_REPORT
+<div class="modal fade" id="fakeAccountsReport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="now-ui-icons ui-1_simple-remove"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="instruction">
+            <div>
+                <div class="col-md-12 float-md-left">
+                        <img style="border-radius:50%;" src="$profile_img" /><br>
+                        <span style="color:red;">@$screen_name</span><br>
+                        <strong>$TOTAL_NUMBER_OF_FOLLOWERS : </strong> <strong style="color:red">$totalFollowers</strong>  <br>
+                        <strong>$FAKE_FOLLOWERS_NUMBER : </strong> <strong style="color:red">$fake_followers</strong>  <br>
+                        <strong>$FAKE_FOLLOWERS_PERCENTAGE : </strong> <strong style="color:red">$fake_followers_percentage</strong>  <br>
+                        <strong>$SAMPLE : </strong> <strong style="color:red">$sample</strong>  <br>
+                        <strong>$TOLERANCE : </strong> <strong style="color:green"> ± 10%</strong>  
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+FAKE_FOLLOWERS_REPORT;
             }
 
         }

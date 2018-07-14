@@ -39,7 +39,7 @@
                          }
                     }
                     if(isset($response)){
-                        $this->encodeRepsonse($repsonse);
+                        $this->encodeResponse($response);
                     }
                 $this->encodeResponse(["code"=>403,'error'=>"Protected Area You Cannot Access."]);
              }

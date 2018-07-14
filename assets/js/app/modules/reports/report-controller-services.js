@@ -1,4 +1,4 @@
-angular.module('seshatApp').controller('reportCtrl',function($scope,$location,reportServices,$window){
+angular.module('seshatApp').controller('reportCtrl',function($scope,$location,$window){
     $scope.location = $location;
     $scope.window   = $window;
     $scope.url = $location.absUrl();

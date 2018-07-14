@@ -1,5 +1,5 @@
 
-
+</body>
 <!-- Core JS Files -->
 
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery-3.2.1.min.js"></script>
@@ -7,9 +7,12 @@
 <script src="<?=ASSESTS_URI."js"?>/lib/popper.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery.validate.min.js" type="text/javascript"></script>
+<script src="<?=ASSESTS_URI."js"?>/lib/html2canvas.min.js" type="text/javascript"></script>
 <script src="//cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-animate.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-route.min.js"></script>
+
 
 
 <!-- Switches -->
@@ -18,12 +21,6 @@
 <!--  Plugins for Slider -->
 <script src="<?=ASSESTS_URI."js"?>/lib/nouislider.js"></script>
 
-<!--  Photoswipe files -->
-<script src="<?=ASSESTS_URI."js"?>/lib/photo_swipe/photoswipe.min.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/photo_swipe/photoswipe-ui-default.min.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/photo_swipe/init-gallery.js"></script>
-
-<!--  Plugins for Select -->
 
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-select.js"></script>
 
@@ -43,7 +40,7 @@
 
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-notify.js" type="text/javascript"></script>
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/app/paper-kit.js?v=2.1.0"></script>
+<script src="<?=ASSESTS_URI."js"?>/app/now-ui-kit.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/sweetAlert/jquery.sweet-modal.min.js" type="text/javascript"></script>
 <script src="//cdn.jsdelivr.net/npm/afterglowplayer@1.x"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
@@ -52,6 +49,8 @@
 <script src="<?=ASSESTS_URI."js"?>/app/modules/app.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/reports/report-controller-services.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/reports/hashtag/hashtag-report.js"></script>
+<script src="<?=ASSESTS_URI."js"?>/app/modules/profile/twitter/twitter-profile.js"></script>
+<script src="<?=ASSESTS_URI."js"?>/app/modules/profile/profile-controller-services.js"></script>
 <!-- End Angular Section. -->
 <script src="<?=ASSESTS_URI."js"?>/app/lang/en.lang.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/loadingSpinner.js"></script>

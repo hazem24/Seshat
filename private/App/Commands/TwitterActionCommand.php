@@ -67,13 +67,13 @@
 
             }
 
-            protected function writeToTweet(array $parameters){
+            protected function writeToTwitter(array $parameters){
                 $write_type = $parameters['type'];
                 $oauth_token = $parameters['oauth_token'];
                 $oauth_token_secret = $parameters['oauth_token_secret'];
-                $tweet_id = $parameters['tweet_id'];
-                return $this->twitter_api_command->execute(['ModelClass'=>"Tweet\\Action",'Method'=>['Name'=>'writeToTweet',
-                        'parameters'=>['tweet_id'=>$tweet_id,'type'=>$write_type],
+                $parameters = $parameters['parameters'];
+                return $this->twitter_api_command->execute(['ModelClass'=>"Tweet\\Action",'Method'=>['Name'=>'writeToTwitter',
+                        'parameters'=>['parameters'=>$parameters,'type'=>$write_type],
                         'user_auth'=>['status'=>true,'access_token'=>$oauth_token
                         ,'access_token_secret'=>$oauth_token_secret]]]);
             }

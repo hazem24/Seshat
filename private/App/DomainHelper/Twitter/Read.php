@@ -7,8 +7,8 @@
          * Class Read Responsable For All Logic Of Read Something From Twitter.
          */
 
-         class Read extends Action
-         {
+        class Read extends Action
+        {
             
             public function __construct(){
                    $this->command = $this->initCommand();
@@ -87,6 +87,32 @@
                         return ['noReplies'=>true];
                 }  
             }
+            /**
+             * @method userTimeLine.
+             * @return array.
+             */
+            protected function userTimeLine (array $params = []) { 
+                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"userTimeLine" , "parameters"=>['screen_name'=>$params['screen_name']] , 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+            }
+            /**
+             * @method getUser.
+             * @return array.
+             */
+            protected function getUser (array $params = []) { 
+                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"getUser" , "parameters"=>['screen_name'=>$params['screen_name']] , 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+            }
+
+            /**
+             * @method getFollowersList.
+             * @return array.
+             */
+            protected function getFollowersList ( array $params = []) {
+                $params['cursor'] = ($params['cursor']) ?? '-1';   
+                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"getFollowersList" , "parameters"=>['screen_name'=>$params['screen_name'] , 'cursor'=>$params['cursor']], 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+            }
 
             /**
              * @method getHashtagData.
@@ -135,4 +161,4 @@
                 }
                 return $tweets;
             }
-         }
+        }

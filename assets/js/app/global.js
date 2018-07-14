@@ -20,24 +20,21 @@ var globalMethod = {
                 $($table).DataTable();
         }, 
         repsonseError : function(data,element='body'){
-                if(data.error.reauth !== undefined){
+                if(data.error.reauth !== undefined ){
                         //Reauth Logic.
                         $("#tweetModal").modal("hide");
                         $(".navbar").hide();
                         $("<script>").text(data.error.reauth).appendTo("body");           
-                   }else if (data.AppError != undefined){
+                }else if (data.AppError !== undefined){
                         //AppError.   
                         globalMethod.showNotification('danger','top','right',data.AppError,element,20000);
-                   }else{
-                         //Simple Error.
-                         globalMethod.showNotification('danger','top','right',data.error[0],element,20000);
-                   }      
+                }else{
+                        //Simple Error (loop can be presented here to loop through all errors). 
+                        globalMethod.showNotification('danger','top','right',data.error[0],element,20000);
+                }      
         },
         clearInput : function () {
                 $('form').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file] ,textarea').val('');
-        },
-        onPageLoad : function(){
-                //Spinner Here!.
         },
         navLocation : function ($navLocation){
                 $navLocation = $navLocation.toLowerCase();
@@ -48,38 +45,44 @@ var globalMethod = {
                         //Your Profile Here.
                 }
 
-        },copyTweet : function(){
-                $(".tweetThis").on("click",function(event){
-                        event.preventDefault();
-                        //Init the editor text.
-                        globalMethod.clearInput();
-                        $('.emojionearea-editor').first().text('');        
-                        //Open Modal.
-                        $key = $(this).data("key");
-                        $content_to_share = $("#"+$key).val();
-                        $("#tweetModal").modal();
-                        $(".emojionearea-editor").first().focus();
-                        $('.emojionearea-editor').first().typetype($content_to_share);
-                        //Focus on editor emojionarea.
-                });
+        },copyTweet : function(element){
+                //Init the editor text.
+                globalMethod.clearInput();
+                $('.emojionearea-editor').first().text('');        
+                //Open Modal.
+                $key = $(element).data("key");
+                $content_to_share = $("#"+$key).val();
+                $("#tweetModal").modal();
+                $(".emojionearea-editor").first().focus();
+                $('.emojionearea-editor').first().typetype($content_to_share);
+                //Focus on editor emojionarea.
         },
         share : function($selector){
               //Share Logic Here.  
         },
+        screenShot :  function ($selector){
+                html2canvas(document.querySelector($selector), {
+                        onrendered: function (canvas) {
+                          let pngUrl = canvas.toDataURL();
+                          let img = document.querySelector(".screen"); //Not Ready .screen not found.
+                          img.src = pngUrl;
+                          // here you can send 'pngUrl' to server
+                          console.log(img.src);
+                          return img.src;
+                        },
+                });                    
+        },
         translateTweet : function ($selector){
               //Translate Logic.
-              $($selector).on("click",function(event){
-                        event.preventDefault();
                         /**
                          * 1 - create modal.--Done.
                          * 2 - Add content style.--Done.
                          * 3 - Ajax .. To Be Contianed.
                          */
-
-                        $from = $(this).data("from");
+                        $from = $selector.data("from");
                         $.sweetModal({
                                 title   : '<div style="overflow:hidden;width:auto;height:auto;"><button value="en" class="btn btn-info translateTo">English</button> <button value="ru" class="btn btn-info translateTo">русский язык</button> <button value="tr" class="btn btn-info translateTo">Türkçe</button> <button value="de"class="btn btn-info translateTo">Deutsch</button> <button value="es"class="btn btn-info translateTo">Español</button> <button value="fr"class="btn btn-info translateTo">Français</button> <button value="ar" class="btn btn-info translateTo">العربية</button></div>',
-                                content : '<div  style="float:left;width: 100%;padding: 10px;"><form><textarea id="translated_tweet" data-org_tweet="'+$("#content"+$(this).data('key')).val()+'" class="form-control border-input"  rows="3"></textarea><button type="button" id="tweet_translated_tweeta" style=" margin-top:10px;width: 50%;padding-top: 5px;" class="btn btn-danger" disabled>'+$tweet_translated_tweet_lang+'</button></div>',
+                                content : '<div style="float:left;width: 100%;padding: 10px;"><form><textarea id="translated_tweet" data-org_tweet="'+$selector.val()+'" class="form-control border-input"  rows="3"></textarea><button type="button" id="tweet_translated_tweeta" style=" margin-top:10px;width: 50%;padding-top: 5px;" class="btn btn-danger" disabled>'+$tweet_translated_tweet_lang+'</button></div>',
                                 theme: $.sweetModal.THEME_DARK,
                         });
                         //init Emoj.
@@ -139,7 +142,6 @@ var globalMethod = {
                                         } 
                                 });
                         });
-              });                 
         },
         seshatView : function($selector,$url){
                 /*$($selector).on("click",function(event){
@@ -189,15 +191,26 @@ var globalMethod = {
 //Nav Location.
 globalMethod.navLocation(String(document.location));
 //End Nav Location.
-
-
 $(document).ready(function(){
+        //Remove spinner when page loaded.
+        spinner.removeSpinner('.ai-spinner');
         //By Default Disabled Buttons.
         $("#scheduleButton").attr("disabled",true);
         //Init, datetimepicker.
         $('#datetimepicker').parent().css('position', 'relative');
         $("#datetimepicker").datetimepicker({
             minDate : new Date(),
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove'
+            }        
         });
 
         //reset modal after user close it.
@@ -222,17 +235,12 @@ $(document).ready(function(){
         });
 
         //Share button.
-        globalMethod.copyTweet();
+        //globalMethod.copyTweet();
         //End Share Button.
 
         //seshat analytic view.
         globalMethod.seshatAnalytic("#tweetStatics",[$("#rt_precent").val(),$("#like_precent").val()]);
         //End seshat analytic v view.
-
-
-        //Translate Tweet.
-        globalMethod.translateTweet(".translateThis");
-        //End Translate Tweet.
 
           
         $("#datetimepicker").on('dp.change',function(){
@@ -281,6 +289,7 @@ $(document).ready(function(){
                                 "cache": false,
                                 "processData":false,                    
                                 "success": function(data)  { 
+                                        console.log(data);
                                         spinner.remove($publish_now_button,$publish_button_text);
                                         if($("#tweetType").attr('name').toLowerCase() == 'publish'){
                                                 spinner.remove($schedule_button,$schedule_button_text,true);

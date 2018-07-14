@@ -6,7 +6,7 @@
     // exit;
     if(isset($userTimeLine) && !empty($userTimeLine)  && is_array($userTimeLine)):
 ?>
-<div class='container col-8' style="float:right" > 
+<div class='container col-8' style="float:right;padding-top: 120px;" > 
 <?php     
        
 

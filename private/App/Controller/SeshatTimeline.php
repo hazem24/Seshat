@@ -50,8 +50,7 @@
                                 //set Cache For Timeline.
                                 $this->cache->set($userTimeLine_cache,$timeLine,960);
                                 return $this->cache->get($userTimeLine_cache);
-                        }
-                                
+                        }      
                 }else{
                         //Get Data Directly From Cache,(Read From Cache).
                         return $this->cache->get($userTimeLine_cache);

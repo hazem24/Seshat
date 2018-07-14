@@ -6,7 +6,7 @@
 			$tweet =  (object)$FrontHelperClass::extractTweetData($analyticData['tweet']);
 ?>
 
-<div class="col-lg-12 container" >
+<div class="col-lg-12 container" style = "padding-top: 120px;">
 			<div class="card col-sm-4" style="margin: auto;width: 50%;border: 3px solid blue;padding: 10px;">
 				<div class="card-body">
 					<h6 class="author pull-left">

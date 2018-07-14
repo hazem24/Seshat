@@ -2,15 +2,13 @@
             namespace App\Model\WebServices\Twitter\Api\Tweet;
             use App\Model\WebServices\Twitter\Api\TwitterApi;
 
-
-
             /**
              *Class Viewer Responsable For Read Data From Twitter Api And Return Response To User In Seshat.
              */
             Class Viewer extends TwitterApi
             {
              /**
-              * @method readtTimeLine Read TimeLine From User Account.
+              * @method readtTimeLine Read TimeLine From User Account (User Which Auth To My App).
               * @return array.
               */
               public function readTimeLine(){
@@ -52,6 +50,33 @@
                 public function showTweet(array $parameters = []){
                     $getTweet = $this->connection->get("statuses/show",['id'=>$parameters['tweet_id'],'include_my_retweet'=>'false',"tweet_mode"=>"extended"]);
                     return $this->getResponse($getTweet);
+                }
+
+                /**
+                 * @method getUser. GET https://api.twitter.com/1.1/users/show.json.
+                 * @return array.
+                 */
+                public function getUser ( array $parameters = []) {
+                    $getUser = $this->connection->get("users/show",['screen_name'=>$parameters['screen_name'] , 'include_entities' => "true"]);
+                    return $this->getResponse($getUser);
+                }
+
+                /**
+                 * @method userTimeLine. GET https://api.twitter.com/1.1/statuses/user_timeline.json.
+                 * @return array.
+                 */
+                public function userTimeLine (array $parameters = []) {
+                    $getUserTimeLine = $this->connection->get("statuses/user_timeline" , ['screen_name'=>$parameters['screen_name'] , 'count'=>'50' , "tweet_mode"=>"extended" , 'exclude_replies'=>"true"]);
+                    return $this->getResponse($getUserTimeLine);
+                }
+
+                /**
+                * @method getFollowersList. GET https://api.twitter.com/1.1/followers/list.json.
+                * @return array.
+                */
+                public function getFollowersList( array $parameters = [] ){
+                    $followersList = $this->connection->get('followers/list',['screen_name'=>$parameters['screen_name'],'count'=>'200','cursor'=>$parameters['cursor']]);
+                    return $this->getResponse($followersList); 
                 }
 
             }

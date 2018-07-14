@@ -19,7 +19,7 @@ angular.module('seshatApp').controller("reportHashTagCtrl",function($scope,repor
                     console.log('This Hash tag not active !.');
             }else if (response.data.report_name != undefined){
                     $scope.window.location.href = BASE_URL + "!seshat/getReport/hashtag/" + response.data.report_name;
-            }else if (response.data.error != undefined || repsonseError.data.AppError){
+            }else if (response.data.error !== undefined || repsonseError.data.AppError !== undefined){
                    globalMethod.repsonseError(response.data);
             }
             spinner.remove($("#createReport") , $("#createReport").text());

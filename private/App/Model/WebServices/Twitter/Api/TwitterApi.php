@@ -96,6 +96,12 @@
             final protected function anyApiError($response){
                         if(isset($response->errors) === true){//There's An Error.
                                 switch ((int)$response->errors[0]->code) {
+                                    case 50:
+                                        $error = USER_NOT_FOUND;
+                                        break;
+                                    case 63:
+                                        $error  =  SUSPENDED_USER;
+                                        break;   
                                     case 88:
                                         $error = SESHAT_NEED_TIME;
                                         break;
