@@ -5,6 +5,7 @@
     use App\DomainHelper\Twitter;
     use App\DomainHelper\FrontEndHelper;
     use App\DomainHelper\Helper;
+    use Framework\Request\RequestHandler;
 
     /**
      * This Class provide helper methods for profile Controller.
@@ -39,17 +40,12 @@
         public static function getProfileDataForTwitter ( Profile $profile , array $params = [] ){
             $user_name = $params[0] ?? null;
             if(is_null($user_name) === false) {
-                $tokens = $profile->getTokens();//get Tokens.
-                //Logic Here.
-                $profileReader = new Twitter\Read;
-                $profile_data  = $profileReader->do("getUser",['screen_name'=>$user_name,'oauth_token'=>$tokens['oauth_token'] , 
-                'oauth_token_secret'=>$tokens['oauth_token_secret']]);
-                $tweetsReader = $profileReader->do("userTimeLine",['screen_name'=>$user_name,'oauth_token'=>$tokens['oauth_token'] , 
-                    'oauth_token_secret'=>$tokens['oauth_token_secret']]);
-                //Check For Any Error From Twitter. 
-                if( (is_array($profile_data) && is_object($profile_data) ===  false && array_key_exists("error",$profile_data)) || (is_array($tweetsReader) && is_object($tweetsReader) ===  false && array_key_exists("error",$tweetsReader))){
-                    $profile->commonError( (is_array($profile_data) ? $profile_data : $tweetsReader ) );
-                }
+                $tokens = $profile->getTokens();
+                $profileReader = self::checkUser(  $profile , new Twitter\Read , $tokens , str_ireplace("@",'',$user_name), true);
+                $profile_data  = $profileReader['profileReader'];
+                $tweetsReader  = $profileReader['timeLine'];
+                //search For error.
+                $profile->commonError( (is_array($profile_data) ? $profile_data : $tweetsReader ) );
                 $response = $profile->returnResponseToUser(['profile'=> $profile_data,'tweets'=> (is_array($tweetsReader)) ? FrontEndHelper::tweetsStyle($tweetsReader) : $tweetsReader ,'auth_id'=>$profile->session->getSession('tw_id')]);
                 $profile->encodeResponse($response);
             }
@@ -64,7 +60,6 @@
             $screen_name = $params[1] ?? null;
             if ( is_null($media) === false && Helper::issetMedia($media) && is_null($screen_name) === false ) {
                 //Calc.
-                //$profile->encodeResponse(['error'=>['error in calc.']]);
                 self::doFakeCalculation($profile , $media , $screen_name );
             }else {
                 $profile->setError(INVALIAD_REQUEST);
@@ -72,6 +67,54 @@
             //return response.
             $response = $profile->returnResponseToUser($response ?? null);
             $profile->encodeResponse($response);
+        }
+
+        /**
+         * @method tweetAsTask.
+         * @return json.
+         */
+        public static function tweetAsTask ( Profile $profile ) {
+            if (RequestHandler::postRequest()) {
+                /**
+                * 1 - check if user exists in twitter or no error in twitter api.
+                    * if true start the logic of tweetAs task.
+                    * else error return.
+                */
+                $tweet_as = ( string ) RequestHandler::post('tweetAs'); //Username to tweet as him/her.
+                $options  = [
+                    'translate_tweets_to'=> (( string ) RequestHandler::post('translate_tweets_to'))
+                ];
+                $checkLang = Helper::checkLang( $options['translate_tweets_to'] );
+                $checkLang = ($checkLang === true) ? null : $profile->setError( $checkLang );
+                
+                $tokens = $profile->getTokens();
+                $profile_reader = self::checkUser( $profile ,  new Twitter\Read  , $tokens , $tweet_as );
+                $profile->commonError( $profile_reader );
+                
+                if( is_object( $profile_reader ) && isset( $profile_reader->screen_name ) && is_null( $checkLang ) === true){
+                    //Exists.
+                    if( isset( $profile_reader->status ) ) {
+                        //Save Task.
+                        $task     = new Twitter\Task;
+                        $response = $task->do('addNewTask' , array_merge($tokens,['task_id'=>2,'screen_name'=>$tweet_as,'lang'=>$options['translate_tweets_to'],'user_id'=>$profile->session->getSession('id')]) );
+                        $profile->commonError( $response );
+                        if( is_array( $response )  && array_key_exists('task_not_save',$response)){
+                            $profile->setError(TASK_NOT_SAVE);
+                        }else if ( is_array( $response ) && array_key_exists('task_save',$response)){
+                            $response = ['tweet_as_success'=>TWEET_AS_SUCCESS .  "$tweet_as " . WITH_LANG . ' ' . $options['translate_tweets_to']];
+                        }
+                    }else{
+                        $profile->setError( PRIVATE_ACCOUNT );
+                    }
+                }
+                //InCase of there's no response.
+                if( !isset( $response ) ) {
+                    $profile->setError( INVALIAD_REQUEST ); 
+                }
+                $response = $profile->returnResponseToUser(  $response ?? null );
+                $profile->encodeResponse( $response );
+            }
+            $profile->encodeResponse(['error'=>['Request Not Found.']]);
         }
 
         private static function doFakeCalculation (  Profile $profile , string $media ,  string $screen_name ){
@@ -90,11 +133,9 @@
         public static function twitterFakeAccounts ( Profile $profile , string $screen_name ) {
             $tokens = $profile->getTokens();
             $reader = new Twitter\Read;
-            $profileReader = $reader->do("getUser",['screen_name'=>$screen_name,'oauth_token'=>$tokens['oauth_token'] , 
-            'oauth_token_secret'=>$tokens['oauth_token_secret']]);
-            if (is_array($profileReader) && array_key_exists('error' , $profileReader)) {
-                $profile->commonError($profileReader);
-            }else if (is_object($profileReader) && isset($profileReader->screen_name)) {
+            $profileReader = self::checkUser( $profile , $reader  , $tokens , $screen_name );
+            $profile->commonError($profileReader);
+            if (is_object($profileReader) && isset($profileReader->screen_name)) {
                 if(isset($profileReader->status)){
                     //do calc. here
                     $loops    = self::followersLoopCalculation($profileReader->followers_count);
@@ -111,8 +152,12 @@
             }else {
                 $profile->commonError(['AppError'=>true]);
             }
+            //Incase of request 
+            if( !isset( $response ) ){
+                $profile->setError( INVALIAD_REQUEST );
+            }
             //response Here.
-            $response = $profile->returnResponseToUser(($response ?? null));
+            $response = $profile->returnResponseToUser( $response ?? null);
             $profile->encodeResponse( $response );
         }
         /**
@@ -176,6 +221,19 @@
                 }
 
             }
-            return $response;
+            return $response ?? ['error'=>[GLOBAL_ERROR]];
+        }
+        /**
+         * Check if user exists.
+         */
+        private static function checkUser (Profile $profile , Twitter\Read $reader , array $tokens  , string $screen_name , bool $return_time_line = false) {
+            $profileReader = $reader->do("getUser",['screen_name'=>$screen_name,'oauth_token'=>$tokens['oauth_token'] , 
+            'oauth_token_secret'=>$tokens['oauth_token_secret']]);
+            if($return_time_line === true) {
+                $tweetsReader = $reader->do("userTimeLine",['screen_name'=>$screen_name,'oauth_token'=>$tokens['oauth_token'] , 
+                'oauth_token_secret'=>$tokens['oauth_token_secret']]);
+                return ['profileReader'=>$profileReader,'timeLine'=>$tweetsReader];
+            }
+            return $profileReader;
         }
      }

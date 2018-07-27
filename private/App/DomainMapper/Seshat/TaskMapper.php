@@ -33,9 +33,20 @@
                    $schedule_exists->execute();
                    $schedule_exists = $schedule_exists->fetch();
                    if($schedule_exists !== false){
-                                return true; //Exists.
+                        return true; //Exists.
                    }
-                                return false;//Not Exists.
+                   return false;//Not Exists.
+            }
+
+            public function getTweetAsInfo ( int $user_id ){
+                $selectBuilder = new SelectQueryBuilder;
+                $stm           = $selectBuilder->select()->from($this->table)->where([ $this->foreign_key . ' = ? && '=>$user_id ,
+                $this->columnsTable[0] . '  = ?' => 2])->createQuery();
+                $tweetAsInfo = $this->pdo->prepare($stm['query']);
+                $this->bindParamCreator(2,$tweetAsInfo,$stm['data']);
+                $tweetAsInfo->execute();
+                $tweetAsInfo = $tweetAsInfo->fetchAll( \PDO::FETCH_CLASS, 'App\\Model\\App\\Seshat\\TaskModel' );
+                return $tweetAsInfo; // array || false in failure.
             }
             protected function doSave(Model $model){
                     if(is_null($model->getProperty('id'))){
@@ -49,9 +60,9 @@
                         $this->bindParamCreator(5,$newTask,$stm['data']);
                         $newTask->execute();
                         if($newTask->rowCount() > 0){
-                                return true;  //Saved Succesfully.
+                            return true;  //Saved Succesfully.
                         }
-                                return false; //Not Saved.
+                            return false; //Not Saved.
                     }     
 
             }

@@ -28,12 +28,12 @@
             *Constructor Of Each Controller
             */
             public $session;
-
+            public $actionView;
+    
             protected $parameters = [];
             //protected $renderLayoutView = false;
             protected $renderActionView = false;
             //protected $layoutView;
-            protected $actionView;
 
             protected $actionToCall;
 

@@ -100,9 +100,9 @@
              public static function checkLang(string $to){
                     $whiteList = ['ar','ru','tu','de','tr','fr','es','en'];
                     if(in_array(strtolower($to),$whiteList)){
-                            return true;
+                        return true;
                     }
-                            return LANG_NOT_SUPPORTED;
+                        return LANG_NOT_SUPPORTED;
              }
 
                 /**

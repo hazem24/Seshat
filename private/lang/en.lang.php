@@ -15,6 +15,9 @@ define("TOTAL_NUMBER_OF_FOLLOWERS","Total Number of followers ");
 define("FAKE_FOLLOWERS_NUMBER","Fake followers ");
 define("FAKE_PERCENTAGE","Fake followers %");
 define("SAMPLE","Sample ");
+define("USERS","Users");
+define("TWEETS","Tweets");
+define("FILTER","Filter");
 define("TOLERANCE","Tolerance ");
 define("REPORTED_BY_SESHAT","Report By Seshat.");
 define("THIS_FEATURE_NOT_FOUND","Sorry this feature cannot created by seshat now but will be found sooner.");
@@ -36,6 +39,7 @@ define("EMAIL_EXISTS","This Email Used Please Try With Another Email Address.");
 define("BOT_ACCESS",'Seshat Not Love To Work With Bots.');
 define("INVALIAD_REQUEST","Invailed request.");
 define("REAOUTH_SESHAT",'Re-authentication With Seshat.');
+define("CAN_NOT_RETREIVE_DATA","Cannot retreive data now try again later.");
 define("TWEET_NOT_SAVED",'I Publish Your Tweet In Twitter But I Can not Save It.');
 define("CANNOT_UNDERSTAND","I cannot understand what do you want i still learning sorry about that.");
 define("ERROR_404","Well something wrong happened .. i guess that this page not exists if you feel that this is an error 
@@ -116,8 +120,10 @@ define("DUPLICATE_RETWEET","You Forget That You Retweet This Tweet Before .. Don
 define("NOT_FOUND","Not Found.");
 define("PRIVATE_ACCOUNT","This Account is private i can't process your request.");
 define("USER_NOT_FOUND","User Not Found.");
+define("SOME_THING_MISSING","Something missing in your request.");
 define("FOLLOWERS_LIST_ERROR","Can't retrive followers list of ");
 define("SUSPENDED_USER","This User was suspended from twitter.");
+define("YOU_TWITTER_ACCOUNT_SUSPENDED","There's a problem in your twitter account please solve this!.");
 define("FOLLOW_TO_DIRECT","This User Must Follow You To Send Message Via Direct.");
 define("LIMIT_FOLLOW","You Cannot Follow More People At This Time Leave Me Some Time To organize and analysis Your Data I Will Back With Great Detials.");
 define("DUPLICATE_TWEET","You Forget That You Tweet This Tweet Before .. Don't Worry I Remembered That For You.");
@@ -155,11 +161,18 @@ define("TWEET_UPLOAD_SUCCESS","Your Tweet Was Sent To Twitter.");
 //Tasks.
 define("SC","Schedule.");
 define("ARL","Auto Replay,Like.");
+define("TWTAS","Tweet as");
+define("TWEET_AS_SUCCESS","Your account now automatically tweet as  ");
+define("WITH_LANG","with lang");
+define("MAX_TWEET_AS_THREE","You Reach max uses of 'Tweet as' feature");
+define("YOU_TWEET_AS_THIS_USER_ALREADY","You Already tweet as");
 define("FANS","Search Fans For Your Tweet.");
 define("UNFOLLOW","Unfollow People Not Follow You.");
 define("INACTIVE_ACCOUNTS","Inactive Accounts In Your Account.");
 define("TASK_SCHEDULE_SAVED","Your Tweet Scheduled successfully !.");
 define("TASK_NOT_SCHEDULE_SAVED","Error I Cannot Save This Schedule Now Try Again Later.");
+define("CANNOT_DO_TASK","Sorry Seshat can not do this task.");
+define("TASK_NOT_SAVE","Sorry you cannot save your task now try again later.");
 define("HAVE_SCHEDULE_AT_SAME_TIME","You Have Scheduled Tweet At This Time I Cannot Schedule More Than Tweet At Same Date  Please Change The Date.");
 //End Tasks.
 

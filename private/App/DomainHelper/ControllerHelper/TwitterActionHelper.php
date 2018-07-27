@@ -146,7 +146,7 @@
                 $method = "publishNewTweet";
             }else{
                 $class = new Twitter\Task;
-                $method = "newTask";
+                $method = "addNewTask";
                 $data['task_id'] = 1;
                 $data['expected_finish'] = self::$date;//Coming From Date Trait.
             }
@@ -209,7 +209,7 @@
             switch (strtolower($relationType)) {
                 case 'follow':
                     //Follow Here.
-                    $response   = self::newAction( $twitterAction , 'follow' , $userId );
+                    $response   = self::newAction( $twitterAction , 'follow' , $userId ); 
                     $response   = (is_object($response)) ? (isset($response->screen_name))  ? (isset($response->status)) ? ['follow'=>true] : ['follow_request_sent'=>true]  : $twitterAction->setError($response) : ['error'=> [CANNOT_CREATE_YOUR_ACTION]];
                     break;
                 case 'unfollow':

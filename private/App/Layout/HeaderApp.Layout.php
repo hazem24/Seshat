@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width" />
 	<link href="<?=ASSESTS_URI."css"?>/lib/bootstrap.min.css" rel="stylesheet" type='text/css' />
 	<link href="<?=ASSESTS_URI."css"?>/app/now-ui-kit.css" rel="stylesheet" type='text/css' />
-	<link href="<?=ASSESTS_URI."css"?>/app/notifyStyle.css" rel="stylesheet" type='text/css' />
+	<link href="<?=ASSESTS_URI."css"?>/lib/iziToast.min.css" rel="stylesheet" type='text/css' />
 	<!--     Fonts and icons     -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -32,7 +32,7 @@
 </div>
 <?php if($this->session->getSession('id') !== false) : ?>
 
-<body ng-app="seshatApp">
+<body ng-app="seshatApp" ng-controller = "appCtrl">
 	<div class="modal fade bd-example-modal-lg" id="tweetModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -124,7 +124,7 @@
 	</div>
 	<!--         default navbar with notifications     -->
 
-	<body style="" ng-app="seshatApp" ng-class="{
+<body style="" ng-app="seshatApp" ng-class="{
     bootstrapped: bootstrapped,
     dark: theme === 'dark',
     menuOpen: menuOpen }" class="halfView feed-all-muzli bootstrapped loading-muzli-complete">
@@ -133,27 +133,44 @@
 		<div id="container">
 			<header>
 				<div class="pull-left">
-					<a class="logo"></a>
+					<a><?=NAME;?></a>
 				</div>
-				<div class="pull-right">
-					<!---->
-					<div class="nav-icon search"> <i class="icon-search"></i>
-					</div>
-					<div class="nav-icon favorites"> <i class="icon-fav"></i>
-					</div>
-					<div class="nav-icon notifications">
-						<div ng-click="toggleNotifications()"> <i class="icon-notification"></i>
-							<!---->
-						</div>
-						<!---->
-					</div>
-					<a class="userIcon" href="#" id="menuOpener">
-						<!---->
-						<img class="avatar" ng-src="http://pbs.twimg.com/profile_images/956848122910691328/j2OsQeIO_normal.jpg" alt="" src="http://pbs.twimg.com/profile_images/956848122910691328/j2OsQeIO_normal.jpg">
-						<!---->
-						<!---->
-					</a>
-				</div>
+				<nav class="navbar navbar-expand-lg" style="background-color:black;" >
+                                <div class="container">
+								<div class="navbar-translate">
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#example-navbar-icons" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-bar bar1"></span>
+                                        <span class="navbar-toggler-bar bar2"></span>
+                                        <span class="navbar-toggler-bar bar3"></span>
+                                    </button>
+								</div>	
+                                    <div class="collapse navbar-collapse" id="example-navbar-icons">
+                                        <ul class="navbar-nav ml-auto">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#pablo"><i class="now-ui-icons ui-1_send" aria-hidden="true"></i></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#pablo"><i class="now-ui-icons users_single-02" aria-hidden="true"></i></a>
+                                            </li>
+                                            <li class="nav-item dropdown">
+                                                <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                                                    <i class="now-ui-icons ui-1_settings-gear-63" aria-hidden="true"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                                    <a class="dropdown-header">Dropdown header</a>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                    <div class="divider"></div>
+                                                    <a class="dropdown-item" href="#">Separated link</a>
+                                                    <div class="divider"></div>
+                                                    <a class="dropdown-item" href="<?=BASE_URL?>!index/logout"><?=LOGOUT;?></a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
 			</header>
 			<!---->
 			<!-- Sidebar -->

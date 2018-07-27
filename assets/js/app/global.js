@@ -2,24 +2,33 @@ var twitterActionUrl = "http://127.0.0.1/seshat/!twitterAction/";
 var extraFeatures    = "http://127.0.0.1/seshat/!extraFeatures/";
 var globalMethod = {
         //type => ['info', 'success', 'warning', 'danger', 'rose', 'primary']
-        showNotification: function(type, from, align, msg,element,timer) {
-                $.notify({
-                    icon: "notifications",
-                    message: msg
-                }, {
-                    type: type,
-                    element: element,
-                    timer: timer,
-                    placement: {
-                        from: from,
-                        align: align
-                    }
-                });
-            },
-            initDataTable : function($table){
+        showNotification: function(type, from, align, msg,element,timer) { 
+              switch (type.toLowerCase()) {
+                      case 'danger':
+                        iziToast.error({
+                                message: msg,
+                                position:from+align,
+                                timeout : timer
+                        });
+                                break;
+                        case 'success':
+                        iziToast.success({
+                                message: msg,
+                                position:from+align,
+                                timeout:timer
+                        });
+                                break;
+                        case 'question':
+                                break;
+                      default:
+                              break;
+              } 
+        },initDataTable : function($table){
                 $($table).DataTable();
-        }, 
-        repsonseError : function(data,element='body'){
+        },
+        destoryNotify : function (){
+                iziToast.destroy();//destory the izi toast.
+        },repsonseError : function(data, element='body'){
                 if(data.error.reauth !== undefined ){
                         //Reauth Logic.
                         $("#tweetModal").modal("hide");
@@ -27,10 +36,10 @@ var globalMethod = {
                         $("<script>").text(data.error.reauth).appendTo("body");           
                 }else if (data.AppError !== undefined){
                         //AppError.   
-                        globalMethod.showNotification('danger','top','right',data.AppError,element,20000);
+                        globalMethod.showNotification('danger','top','Right',data.AppError,element,20000);
                 }else{
                         //Simple Error (loop can be presented here to loop through all errors). 
-                        globalMethod.showNotification('danger','top','right',data.error[0],element,20000);
+                        globalMethod.showNotification('danger','top','Right',data.error[0],element,20000);
                 }      
         },
         clearInput : function () {
@@ -107,7 +116,7 @@ var globalMethod = {
                                                         globalMethod.repsonseError(data);
                                                 }else if (data.success != undefined){
                                                         //Success.
-                                                        globalMethod.showNotification('success','top','right',data.success,'body',3000);
+                                                        globalMethod.showNotification('success','top','Right',data.success,'body',3000);
                                                 }
                                         }
                                 });
@@ -302,7 +311,7 @@ $(document).ready(function(){
                                         }else if (data.success != undefined){
                                                 //Success.
                                                 $("#tweetModal").modal("hide");
-                                                globalMethod.showNotification('success','top','right',data.success,'body',3000);
+                                                globalMethod.showNotification('success','top','Right',data.success,'body',3000);
                                         }
                                 }
                         });
@@ -330,7 +339,7 @@ $(document).ready(function(){
                                 globalMethod.repsonseError(data);
                         }else if (data.success != undefined){
                                 //Success.
-                                globalMethod.showNotification('success','top','right',data.success,'body',3000);
+                                globalMethod.showNotification('success','top','Right',data.success,'body',3000);
                         }
                             //Re-enable quickButton.
                             $(".quickReplayButton").attr("disabled",false);

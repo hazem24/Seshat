@@ -35,4 +35,12 @@
             ProfileHelper::fakeAccountsCalcualtion( $this , $params );             
         }
 
+        /**
+         * tweetAs Feature.
+         */
+        public function tweetAsAction( array $param = [] ){
+            $this->rule();
+            ProfileHelper::tweetAsTask( $this );
+        }
+
     }

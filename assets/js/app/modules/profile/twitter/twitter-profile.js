@@ -1,8 +1,5 @@
-angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , $sce , profileReader) {
-    $scope.renderHtml = function(html_code) {
-        return $sce.trustAsHtml(html_code);
-    }
-
+angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , profileReader) {
+   
     profileReader.getProfile( "getTwitterProfile" , $scope.user_name , function ( response ) {
         $scope.data = response.data;
         if($scope.data.error !== undefined || $scope.data.AppError !== undefined){
@@ -10,9 +7,6 @@ angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , $
         }
         spinner.removeSpinner('.spinner');
     });
-    $scope.retweetLogic = function ($event) {
-        twitterAction.retweetLogic($event.currentTarget,false);
-    };
 
     $scope.calculateFakeFollowers = function ( $screen_name ) {
         $button_text = $("#fakeAccountsCalc").html();
@@ -28,32 +22,10 @@ angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , $
             }
             spinner.remove( $("#fakeAccountsCalc") , $button_text );
         });
-    }
-
-    $scope.tweetThis = function ($selector) {
-        $img = globalMethod.screenShot($selector);
-        console.log( $img );
-    }
-    $scope.likeLogic = function ($event) {
-        twitterAction.likeLogic($event.currentTarget,false);
     };
 
-    $scope.replayLogic = function($event){
-        $tweet_id  = $event.currentTarget.dataset.twid;
-        $replay_to = $event.currentTarget.dataset.replayTo;
-        twitterAction.replayLogic($tweet_id , $replay_to);
-    };
-
-    $scope.translateTweet = function (element) {
-        globalMethod.translateTweet($('#content' + element));
-    };
-
-    $scope.copyTweet = function ($event){
-        globalMethod.copyTweet($event.currentTarget);
-    }; 
-
-    $scope.createRelation = function ( $type , $user_name ) {
-        $response = twitterAction.createRelation( $type , $user_name , true);
+    $scope.createRelation = function ( $type , $user_id ) {
+        $response = twitterAction.createRelation( $type , $user_id , true);
         switch ($type.toLowerCase()) {
             case 'follow':
                 if($scope.data.profile.protected === false){
@@ -72,6 +44,18 @@ angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , $
             default:
                 break;
         }
+    }; 
+    $scope.tweetAs = function ( $screen_name  , $lang) {
+        $button_content = $("#tweetAs").html();
+        spinner.button($("#tweetAs"), '<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>' , true , true);
+        profileReader.tweetAs( $screen_name , $lang  , function ( response ) {
+            if(response.data.error !== undefined){
+                globalMethod.repsonseError( response.data );
+            }else if ( response.data.tweet_as_success !== undefined){
+                globalMethod.showNotification('success','top','Right',response.data.tweet_as_success,'body',5000);
+            }
+            spinner.remove($("#tweetAs"), $button_content , false , true);
+        });
     };
 }).directive("twitterProfilePage",function(){
     return {

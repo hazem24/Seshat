@@ -157,6 +157,7 @@ endforeach;
 ?>
 </div>                     
 <?php
+//new twitter account.
 elseif(isset($userTimeLine) && empty($userTimeLine)):
 ?>
 <div class='container col-8' style="margin: auto;width: 50%;border: 3px solid blue;padding: 10px;" > 

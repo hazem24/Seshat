@@ -115,6 +115,15 @@
             }
 
             /**
+             * @method searchUsers.
+             * @return array.
+             */
+            protected function searchUsers( array $params = [] ){
+                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"searchUsers" , "parameters"=>['search'=>$params['search']], 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+            }
+
+            /**
              * @method getHashtagData.
              */
             protected function getHashtagData(array $params){

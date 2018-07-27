@@ -27,10 +27,20 @@
                     <a href="" id="relationButton" ng-if="data.profile.following && data.auth_id !== data.profile.id_str && !data.profile.follow_request_sent" ng-click="createRelation('unfollow',data.profile.id_str)" class="btn btn-info btn-round btn-lg">Unfollow</a>
                     <a href="" id="relationButton" ng-if="data.profile.follow_request_sent" ng-click="createRelation('undo_follow_request',data.profile.id_str)" class="btn btn-danger btn-round btn-lg">Follow Request Sent.</a>
                     <a href="" id="relationButton" ng-if="!data.profile.following && data.auth_id !== data.profile.id_str && !data.profile.follow_request_sent" ng-click="createRelation('follow',data.profile.id_str)" class="btn btn-primary btn-round btn-lg">Follow</a>
-                    <button ng-if='data.auth_id !== data.profile.id_str && data.tweets[0]' class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Tweet as {{ data.profile.name }}">
+                    <button ng-if='data.auth_id !== data.profile.id_str && data.tweets[0]' class="btn btn-primary btn-round dropdown-toggle" id="tweetAs" title="Tweet as {{ data.profile.name }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-copy text-center" style="font-size:20px;"></i>
                     </button>
-                    <button ng-if="data.tweets[0]" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="download tweets in excel format">
+                    <div ng-if='data.auth_id !== data.profile.id_str && data.tweets[0]' class="dropdown-menu" aria-labelledby="tweetAs">
+                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "ar" )'>العربية</button>
+                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "en" )'>English</button>
+                        <button class="dropdown-item"  ng-click='tweetAs( data.profile.screen_name , "ru" )'>русский язык</button>
+                        <button class="dropdown-item"  ng-click='tweetAs( data.profile.screen_name , "tr" )'>Türkçe</button>
+                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "de" )'>Deutsch</button>
+                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "es" )'>Español</button>
+                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "fr" )'>Français</button>
+                    </div>
+
+                    <button ng-if="data.tweets[0]" ng-json-export-excel data="data.tweets" filename="data.profile.screen_name"  class="btn btn-default btn-round btn-lg btn-icon" report-fields="{id: '#', created_at: 'date', org_text: 'tweets',lang:'lang',retweet_count:'retweets',like_count:'likes'}" rel="tooltip" title="download tweets in excel format">
                         <i class="fas fa-download text-center" style="font-size:20px;"></i>
                     </button>
                 </div>
@@ -47,11 +57,6 @@
                                 <li class="nav-tweet text-center">
                                     <a class="nav-link" data-toggle="tab" href="#robots" role="tablist">
                                         <i class="fas fa-robot text-center" style="font-size:20px;"></i>
-                                    </a>
-                                </li>
-                                <li class="nav-tweet">
-                                    <a class="nav-link" data-toggle="tab" href="#messages" role="tablist">
-                                        <i class="now-ui-icons design-2_ruler-pencil" style="font-size:20px;"></i>
                                     </a>
                                 </li>
                             </ul>
@@ -88,9 +93,9 @@
                                                             <div  class="postInfo">
                                                                 <div class="source-wrapper">
                                                                     <span style="padding:10px;float:right;font-size:15px;"><i class="fab fa-twitter" style="font-size: 25px;"></i> </span>
-                                                                    <span style='padding: 10px;'ng-if='tweet.retweeted'>  Retweeted By: <strong style='color:green;'>{{ tweet.user_retweeted_tweet }}</strong></span>
+                                                                    <span style='padding: 10px;'ng-if='tweet.retweeted'>  Retweeted By: <strong style='color:green;'><a href="/seshat/!profile/twitter/{{ tweet.user_retweeted_tweet }}">{{ tweet.user_retweeted_tweet }}</a></strong></span>
                                                                     <div class='avatar'>
-                                                                        <img style = 'border-radius:50%'  ng-src = "{{ tweet.user_profile }}"  title="" /> <span style='color:red;' dir='{{ tweet.dir }}'> {{ tweet.screenName }}</span>
+                                                                        <img style = 'border-radius:50%'  ng-src = "{{ tweet.user_profile }}"  title="" /> <span style='color:red;' dir='{{ tweet.dir }}'> <a  href="/seshat/!profile/twitter/{{ tweet.screenName }}">{{ tweet.screenName }}</a></span>
                                                                     </div>
                                                                 </div><br>
                                                                 <p ng-if="tweet.full_text" class = 'text-center' style='font-size: 16px;padding:20px; font-weight:bold;'  ng-bind-html="renderHtml(tweet.full_text)"  dir='{{ tweet.dir }}'></p><br><br><br><br>
@@ -164,49 +169,10 @@
                                 <div class="row">
                                     <div >
                                         <p ng-if="data.tweets.error" class="text-center" style="font-size: 20px;color:red;font: bold;"><span style="color:black">{{ data.profile.screen_name }}</span> is a private account you can't use this feature.</p>
-                                            <li class="text-center" style="font-size: 20px;color:black;font:bold;">To Calculate How many fake followers <span style="color:red;">{{ data.profile.screen_name }}</span> have just click the button below.</li><br>
-                                            <button  id="fakeAccountsCalc" ng-click="calculateFakeFollowers(data.profile.screen_name)" class="btn btn-danger">Fake Accounts</button>
+                                            <li ng-if="!data.tweets.error" class="text-center" style="font-size: 20px;color:black;font:bold;">To Calculate How many fake followers <span style="color:red;">{{ data.profile.screen_name }}</span> have just click the button below.</li><br>
+                                            <button ng-if="!data.tweets.error" id="fakeAccountsCalc" ng-click="calculateFakeFollowers(data.profile.screen_name)" class="btn btn-danger">Fake Accounts</button>
                                     </div>
                                     
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="messages" role="tabpanel">
-                                <div class="row">
-                                    <div class="col-md-5 ml-auto mr-auto">
-                                        <div class="card card-background card-background-product card-raised">
-                                            <div class="card-body">
-                                                <h2 class="card-title">Interior Redesign</h2>
-                                                <p class="card-description">
-                                                    Insight to help you create, connect, and convert. Understand Your Audience's Interests, Influence, Interactions, and Intent. Discover emerging topics and influencers to reach new audiences.
-                                                </p>
-                                                <label class="badge badge-neutral">Interior</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="info info-horizontal">
-                                            <div class="icon icon-info">
-                                                <i class="now-ui-icons design_palette"></i>
-                                            </div>
-                                            <div class="description">
-                                                <h5 class="info-title">Colors adjustments</h5>
-                                                <p class="description">
-                                                    Gain access to the demographics, psychographics, and location of unique people who talk about your brand.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="info info-horizontal">
-                                            <div class="icon icon-info">
-                                                <i class="now-ui-icons design_scissors"></i>
-                                            </div>
-                                            <div class="description">
-                                                <h5 class="info-title">Performance Clothing</h5>
-                                                <p class="description">
-                                                    Unify data from Facebook, Instagram, Twitter, LinkedIn, and Youtube to gain rich insights from easy-to-use reports.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

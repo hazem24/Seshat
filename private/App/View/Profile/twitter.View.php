@@ -1,1 +1,1 @@
-<main><div ng-controller="socialMediaprofileCtrl"><twitter-profile-page ng-controller ="twitterprofileCtrl"></twitter-profile-page></div></main>
+<main ng-controller = "globalTwitterCtrl" ><div ng-controller="socialMediaprofileCtrl"><twitter-profile-page ng-controller ="twitterprofileCtrl"></twitter-profile-page></div></main>

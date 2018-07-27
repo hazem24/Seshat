@@ -6,10 +6,11 @@
         *This Class Have All Commands That Interact with twitter Api Model.
         */
 
-        Class TwitterApiCommand extends BaseCommand
+        Class TwitterApiCommand extends TwitterCommand
         {
             private static  $TwitterModel = "App\\Model\\WebServices\\Twitter\\Api\\";    
             public function execute(array $data = []){
+                    
                     $className = self::$TwitterModel.$data['ModelClass'];
                     if(class_exists($className) === true){
                                 $TwitterApi_object = new $className($data['paramater']);

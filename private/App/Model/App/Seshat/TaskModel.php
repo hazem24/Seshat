@@ -24,18 +24,24 @@
                 private static $tasksMapper = null;
 
                 /**
-                 * @method saveNewPublish 
-                 * @return bool.
-                 */
-
-                 public  function save():bool{
+                * @method saveNewPublish 
+                * @return bool.
+                */
+                public  function save():bool{
                         return self::getFinder()->save($this);        
-                 }
+                }
 
-                 public static function scheduleExists($user_id,$date):bool{
+                public static function scheduleExists($user_id,$date):bool{
                         return self::getFinder()->scheduleExists($user_id,$date);
-                 }
+                
+                }
 
+                /**
+                * @method getTweetAsInfo. 
+                */
+                public function getTweetAsInfo ( int $user_id ){
+                        return self::getFinder()->getTweetAsInfo( $user_id );
+                }
                 /**
                 * @method getFinder Find The Mapper Which Object Related To It.
                 * @return Mapper.

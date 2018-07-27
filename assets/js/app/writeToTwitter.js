@@ -1,7 +1,7 @@
 var twitterAction = {
     twitterResponse: function(data){
         if(data.success !== undefined){
-            globalMethod.showNotification('success','bottom','center',data.success,'body',1000);
+            globalMethod.showNotification('success','bottom','Center',data.success,'body',1000);
         }else if(data.error !== undefined){
            globalMethod.repsonseError(data);
         }

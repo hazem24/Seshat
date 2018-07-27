@@ -4,6 +4,7 @@ angular.module('seshatApp').controller("reportHashTagCtrl",function($scope,repor
     reportServices.getHashtagReport($scope.report_name,function(response){
         //Response Here !.
         $scope.hashtag_report_data = response.data;
+        console.log( $scope.hashtag_report_data );
     });
     //End Hashtag report reader section.
 

@@ -21,8 +21,8 @@
                * @return array.
                */
               public function searchTweets(array $parameters = []){
-                     $search_tweets = $this->connection->get("search/tweets",["q"=>$parameters['q'],'result_type'=>$parameters['result_type'],"max_id"=>$parameters['max_id'],"until"=>$parameters['until'],"since_id"=>$parameters['since_id'],"count"=>"100","tweet_mode"=>"extended"]);
-                     return $this->getResponse($search_tweets);
+                    $search_tweets = $this->connection->get("search/tweets",["q"=>$parameters['q'],'result_type'=>$parameters['result_type'],"max_id"=>$parameters['max_id'],"until"=>$parameters['until'],"since_id"=>$parameters['since_id'],"count"=>"100","tweet_mode"=>"extended"]);
+                    return $this->getResponse($search_tweets);
               }
 
               /**
@@ -78,5 +78,13 @@
                     $followersList = $this->connection->get('followers/list',['screen_name'=>$parameters['screen_name'],'count'=>'200','cursor'=>$parameters['cursor']]);
                     return $this->getResponse($followersList); 
                 }
+                /**
+                * @method searchUsers. GET https://api.twitter.com/1.1/users/search.json.
+                * @return array. 
+                */
+                public function searchUsers ( array $parameters = [] ) {
+                    $searchUsers = $this->connection->get('users/search',['q'=>$parameters['search']]);
+                    return $this->getResponse( $searchUsers );
+                }   
 
             }

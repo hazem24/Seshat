@@ -1,15 +1,22 @@
 var src = "/seshat/assets/spinner/";
 var spinner = {
-            button : function($selector,$spinner_to_load = '',$disabled = true){
+            button : function($selector,$spinner_to_load = '',$disabled = true , $html = false){
                     //button spinner here.
                     $($selector).attr("disabled",$disabled);
-                    $button_text = $($selector).text();
+                    if($html === false){
+                        $button_text = $($selector).text();
+                    }else {
+                        $button_text = $($selector).html();
+                    }
                     $($selector).html($spinner_to_load + $button_text);
-            },remove : function ($selector,$text='',$disabled = false){ // Used For Buttons.
+            },remove : function ($selector,$text='',$disabled = false , $html){ // Used For Buttons.
                     //Remove spinner after Request End. 
                     $($selector).html(''); 
-                    //Return back the text.
-                    $($selector).text($text);  
+                    if($html === false){
+                        $button_text = $($selector).text($text);
+                    }else {
+                        $button_text = $($selector).html($text);
+                    }
                     //return back the button.
                     $($selector).attr("disabled",$disabled);
             },onPageLoad : function(body = false){

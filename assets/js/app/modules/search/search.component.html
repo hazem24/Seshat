@@ -1,0 +1,32 @@
+<form name = "searchParentForm" class="col-md-8" style="width:50%;padding:10px;margin:auto;" novalidate>
+        <div ng-form="searchForm">
+                <input type="text" ng-change = "searchFormError(this)" name="q" ng-model = "searchVal" placeholder="Someting to search" class="form-control" style="height:40px;" ng-minlenght = "1" ng-maxlength ="200" ng-required="true" />
+                <a  data-toggle="collapse" href="#filterSearch" aria-expanded="false" aria-controls="filterSearch" class="pull-right text-success"  style="padding:10px;font-weight: bold;"><strong>Filter</strong></a>
+                <div class="collapse" id="filterSearch">
+                    <div class="card card-body bg-light text-white">
+                        <div class="form-check disabled">
+                            <label class="form-check-label">
+                                <input class="form-check-input"  type="checkbox" checked disabled>
+                                <span class="form-check-sign"></span>
+                                    <i style="font-size:20px;" class="fab fa-twitter"></i>
+                                </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label text-primary">
+                                <input class="form-check-input" type="radio" ng-model="filterBy" name="by" id="filterTwitter" value="twitter::users">
+                                    <span class="form-check-sign"></span>
+                                    Users
+                            </label>
+                        </div>
+                        <div class="form-check form-check-radio">
+                            <label class="form-check-label text-primary">
+                                <input class="form-check-input" type="radio" ng-model="filterBy" name="by" id="filterTwitter" value="twitter::tweets" checked>
+                                    <span class="form-check-sign"></span>
+                                    Tweets
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" id="searchBtn" ng-disabled = "searchParentForm.$invalid" ng-click="advancedSearch(searchVal,twitter_filter_by)"  class="btn btn-primary btn-round"><i class="fas fa-search"></i></button>
+        </div>
+</form>

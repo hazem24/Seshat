@@ -99,7 +99,7 @@
             *@method verfiyCredentials Get User Email-Name-Image For Wizard Proccess && seshatTimeLine.
             *@return array. 
             */
-        protected function verfiyCredentials(){
+        public function verfiyCredentials(){
                 $oauth_token = $this->session->getSession('oauth_token');
                 $oauth_token_secret = $this->session->getSession('oauth_token_secret');
                 $cmd = Shared\CommandFactory::getCommand('twitterapi');
@@ -144,10 +144,10 @@
          * @method commonError.
          * @return void.
          */
-        public function commonError(array $data_has_error){
-                if(array_key_exists('AppError',$data_has_error) === true){
+        public function commonError($data_has_error){
+                if( is_array( $data_has_error ) && array_key_exists('AppError',$data_has_error) === true){
                         $this->error[] = GLOBAL_ERROR;
-                }else if (array_key_exists('error',$data_has_error) === true){
+                }else if ( is_array( $data_has_error ) && array_key_exists('error',$data_has_error) === true){
                         $this->error[] = $data_has_error['error'];
                 }
         }
@@ -163,6 +163,15 @@
                         $response = ['error'=>($user_need_reauth === false) ? $this->error : ['reauth'=>$user_need_reauth[0]]];//reauth Index To Can Be Supplied By Javascript Can Know the type of error notify.
                 }
                 return $response;
+        }
+
+        /**
+        * @method getErrors.
+        * @return errors. 
+        */
+
+        public function getErrors(){
+                return $this->error;
         }
 
         /**

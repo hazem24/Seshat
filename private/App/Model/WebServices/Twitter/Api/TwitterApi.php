@@ -105,6 +105,12 @@
                                     case 88:
                                         $error = SESHAT_NEED_TIME;
                                         break;
+                                    case 195:
+                                        $error = SOME_THING_MISSING;
+                                        break;
+                                    case 47:
+                                        $error =  SOME_THING_MISSING;
+                                        break;       
                                     case 89:
                                         $error = ["reauth"=>REVOKED_SESHAT];
                                         break;
@@ -143,7 +149,13 @@
                                         break; 
                                     case 220:
                                         $error = NOT_ACCESS_RESOURCE;
-                                        break;                                              
+                                        break; 
+                                    case 63:
+                                        $error = YOU_TWITTER_ACCOUNT_SUSPENDED;
+                                        break;
+                                    case 326:
+                                        $error = YOU_TWITTER_ACCOUNT_SUSPENDED;
+                                        break;                                                                 
                                     default:
                                         $error = DEFAULT_TWITTER_HTTP_ERROR;
                                         break;

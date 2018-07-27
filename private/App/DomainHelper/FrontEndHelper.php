@@ -29,10 +29,10 @@ MODAL;
             /**
              * @method notify responsable to give user notification in specific time.
              */
-            public static function notify(array $messages,string $location = "top",string $direction = "right",string $append ="body",string $type="danger",int $timeOut = 100000){
+            public static function notify(array $messages,string $location = "top",string $direction = "Right",string $append ="body",string $type="danger",int $timeOut = 100000){
                 $return = [];   
                 foreach ($messages as $key => $msg) {
-                        $return[] = "globalMethod.showNotification('$type','$location','$direction','$msg','$append',$timeOut);";
+                        $return[] =   "iziToast.error({message: '$msg',position:'{$location}{$direction}',timeout : 20000});";
                 }
                 return $return;
             }
@@ -62,7 +62,7 @@ MODAL;
                         $org_text   = $tweet->retweeted_status->full_text;
                         $full_text  = $tweet->retweeted_status->full_text;
                         $screen_name = $tweet->retweeted_status->user->screen_name;//orgin screenName which tweet specific tweets.
-                        $user_retweeted_tweet = " @".$tweet->user->screen_name; //User Which retweeted this tweet.
+                        $user_retweeted_tweet = "@".$tweet->user->screen_name; //User Which retweeted this tweet.
                         $name = $tweet->retweeted_status->user->name;
                         $user_profile = $tweet->retweeted_status->user->profile_image_url;
                         $media =  isset($tweet->retweeted_status->extended_entities->media[0]) ? $tweet->retweeted_status->extended_entities->media[0] : null;
@@ -128,7 +128,7 @@ MODAL;
                 if($hash_tag_tweets !== false):
                         foreach ($hash_tag_tweets as $key => $hashtag) :
                                 $colored_tag = '#'.$hashtag->text;
-                                $hash_tag_in_tweets[] =  [$hashtag->text,"<a href='' style='color:DarkViolet;'>".$colored_tag."</a>"];//hashtag In text.
+                                $hash_tag_in_tweets[] =  [$hashtag->text,"<a style='color:DarkViolet;'>".$colored_tag."</a>"];//hashtag In text.
                         endforeach;
                 endif;
                 //End Hashtag section. 
@@ -139,7 +139,7 @@ MODAL;
                 if($mentions_in_this_tweet !== false):
                         foreach ($mentions_in_this_tweet as $key => $mention) :
                                 $colored_mentions = ($ar) ? $mention->screen_name.'@': '@'.$mention->screen_name;
-                                $mentions_in_tweet[] =  [$mention->screen_name,"<a href='' class='link-info'>".$colored_mentions."</a>"];//hashtag In text.
+                                $mentions_in_tweet[] =  [$mention->screen_name,"<a href='/seshat/!profile/twitter/$mention->screen_name' class='link-info'>".$colored_mentions."</a>"];//hashtag In text.
                         endforeach;
                 endif;
                 //End mentions color sesction.
