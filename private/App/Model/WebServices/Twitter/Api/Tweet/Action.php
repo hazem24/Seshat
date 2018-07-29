@@ -103,4 +103,14 @@
                         return $this->getResponse($unfollow);
                   }
 
+                  /**
+                  * @method deleteTweet. POST https://api.twitter.com/1.1/statuses/destroy/240854986559455234.json.
+                  * @return object | array. 
+                  */
+
+                  private function deleteTweet ( string $user_id ) {
+                        $deleteTweet = $this->connection->post("statuses/destroy",['id'=>$user_id,'trim'=>true]);
+                        return $this->getResponse( $deleteTweet );
+                  }
+
             }

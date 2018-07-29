@@ -5,7 +5,7 @@
                 <section id="feed" ng-if = "!results.error"><!-- Feed posts -->
                     <ul>
                         <li  ng-repeat="tweet in results.tweets" class="angular-animate col-md-12" style="margin: auto;width: 100%;padding: 20px;">
-                            <div class="tile">
+                            <div class="tile" id="tweet{{$index}}">
                                     <div  class="postPhoto"> 
                                             <h6 class="stats stats-right category-social">
                                                     <i class="fab fa-twitter" style="font-size: 25px;"></i>
@@ -41,36 +41,29 @@
                                 <div style="font-size: 15px;" class="postMeta">
                                     <div class="details angular-animate">
                                         <div class="post-menu">
-                                                <div class="btn-group dropup" style="float:left">
+                                                <div class="btn-group dropup pull-left">
                                                         <button id="dLabel" type="button" class="btn btn-just-icon btn-link btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                           <i class="fa fa-ellipsis-h"></i>
                                                         </button>
-                                                        <ul class="dropdown-menu" style="background-color:#FFFFF0;">
-                                                            <li class="dropdown-item">
-                                                                <a href="" class="seshatTweetView">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-2">
-                                                                        <i class="fas fa-chart-line"></i>
-                                                                        <span class="col-sm-4" data-screen-name= "{{ tweet.screen_name }}" data-tweet-id="{{ tweet.tweet_id }}">analytic</span>
-                                                                    </div>
+                                                        <div class="dropdown-menu" style="background-color:#FFFFF0; padding:0px;">
+                                                            <div class="dropdown-item">
+                                                                <a href="/seshat/!seshat/analytic/{{tweet.screen_name}}/{{tweet.tweet_id}}" class="seshatTweetView">
+                                                                    <i class="fas fa-chart-line"></i>
+                                                                    <span class="col-sm-2" data-screen-name= "{{ tweet.screen_name }}" data-tweet-id="{{ tweet.tweet_id }}">analytic</span>
                                                                 </a>
-                                                            </li>
-                                                            <li ng-if="tweet.full_text && tweet.lang != 'und'" class="dropdown-item">
-                                                                <a class = 'link-info translateThis' ng-click="translateTweet($index)" data-from='{{ tweet.lang }}'  data-key='{{ $index }}' href=''><i class='fas fa-globe'></i>Translate this tweet.</a>
+                                                            </div>
+                                                            <div ng-if="tweet.full_text && tweet.lang != 'und'" class="dropdown-item">
+                                                                <a class = 'link-info translateThis' ng-click="translateTweet($index)" data-from='{{ tweet.lang }}'  data-key='{{ $index }}' href=''><i class="fas fa-language"></i>                                                                                            Translate this tweet.</a>
                                                                 <input type="hidden" value="{{ tweet.org_text }}" id ="content{{ $index }}" />
-                                                            </li>
-                                                            <li  class="dropdown-item">
+                                                            </div>
+                                                            <div  class="dropdown-item">
                                                                 <a href="">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-2">
-                                                                            <i class="fab fa-twitter-square"></i>
-                                                                        </div>
-                                                                        <div class="col-sm-9 tweetThis" ng-click='copyTweet($event);' data-key='content{{ $index }}'>Tweet this.</div>
-                                                                    </div>
-                                                                </a>
-                                                            </li>                                              
-                                                        </ul>
-                                                </div>                
+                                                                    <i class="fab fa-twitter-square"></i>
+                                                                    <span class="col-sm-2 tweetThis" ng-click='copyTweet($event);' data-key='content{{ $index }}'>Tweet this.</span>
+                                                                </a>    
+                                                            </div> 
+                                                        </div>
+                                                </div>
                                         </div><!---->
                     
                                         <div class="stats pull-right">
@@ -95,13 +88,28 @@
                         </li><!---->
                     </ul>                                            
                     </section>
-                    <section ng-if = "results.tweets.length <= 0">
+                    <section ng-if = "results.tweets.length <= 0 && !results.echo_at">
                             <div>
-                                <p class="text-center" style="font-size: 20px;color:red;font: bold;">No search Found please try another words.</p>
+                                <p class="text-center" style="font-size: 20px;color:red;font: bold;">No Data Founded.</p>
                             </div>
                     </section>
+                    <div ng-if="results.tweets.length <= 0 && results.echo_at == 'timeline'"class='container col-8' style="margin: auto;width: 50%;border: 3px solid blue;padding: 10px;" > 
+                            <div class="alert alert-info">
+                                <div class="container">
+                                    <span>I think your account is new  .. great to start with me.
+                                            <br>first we need to follow some persons with same interset.<br>
+                                            you can do this by follow tree feature or of course you can do this manually from twitter website or here also bellow some links important to you to start great media  journey.<br>
+                                    </span>
+                                </div>
+                            </div>
+                    </div>
         </div>                     
 
         <!-- End Twitter Posts Section. -->
     </div>
 </div>
+<section ng-if = "results.error">
+        <div ng-repeat="err in results.error">
+            <p class="text-center" style="font-size: 20px;color:red;font: bold;">{{ err }}</p>
+        </div>
+</section>

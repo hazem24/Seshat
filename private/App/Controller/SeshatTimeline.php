@@ -15,22 +15,19 @@
             /**
             *@method defaultAction.
             */    
-            public function defaultAction(){
-                //$_SESSION = [];
+            public function defaultAction( array $params = [] ){
                 $this->rule();
-                $this->renderLayout("HeaderApp");  
-                $timeLineData  = $this->getUserTimeLine(); 
-                
-                //Return Reponse To User.
-                if($this->anyAppError() === false){
-                        $toView = $timeLineData;          
-                }else{
-                        $user_need_reauth = $this->reauthUser($this->error);
-                        $toView = ['error'=>($user_need_reauth === false) ? FrontEndHelper::notify($this->error): $user_need_reauth];
-                }    
-                $this->actionView->setDataInView((array_key_exists('error',$toView) === false)?["userTimeLine"=>$toView,'FrontEndHelper'=> new FrontEndHelper]:[]);     
+                $data = $params[0] ?? false;
+                if ( $data !== false && $data === 'getTimeLineDataAsJson') {
+                        $response  = $this->getUserTimeLine();   
+                        $this->commonError( $response );
+                        $response = $this->returnResponseToUser( $response ?? null );
+                        $this->encodeResponse( $response );
+                }
+                //renderView.
+                $this->renderLayout("HeaderApp");     
                 $this->render();
-                $this->renderLayout("FooterApp",(array_key_exists('error',$toView) === true)?['error'=>$toView]:[]);
+                $this->renderLayout("FooterApp");
             }
 
             private function getUserTimeLine(){
@@ -44,16 +41,15 @@
                         $timeLine = $readTimeLine->do('readTimeLine',["oauth_token"=>$this->session->getSession("oauth_token"),
                         "oauth_token_secret"=>$this->session->getSession("oauth_token_secret")]);       
                         //error exists.
+        
                         if(is_array($timeLine) && array_key_exists("error",$timeLine)){
-                                $this->error[] = $timeLine['error'];
+                                $this->error[] = $timeLine['error'];//store an error.
+                                return;//an error founded exit this method.
                         }else{
                                 //set Cache For Timeline.
                                 $this->cache->set($userTimeLine_cache,$timeLine,960);
-                                return $this->cache->get($userTimeLine_cache);
                         }      
-                }else{
-                        //Get Data Directly From Cache,(Read From Cache).
-                        return $this->cache->get($userTimeLine_cache);
                 }
+                return ['results'=>['from'=>'twitter','type'=>'posts','echo_at'=>'timeline','tweets'=>FrontEndHelper::tweetsStyle($this->cache->get($userTimeLine_cache))]];
             }
         }

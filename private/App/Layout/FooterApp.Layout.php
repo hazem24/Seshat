@@ -53,6 +53,7 @@
 <script src="<?=ASSESTS_URI."js"?>/app/modules/profile/twitter/twitter-profile.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/profile/profile-controller-services.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/search/search-app.js"></script>
+<script src="<?=ASSESTS_URI."js"?>/app/modules/seshat/seshat.js"></script>
 <!-- End Angular Section. -->
 <script src="<?=ASSESTS_URI."js"?>/app/lang/en.lang.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/loadingSpinner.js"></script>

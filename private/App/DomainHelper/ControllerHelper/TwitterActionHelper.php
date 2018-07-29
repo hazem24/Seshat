@@ -173,7 +173,11 @@
                 break;
                 case 'unlike':
                     $response = self::newAction( $twitterAction , 'unlike',$tweet_id);
-                    $successMsg = UNLIKED; 
+                    $successMsg = UNLIKED;
+                break;    
+                case 'deletetweet':
+                    $response = self::newAction( $twitterAction , 'deleteTweet' , $tweet_id );
+                    $successMsg = TWEET_DELETED;     
                 break;
                 default:
                 $twitterAction->setError(CANNOT_CREATE_YOUR_ACTION);

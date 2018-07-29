@@ -1,6 +1,4 @@
-angular.module("seshatApp").controller("socialMediaprofileCtrl",function ($scope , $sce ,  $location , $window) {
-   
-
+angular.module("seshatApp").controller("socialMediaprofileCtrl",function ($scope  , $location , $window) {
     $scope.location = $location;
     $scope.window   = $window;
     $scope.url = $location.absUrl();

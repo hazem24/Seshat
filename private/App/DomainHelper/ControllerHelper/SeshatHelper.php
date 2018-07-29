@@ -124,7 +124,7 @@
                 $screenName = (isset($params[0]) && !empty($params[0]))?(string) $params[0] : false;
                 $tweet_id   = (isset($params[1]) && !empty($params[1]))? (string) $params[1] : false;                    
                 if($screenName !== false && $tweet_id !== false){
-                    $getAnalytic = $seshat->seshatAnalyticData($screenName,$tweet_id);
+                    $getAnalytic = self::seshatAnalyticData( $seshat , $screenName , $tweet_id);
                                                                     
                 }else{
                     $seshat->setError(CANNOT_UNDERSTAND);
@@ -144,7 +144,7 @@
                 if($haveError === true){
                     $seshat->renderLayout('Notfound');
                 }else{
-                    $seshat->actionView->setDataInView(["analyticData"=>$send_to_view,'FrontHelperClass'=>new FrontEndHelper]);        
+                    $seshat->actionView->setDataInView(["analyticData"=>$send_to_view,'FrontHelperClass'=>new DomainHelper\FrontEndHelper]);        
                     $seshat->render();
                 }
                                     

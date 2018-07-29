@@ -68,7 +68,7 @@
                                         <section id="feed" ng-if = "!data.tweets.error"><!-- Feed posts -->
                                             <ul>
                                                 <li  ng-repeat="tweet in data.tweets" class="angular-animate col-md-12" style="margin: auto;width: 100%;padding: 20px;">
-                                                    <div class="tile">
+                                                    <div class="tile" id="tweet{{$index}}">
                                                             <div  class="postPhoto"> 
                                                                     <h6 class="stats stats-right category-social">
                                                                             <i class="fab fa-twitter" style="font-size: 25px;"></i>
@@ -104,35 +104,34 @@
                                                         <div style="font-size: 15px;" class="postMeta">
                                                             <div class="details angular-animate">
                                                                 <div class="post-menu">
-                                                                        <div class="btn-group dropup" style="float:left">
+                                                                        <div class="btn-group dropup pull-left">
                                                                                 <button id="dLabel" type="button" class="btn btn-just-icon btn-link btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                   <i class="fa fa-ellipsis-h"></i>
                                                                                 </button>
-                                                                                <ul class="dropdown-menu" style="background-color:#FFFFF0;">
-                                                                                    <li class="dropdown-item">
-                                                                                        <a href="" class="seshatTweetView">
-                                                                                            <div class="row">
-                                                                                                <div class="col-sm-2">
-                                                                                                <i class="fas fa-chart-line"></i>
-                                                                                                <span class="col-sm-4" data-screen-name= "{{ tweet.screen_name }}" data-tweet-id="{{ tweet.tweet_id }}">analytic</span>
-                                                                                            </div>
+                                                                                <div class="dropdown-menu" style="background-color:#FFFFF0; padding:0px;">
+                                                                                    <div class="dropdown-item">
+                                                                                        <a href="/seshat/!seshat/analytic/{{tweet.screen_name}}/{{tweet.tweet_id}}" class="seshatTweetView">
+                                                                                            <i class="fas fa-chart-line"></i>
+                                                                                            <span class="col-sm-2" data-screen-name= "{{ tweet.screen_name }}" data-tweet-id="{{ tweet.tweet_id }}">analytic</span>
                                                                                         </a>
-                                                                                    </li>
-                                                                                    <li ng-if="tweet.full_text && tweet.lang != 'und'" class="dropdown-item">
-                                                                                        <a class = 'link-info translateThis' ng-click="translateTweet($index)" data-from='{{ tweet.lang }}'  data-key='{{ $index }}' href=''><i class='fas fa-globe'></i>Translate this tweet.</a>
+                                                                                    </div>
+                                                                                    <div ng-if="tweet.full_text && tweet.lang != 'und'" class="dropdown-item">
+                                                                                        <a class = 'link-info translateThis' ng-click="translateTweet($index)" data-from='{{ tweet.lang }}'  data-key='{{ $index }}' href=''><i class="fas fa-language"></i>                                                                                            Translate this tweet.</a>
                                                                                         <input type="hidden" value="{{ tweet.org_text }}" id ="content{{ $index }}" />
-                                                                                    </li>
-                                                                                    <li  class="dropdown-item">
+                                                                                    </div>
+                                                                                    <div  class="dropdown-item">
                                                                                         <a href="">
-                                                                                            <div class="row">
-                                                                                                <div class="col-sm-2">
-                                                                                                    <i class="fab fa-twitter-square"></i>
-                                                                                                </div>
-                                                                                                <div class="col-sm-9 tweetThis" ng-click='copyTweet($event);' data-key='content{{ $index }}'>Tweet this.</div>
-                                                                                            </div>
+                                                                                            <i class="fab fa-twitter-square"></i>
+                                                                                            <span class="col-sm-2 tweetThis" ng-click='copyTweet($event);' data-key='content{{ $index }}'>Tweet this.</span>
+                                                                                        </a>    
+                                                                                    </div> 
+                                                                                    <div ng-if="data.auth_id === data.profile.id_str && !tweet.retweeted" ng-click='deleteTweet(tweet.tweet_id,$index);' class="dropdown-item">
+                                                                                        <a href="">
+                                                                                            <i class="fas fa-trash-alt"></i>
+                                                                                            <span class="col-sm-2 deleteTweet{{$index}}"  data-key='content{{ $index }}'>delete Tweet.</span>
                                                                                         </a>
-                                                                                    </li>                                              
-                                                                                </ul>
+                                                                                    </div>                                                                                           
+                                                                                </div>
                                                                         </div>                
                                                                 </div><!---->
                                             

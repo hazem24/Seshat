@@ -1,9 +1,11 @@
 var twitterAction = {
-    twitterResponse: function(data){
+    twitterResponse: function(data){//uses in (retweet,unretweet,like,unlike,deleteTweet).
         if(data.success !== undefined){
-            globalMethod.showNotification('success','bottom','Center',data.success,'body',1000);
+            globalMethod.showNotification('success','top','Right',data.success,'body',5000);
         }else if(data.error !== undefined){
            globalMethod.repsonseError(data);
+        }else{
+            globalMethod.showNotification('danger','top','Right',"Something error happen pleas try again later.",'body',1000);
         }
     },
     //do logic For(retweet-like).
@@ -132,6 +134,20 @@ var twitterAction = {
             $(".emojionearea-editor").text($replay_to);
             $("#tweetModal").modal();                    
         //End replay area.
+    },deleteTweet : function ($tweet_id , element){
+            $.ajax({
+                "url"  : writeToTwitter,
+                "type" : "POST",
+                "data" : "type=deleteTweet&&tweet_id=" + $tweet_id + "&&cached=false",
+                "dataType" : "json",
+                "success" : function ( data ) {
+                    twitterAction.twitterResponse(data);
+                    if( data.success !== undefined ){
+                        //remove tweet element from the dom.
+                        $(element).remove();
+                    }
+                }
+            });
     },createRelation ( $relationType , $user_name , async ) {
         var $response = {};
         $.ajax({

@@ -177,7 +177,7 @@ define("HAVE_SCHEDULE_AT_SAME_TIME","You Have Scheduled Tweet At This Time I Can
 //End Tasks.
 
 //TimeLine.
-define("NO_TWEET_TIME_LINE","I think your account is new great to start with me.
+define("NO_TWEET_TIME_LINE","I think your account is new  .. great to start with me.
 <br>first we need to follow some persons with same interset.<br>
 you can do this by follow tree feature or of course you can do this manually from twitter website or here also bellow some links important to you to start great media  journey.<br>
 ");
@@ -189,6 +189,7 @@ define("RETWEETED_BY",'retweeted by :');
 define("RETWEETED","Tweet retweeted.");
 define("UNRETWEETED","Tweet unretweeted.");
 define("LIKED","Tweet liked.");
+define("TWEET_DELETED","Your Tweet deleted successfully.");
 define("UNLIKED","Tweet unliked.");
 define("REPLAYED","Your Replay sent to this tweet.");
 define("FOLLOW_BUTTON","follow");

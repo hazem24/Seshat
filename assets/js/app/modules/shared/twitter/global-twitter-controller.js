@@ -1,11 +1,12 @@
 angular.module("seshatApp").controller("globalTwitterCtrl",function ( $scope ) {
 
-    $scope.retweetLogic = function ($event) {
-        twitterAction.retweetLogic($event.currentTarget,false);
+    
+    $scope.retweetLogic = function ($event , $cached = false) {
+        twitterAction.retweetLogic($event.currentTarget,$cached);
     };
 
-    $scope.likeLogic = function ($event) {
-        twitterAction.likeLogic($event.currentTarget,false);
+    $scope.likeLogic = function ($event , $cached = false) {
+        twitterAction.likeLogic($event.currentTarget,$cached);
     };
 
     $scope.replayLogic = function($event){
@@ -21,6 +22,11 @@ angular.module("seshatApp").controller("globalTwitterCtrl",function ( $scope ) {
     $scope.copyTweet = function ($event){
         globalMethod.copyTweet($event.currentTarget);
     };
+
+    $scope.deleteTweet = function ( $tweet_id ,  $index){
+        twitterAction.deleteTweet( $tweet_id , $("#tweet"+$index));
+    };
+
 
     $scope.relationOnFly = function ( $type , $user_id , $childScope  , $index) { //$index for ng-repeat.
         $response = twitterAction.createRelation( $type , $user_id , true);
