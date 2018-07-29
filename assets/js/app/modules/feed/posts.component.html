@@ -108,7 +108,7 @@
         <!-- End Twitter Posts Section. -->
     </div>
 </div>
-<section ng-if = "results.error">
+<section ng-if = "results.error && !results.error.reauth">
         <div ng-repeat="err in results.error">
             <p class="text-center" style="font-size: 20px;color:red;font: bold;">{{ err }}</p>
         </div>
