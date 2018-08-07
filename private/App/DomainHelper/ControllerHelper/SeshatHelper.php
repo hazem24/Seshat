@@ -23,6 +23,16 @@
                 'media'=>['twitter'=>['tweets','users']]
             ];
 
+            /**
+            * have all features in specific media.
+            * @property features. 
+            * inActiveFollowing => not implemented in version 0.1 && recentUnFollow.
+            */
+            private static $features = [
+                'media'=>['twitter'=>['nonFollowers','recentUnfollow','fans',
+                'recentFollowers','checkFriends']]
+            ];
+
             public static function createProfileAction ( Seshat $seshat ) {
                 $isWizard = (bool)$seshat->session->getSession('wizard');
                 if($isWizard === true){
@@ -30,7 +40,7 @@
                               *   'firstname' => string 'hazem' (length=5)
                               *   'email' => string 'gotrendtoday@gmail.com' (length=22)
                               *   'account_type' => string '6' (length=1)
-                              *   'account_describe' => string 'Please Enter Some Me !' (length=22)
+                              *   'account_describe' => string 'account descr. !' (length=22)
                               *   'finish' => string 'Finish' (length=6)
                               *   'formToken' => string 'db67c26dcc53014e4dadc7316d731aab' (length=32)
                               */
@@ -119,6 +129,29 @@
                 $seshatController->encodeResponse(['notFound'=>true]);
             }
 
+            public static function controlFollowers ( Seshat $seshat , array $params = [] ) {
+                $media   = $params[0] ?? null;
+                $feature = $params[1] ?? null;
+                $json    = $params[2] ?? null;
+                if ( is_null( $media ) === false && DomainHelper\Helper::issetMedia( $media ) === true && (bool)in_array($feature,self::$features['media'][$media]) === true ) {
+                    if ( strtolower($json) == 'json' ) {//uses in angularjs request to return the data as json.
+                        $response = self::controlFollowersContainer( $seshat , $feature );
+                        $seshat->commonError( $response  );
+                        $response = $seshat->returnResponseToUser( $response ?? null );
+                        $seshat->encodeResponse( $response );
+                    }else { //Render Views.
+                        $seshat->renderLayout( "HeaderApp" );
+                        //renderView of control Followers.                    
+                        $seshat->renderLayout("controlFollowers"); 
+                        $seshat->renderLayout( "FooterApp" );    
+                    }
+                }else {
+                    $seshat->renderLayout( "HeaderApp" );
+                    $seshat->renderLayout('notFound');
+                    $seshat->renderLayout( "FooterApp" );
+                }
+            }
+
             public static function analyticActionHelper ( Seshat $seshat , array $params = []  ) {
                 //Error Handler Api Or App Logic.
                 $screenName = (isset($params[0]) && !empty($params[0]))?(string) $params[0] : false;
@@ -167,7 +200,7 @@
             public static function searchHelper( Seshat $seshat , array $params = []){
                 if ( !empty($params) ) {
                     //get Search results as json. 
-                    $media = (isset($params[0]) && !empty($params[0]) && DomainHelper\Helper::issetMedia($params[0])) ? strtolower($params[0]) : null ;
+                    $media = (isset($params[0]) && !empty($params[0]) && DomainHelper\Helper::issetMedia($params[0])) ? strtolower($params[0]) : 'notFound' ;
                     $type  = (isset($params[1]) && !empty($params[1])) ? self::searchType( $media , $params[1] ) : null ;
                     $query = (isset($params[2]) && !empty($params[2])) ? $params[2] : null;
                     if (is_null($media) || is_null($type) || is_null($query)) { 
@@ -198,6 +231,40 @@
                     $seshat->render();
                     $seshat->renderLayout("FooterApp");
                 }
+            }
+            /**
+             * @method checkFriends .. check the relation between two accounts.
+             * @return json.
+             */
+            public static function checkFriends ( Seshat $seshat , array $params = [] ) {
+                $media          = ( $params[0] ) ?? 'notFound';
+                $getJson            = ( $params[1] ) ?? null;
+                $source_name      = ( $params[2] ) ?? '';
+                $target           = ( $params[3] ) ?? ''; //searchType
+                if (is_null( $getJson ) === false && $getJson == 'json' && DomainHelper\Helper::issetMedia($media) === true && !empty( $source_name ) && !empty( $target )){
+                    //logic here.
+                    $response = self::checkRelationLogic( $source_name , $target , $seshat->getTokens());
+                    $seshat->commonError( $response );
+                    $response = $seshat->returnResponseToUser( $response ?? null );
+                    $seshat->encodeResponse( $response );
+                }else {
+                    //render view.
+                    $seshat->renderLayout("HeaderApp");
+                    $seshat->render();
+                    $seshat->renderLayout("FooterApp");
+                }
+            }
+
+            public static function controlFollowersTask ( Seshat $seshat ){
+                if ( RequestHandler::postRequest() ) {
+                    $task_type    = ( string ) RequestHandler::post('taskType');
+                    $order = ( int )    RequestHandler::post('order');//how many followers/unfollowers seshat will do it automatically.
+                    $response  = self::controlFollowersSaveTask( $task_type  , $order ,  $seshat->getTokens() , $seshat->session->getSession('id'));
+                    $seshat->commonError( $response );
+                    $response = $seshat->returnResponseToUser( $response ?? null );
+                    $seshat->encodeResponse( $response );
+                }
+                $seshat->encodeResponse(['error'=>'Request not Found.']);
             }
 
             /**
@@ -317,6 +384,75 @@
             }
 
 
+            /**
+             * @method controlFollowersContainer.
+             * @return array.
+             */
+            private static function controlFollowersContainer ( Seshat $seshat ,  string $feature) {
+                $data = array_merge(['user_id'=>$seshat->session->getSession('tw_id')] , $seshat->getTokens());
+                $read     = new DomainHelper\Twitter\Read;
+                if ( $feature == 'recentUnfollow' ){
+                    return self::unrecentFollowersLogic( $seshat , $read , $data );
+                }
+                $response = $read->do($feature,$data);
+                return $response;
+            }
+
+            private static function unrecentFollowersLogic ( Seshat $seshat , DomainHelper\Twitter\Read $read  , array $data = []){
+                /**
+                 * 1 - get old list from cache.
+                    * if found return the list if not found create one and save it in cache.
+                 */
+                $itemName = 'followersList' . $seshat->session->getSession('id');
+                $cache = $seshat->fastCache();
+                $followersList = $cache->getItem( $itemName );
+                if ( is_null($cache->get( $followersList )) === true){
+                    //get list and save it in cache.
+                    $createFollowersList = $read->do('getFollowersIds',$data);
+                    if ( is_object( $createFollowersList ) && isset( $createFollowersList->ids ) ){
+                        $cache->set( $followersList , $createFollowersList->ids , 86400);//one day.
+                    }
+                    $response = ['error'=>NO_NEW_DATA];
+                }else {
+                    $data['lastList'] = $cache->get( $followersList );
+                    $response = $read->do('recentUnfollow',$data);
+                }
+                return $response;
+            }
 
 
+            private static function checkRelationLogic ( string $source , string $target , array $tokens = [] ){
+                $data = array_merge( ['source'=>$source,'target'=>$target] , $tokens );
+                $read = new DomainHelper\Twitter\Read;
+                $response =  $read->do('checkFriends',$data);
+                if ( is_array( $response )  && array_key_exists( 'error' , $response )){
+                    $response = ['error'=>$response['error']];
+                } else{
+                    $source_profile_data  = $read->do('getUser',array_merge( ['screen_name'=>$source] , $tokens));
+                    $target_profile_data  = $read->do('getUser',array_merge( ['screen_name'=>$target] , $tokens));
+                    $response             = ['source_data'=>['profile'=>$source_profile_data] , 'target'=>['profile'=>$target_profile_data],'relation'=>$response];
+                }
+                return $response;
+            }
+
+            private static function controlFollowersSaveTask ( string $task_type , int $order ,  array $tokens , int $user_id){
+                $whiteListOfTasks = ['fans'=>32,'nonfollowers'=>31,'recentfollowers'=>33];
+                $task_id          = ($whiteListOfTasks[strtolower($task_type)]) ?? null;
+                if ( is_null( $task_id )  === false){
+                    if ($order > 0 && $order <= 2000){
+                        $task = new DomainHelper\Twitter\Task;
+                        $task = $task->do("addNewTask",array_merge(['task_id'=>$task_id,'user_id'=>$user_id , 'order'=>$order],$tokens));
+                        //response from here.
+                        if ( is_array( $task ) && array_key_exists('task_save',$task) ){
+                            $task = ['success'=>CNTROL_FLLOWR_SAVED];
+                        }else if ( is_array( $task ) &&  array_key_exists('task_not_save',$task)){
+                            $task = ['error'=>TASK_NOT_SAVE];
+                        }
+                        return $task;    
+                    }else{
+                        return ['error'=>MAX_2000];
+                    }
+                }
+                return ['error'=>CANNOT_DO_TASK];
+           }
         }

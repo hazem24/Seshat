@@ -67,12 +67,13 @@
 
             }
 
-            protected function writeToTwitter(array $parameters){
+            protected function writeToTwitter(array $parameters){//$scope tweet or users.
+                $scope = ucfirst(strtolower($parameters['scope']));
                 $write_type = $parameters['type'];
                 $oauth_token = $parameters['oauth_token'];
                 $oauth_token_secret = $parameters['oauth_token_secret'];
                 $parameters = $parameters['parameters'];
-                return $this->twitter_api_command->execute(['ModelClass'=>"Tweet\\Action",'Method'=>['Name'=>'writeToTwitter',
+                return $this->twitter_api_command->execute(['ModelClass'=>"$scope\\Action",'Method'=>['Name'=>'writeToTwitter',
                         'parameters'=>['parameters'=>$parameters,'type'=>$write_type],
                         'user_auth'=>['status'=>true,'access_token'=>$oauth_token
                         ,'access_token_secret'=>$oauth_token_secret]]]);

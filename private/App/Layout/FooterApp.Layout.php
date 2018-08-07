@@ -4,6 +4,7 @@
 
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery-3.2.1.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery-ui-1.12.1.custom.min.js" type="text/javascript"></script>
+<script src="//cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/popper.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery.validate.min.js" type="text/javascript"></script>

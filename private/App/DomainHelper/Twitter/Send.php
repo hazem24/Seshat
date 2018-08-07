@@ -32,7 +32,7 @@
              */
             protected function writeToTwitter(array $parameter){
                 return $this->command->execute(['Method'=>['name'=>"writeToTwitter",'parameters'=>['type'=>$parameter['type'],
-                'parameters'=>$parameter['parameters'],
+                'parameters'=>$parameter['parameters'],'scope'=>$parameter['scope'],
                 'oauth_token'=>$parameter['oauth_token'],'oauth_token_secret'=>$parameter['oauth_token_secret']]]]);  
             }
          }

@@ -38,8 +38,7 @@
                 if(is_null($this->cache->get($userTimeLine_cache)) === true){
                         //Read Data From Twitter First.
                         $readTimeLine = new Twitter\Read();
-                        $timeLine = $readTimeLine->do('readTimeLine',["oauth_token"=>$this->session->getSession("oauth_token"),
-                        "oauth_token_secret"=>$this->session->getSession("oauth_token_secret")]);       
+                        $timeLine = $readTimeLine->do('readTimeLine',$this->getTokens());       
                         //error exists.
         
                         if(is_array($timeLine) && array_key_exists("error",$timeLine)){

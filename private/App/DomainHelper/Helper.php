@@ -11,6 +11,11 @@
 
         Class Helper extends BaseHelper
         {
+            
+            /**
+             * @property media.
+             * */    
+            private static $media = ['twitter'];
                 
             public static function redirectOutSide(string $sessionName = 'id' , string $direction = ""){
                    $sessionInstance = Registry::getInstance('session');
@@ -246,18 +251,11 @@
                /**
                 * this method has all media that seshat provided && check if the provided media in {{ $media }} param. is provided.
                 * @method issetMedia.
+                * @return bool.
                 */
 
                 public static function issetMedia ( string $media ) {
-                       switch (strtolower($media)) {
-                             case 'twitter':
-                                $media_found  = true;       
-                                break;
-                             default:
-                                $media_found    = false; 
-                                break;     
-                       } 
-                       return $media_found;
+                       return (bool) in_array( $media , self::$media );
                 }
                /**
                 * @method hashTagStatistics.

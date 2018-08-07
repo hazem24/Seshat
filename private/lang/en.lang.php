@@ -42,8 +42,8 @@ define("REAOUTH_SESHAT",'Re-authentication With Seshat.');
 define("CAN_NOT_RETREIVE_DATA","Cannot retreive data now try again later.");
 define("TWEET_NOT_SAVED",'I Publish Your Tweet In Twitter But I Can not Save It.');
 define("CANNOT_UNDERSTAND","I cannot understand what do you want i still learning sorry about that.");
-define("ERROR_404","Well something wrong happened .. i guess that this page not exists if you feel that this is an error 
-in my system i love to learn so here's some important links for you ..");
+define("ERROR_404","Well something wrong happened  .. <br> i guess that this page not exists if you feel that this is an error 
+in my system i love to learn so here's some important links for you .. <br>");
 //End AppError.
 
 define("INVAILD_DATE","You Enter Invaild Date.");
@@ -166,13 +166,18 @@ define("TWEET_AS_SUCCESS","Your account now automatically tweet as  ");
 define("WITH_LANG","with lang");
 define("MAX_TWEET_AS_THREE","You Reach max uses of 'Tweet as' feature");
 define("YOU_TWEET_AS_THIS_USER_ALREADY","You Already tweet as");
-define("FANS","Search Fans For Your Tweet.");
 define("UNFOLLOW","Unfollow People Not Follow You.");
 define("INACTIVE_ACCOUNTS","Inactive Accounts In Your Account.");
 define("TASK_SCHEDULE_SAVED","Your Tweet Scheduled successfully !.");
 define("TASK_NOT_SCHEDULE_SAVED","Error I Cannot Save This Schedule Now Try Again Later.");
 define("CANNOT_DO_TASK","Sorry Seshat can not do this task.");
-define("TASK_NOT_SAVE","Sorry you cannot save your task now try again later.");
+define("RECENT_FOLLOWERS","follow Accounts follow you recently.");
+define("FANS","Follow Accounts that follow you and you not follow back.");
+define("AUTOMATIC","Automatically ");
+define("CNTROL_FLLOWR_TASK_EXISTS",'This task i still working on it you can do this until i finished it.');
+define("MAX_2000","Max number seshat can do for now is 2000 per request.");
+define("CNTROL_FLLOWR_SAVED","Your task saved i will do this for you automatically.");
+define("TASK_NOT_SAVE","Sorry i cannot save your task now try again later.");
 define("HAVE_SCHEDULE_AT_SAME_TIME","You Have Scheduled Tweet At This Time I Cannot Schedule More Than Tweet At Same Date  Please Change The Date.");
 //End Tasks.
 

@@ -52,14 +52,7 @@
                     return $this->getResponse($getTweet);
                 }
 
-                /**
-                 * @method getUser. GET https://api.twitter.com/1.1/users/show.json.
-                 * @return array.
-                 */
-                public function getUser ( array $parameters = []) {
-                    $getUser = $this->connection->get("users/show",['screen_name'=>$parameters['screen_name'] , 'include_entities' => "true"]);
-                    return $this->getResponse($getUser);
-                }
+               
 
                 /**
                  * @method userTimeLine. GET https://api.twitter.com/1.1/statuses/user_timeline.json.
@@ -69,22 +62,4 @@
                     $getUserTimeLine = $this->connection->get("statuses/user_timeline" , ['screen_name'=>$parameters['screen_name'] , 'count'=>'50' , "tweet_mode"=>"extended" , 'exclude_replies'=>"true"]);
                     return $this->getResponse($getUserTimeLine);
                 }
-
-                /**
-                * @method getFollowersList. GET https://api.twitter.com/1.1/followers/list.json.
-                * @return array.
-                */
-                public function getFollowersList( array $parameters = [] ){
-                    $followersList = $this->connection->get('followers/list',['screen_name'=>$parameters['screen_name'],'count'=>'200','cursor'=>$parameters['cursor']]);
-                    return $this->getResponse($followersList); 
-                }
-                /**
-                * @method searchUsers. GET https://api.twitter.com/1.1/users/search.json.
-                * @return array. 
-                */
-                public function searchUsers ( array $parameters = [] ) {
-                    $searchUsers = $this->connection->get('users/search',['q'=>$parameters['search']]);
-                    return $this->getResponse( $searchUsers );
-                }   
-
             }

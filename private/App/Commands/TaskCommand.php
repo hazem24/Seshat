@@ -46,6 +46,8 @@
                         break;
                     case 2:
                         $logic = $this->tweetAsLogic( $task_data );
+                    case 31 || 32 || 33:
+                        $logic = $this->controlFollowersLogic( $task_data['user_id'] , $task_id );    
                         break;
                     default:
                         //Nothing Here!.
@@ -97,6 +99,27 @@
                 }
                 return $return ?? null;
             }
+
+            /**
+             * @method controlFollowersLogic.
+             * @return array || null.
+             */
+            private function controlFollowersLogic ( int $user_id , int $task_id ) {
+                $taskExists = $this->controlFollowersTaskExists( $user_id , $task_id );
+                if ( $taskExists === true ){
+                    $return = ['error'=>CNTROL_FLLOWR_TASK_EXISTS];
+                }else{
+                    $return = null;
+                }
+                return $return;
+            }
+            /**
+             * @method controlFollowersChecker Check if user created this task before.
+             * @return bool.
+             */
+            private function controlFollowersTaskExists( int $user_id , int $task_id ){
+                return $this->model::controlFollowersTaskExists( $user_id , $task_id );
+            }
             /**
             * @method scheduleExists Check If User Has  An Exists schedule At Specific Time.
             * @return bool.
@@ -122,17 +145,22 @@
 
             private function taskDetails(int $task_id,array $data){
                 switch ($task_id) {
-                    case 1:
+                    case 1://progress has two values 0 -> 100 only.
                         $details = json_encode(['access_token'=>$data['oauth_token'],
                         'access_token_secret'=>$data['oauth_token_secret'],
                         'media'=>$data['media'],'tweetContent'=>$data['tweetContent']
                         ,'publicAccess'=>$data['seshatPublicAccess'],
                         'catgory'=>$data['category']]);
                         break;
-                    case 2:
+                    case 2:// no progress here unlimited until cancel by user or error happen or not re-pay.
                         $details = json_encode(['access_token'=>$data['oauth_token'],
                         'access_token_secret'=>$data['oauth_token_secret'],'lang'=>$data['lang'],
-                        'screen_name'=>$data['screen_name']]);    
+                        'screen_name'=>$data['screen_name']]); 
+                    case 31 || 32 || 33://progress = (done/order) * 100.
+                        $details = json_encode(['access_token'=>$data['oauth_token'],
+                        'access_token_secret'=>$data['oauth_token_secret'],'socialMedia'=>'twitter',
+                        'order'=>$data['order'],'done'=> 0]);
+                        break;       
                     default:
                         # code...
                         break;

@@ -144,6 +144,9 @@
                                     case 179:
                                         $error = INVAILED_ACTION;
                                         break;
+                                    case 163:
+                                        $error = USER_NOT_FOUND; 
+                                        break;    
                                     case 187:
                                         $error = DUPLICATE_TWEET;
                                         break; 

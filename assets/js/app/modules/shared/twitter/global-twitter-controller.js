@@ -28,7 +28,7 @@ angular.module("seshatApp").controller("globalTwitterCtrl",function ( $scope ) {
     };
 
 
-    $scope.relationOnFly = function ( $type , $user_id , $childScope  , $index) { //$index for ng-repeat.
+    $scope.relationOnFly = function ( $type , $user_id , $childScope  , $index , $feature = false) { //$index for ng-repeat.
         $response = twitterAction.createRelation( $type , $user_id , true);
         switch ($type.toLowerCase()) {
             case 'follow':
@@ -40,6 +40,10 @@ angular.module("seshatApp").controller("globalTwitterCtrl",function ( $scope ) {
             default:
                 //nothing.
                 break;
+        }
+        if ( $feature !== false) {
+            //update localstorge for this feature.
+            localStorage.setItem( $feature , JSON.stringify( $childScope.results ) );
         }
     };
 });

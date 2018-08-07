@@ -10,19 +10,20 @@
 
          class Task extends Action
          {
-            protected $tasks = [1=>SC,TWTAS,ARL,FANS,UNFOLLOW,INACTIVE_ACCOUNTS];
+            protected $tasks = [1=>SC,TWTAS,31=>UNFOLLOW,32=>FANS,33=>RECENT_FOLLOWERS];
             public function __construct(){
-                   $this->command = $this->initCommand();
+                $this->command = $this->initCommand();
             }
 
             protected function initCommand(){
-                    return CommandFactory::getCommand('task');
+                return CommandFactory::getCommand('task');
             }
             /**
              * @method newTask Add New Task.
              * @return
              */
             protected function addNewTask(array $paramater){
+                $paramater['task_id'] = ($paramater['task_id']) ?? 0;    
                 if(array_key_exists((int)$paramater['task_id'],$this->tasks)){
                         //Create Logic Of Add New Task.
                         if((int)$paramater["task_id"] == 1){
@@ -35,15 +36,17 @@
                         }
                         return $this->command->execute(['Method'=>['name'=>'saveTask','parameters'=>$paramater]]);
                 }
-
                 return ['error'=>[CANNOT_DO_TASK]];
             }
             /**
              * @method expectedFinished Resbonsable For Calcuate Time Which Seshat Will Be Finish The Task.
+             * @property ratioPerDay ratio of task refer to day example {{ seshat can do 720 follow || unfollow per day so ratioPerDay is x/720}}
+             * simple equation 24 hr => {{ what seshat can do. }}
+             *                 x hr  => {{ order. }}
              * @return date.
              */
-            private function expectedFinsihed(string $createdAt){
-
+            private function expectedFinsihed(float $ratioPerDay){
+                return date('Y-m-d H' , strtotime("+" . ceil((24 * ($ratioPerDay))) . " hours"));//hours.  
             }
             /**
              * @method taskName Create Task Name For Schedule Task From Tweet Content Itself.
@@ -69,6 +72,11 @@
                         case 2: //tweetAs Task.
                         $logic = ['task_name'=>$this->taskName( $this->tasks[$task_id] . ' ' . $paramaters['screen_name'] , true ),
                         'expected_finish'=>date('Y-m-d')];         
+                        break;
+                        case 31 || 32 || 33:
+                        $counter = ($parameters['order']) ?? 50;
+                        $logic = ['task_name'=>$this->taskName( AUTOMATIC . ' ' . $this->tasks[$task_id] , true ) , 
+                        'expected_finish'=>$this->expectedFinsihed($counter/720)];
                         break; 
                         default:
                                 # code...

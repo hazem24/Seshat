@@ -21,7 +21,7 @@
             private $modelName = 'TaskModel';
             
             public function save(Model $taskModel){
-                   return $this->doSave($taskModel); 
+                return $this->doSave($taskModel); 
             }
             
             public function scheduleExists($user_id,$date){
@@ -47,6 +47,20 @@
                 $tweetAsInfo->execute();
                 $tweetAsInfo = $tweetAsInfo->fetchAll( \PDO::FETCH_CLASS, 'App\\Model\\App\\Seshat\\TaskModel' );
                 return $tweetAsInfo; // array || false in failure.
+            }
+
+            public function controlFollowersTaskExists ( int $user_id , int $task_id) {
+                $selectBuilder = new SelectQueryBuilder;
+                $stm           = $selectBuilder->select()->from($this->table)->where([$this->columnsTable[0] . ' = ? && ' => $task_id
+                , $this->foreign_key . ' = ? && '=>$user_id , $this->columnsTable[3] . ' <> ?'=> true])->createQuery();
+                $exists = $this->pdo->prepare( $stm['query'] );
+                $this->bindParamCreator( 3 , $exists , $stm['data'] );
+                $exists->execute();
+                $exists = $exists->fetch();
+                if($exists !== false){
+                    return true; //Exists.
+                }
+                    return false;//Not Exists.
             }
             protected function doSave(Model $model){
                     if(is_null($model->getProperty('id'))){

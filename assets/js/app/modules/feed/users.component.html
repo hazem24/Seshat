@@ -1,22 +1,49 @@
 <div ng-if="results.type === 'users' ">
     <div ng-controller = "globalTwitterCtrl" ng-if="results.from === 'twitter'">
         <!-- Twitter users sections. -->
-
-        <div class="row" ng-if = "results.users.length > 0">
-            <div class="col-md-4" ng-repeat="user in results.users">
-                    <div class="card" style="width: 20rem;padding-right:10px;">
-                        <img class="card-img-top" src="{{ user.profile_image_url_https }}" alt="Card image cap">
-                        <div class="card-body">
-                            <h4 class="card-title"><a class="text-danger" href="/seshat/!profile/twitter/{{ user.screen_name }}">@{{ user.screen_name }}  </a><button class="btn btn-primary btn-icon btn-round" ng-if="user.following" ng-click="relationOnFly('unfollow',user.id_str,this,$index)"><i class="fas fa-minus-circle"></i></button><button class="btn btn-primary btn-icon btn-round" ng-if="!user.following" ng-click="relationOnFly('follow',user.id_str,this,$index)"><i class="fas fa-plus-circle"></i></button>      
-                            </h4><br>
-                            <p class="card-text" style="color:black;">{{ user.description }}</p><br>
-                            <span>Followers : </span><a href="#" class="card-link"> {{ user.followers_count }}</a>
-                            <span>Following : </span><a href="#" class="card-link"> {{ user.friends_count }}</a>                        
+        <div id="comments" ng-if = "results.users.length > 0" style="padding: 40px;">
+            <!-- Save Task Button -->
+            <button type="button" style="padding:20px;" id="saveAsTask" ng-click="saveTaskAction(feature_type)"  ng-if = "saveTask" class="btn btn-primary btn-round btn-md pull-right"><i class="fas fa-tasks" style="font-size: 20px;"></i></button>
+            <div class="row pull-left">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <div class="media-area">
+                    <div ng-repeat = "user in results.users track by $index" class="media-area">
+                        <div  ng-if="user.screen_name" class="media">
+                            <a class="pull-left" href="/seshat/!profile/twitter/{{ user.screen_name }}">
+                                <div class="avatar">
+                                    <img class="media-object img-raised" src="{{ user.profile_image_url_https }}" alt="twitter_profile" />
+                                </div>
+                            </a>
+                            <div class="media-body">
+                                <h5 class="media-heading"><a class="btn btn-link btn-danger" style="font-size: 15px;" href="/seshat/!profile/twitter/{{ user.screen_name }}">@{{ user.screen_name }}</a>
+                                    <small class="text-muted">&middot; {{ user.name }}</small>
+                                </h5>
+                                <a class="pull-right  btn  btn-link btn-danger" style="font-size: 40px;" ng-if="user.following" ng-click="relationOnFly('unfollow',user.id_str,this,$index,feature_type)"><i class="fas fa-minus-circle"></i></a>
+                                <a class="pull-right btn btn-link btn-success" ng-if="!user.following" style="font-size: 40px;" ng-click="relationOnFly('follow',user.id_str,this,$index,feature_type)"><i class="fas fa-plus-circle"></i></a>
+                                <p class="pull-left">{{ user.description }}</p>
+                                <div class="media-footer">
+                                    <a href="" class="btn btn-danger btn-neutral pull-left" style="font-size: 20px;">
+                                        Followers : {{ user.followers_count }}   Following : {{ user.friends_count }} tweets : {{ user.statuses_count }}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                          
+                    <!-- end media-post -->
+                </div>
+            </div>    
             </div>
-        </div>                              
+        </div>        
         <!-- End Twitter users sections. -->
     </div>
 </div>
+<div ng-if="results.users.length <= 0" >
+    <p class = "text-center danger" style="padding: 20px; color: red; font-size: 15px;">No data to retreive.</p>
+</div>
+<div ng-if="results.error.length > 0 && !results.error.reauth" >
+    <div ng-repeat="err in results.error">
+        <p class = "text-center danger" style="padding: 20px; color:red; font-size: 15px;">{{ err }}</p>
+    </div>
+</div>
+
+

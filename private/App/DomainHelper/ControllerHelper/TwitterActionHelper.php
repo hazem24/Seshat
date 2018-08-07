@@ -213,12 +213,12 @@
             switch (strtolower($relationType)) {
                 case 'follow':
                     //Follow Here.
-                    $response   = self::newAction( $twitterAction , 'follow' , $userId ); 
+                    $response   = self::newAction( $twitterAction , 'follow' , $userId , 'User'); 
                     $response   = (is_object($response)) ? (isset($response->screen_name))  ? (isset($response->status)) ? ['follow'=>true] : ['follow_request_sent'=>true]  : $twitterAction->setError($response) : ['error'=> [CANNOT_CREATE_YOUR_ACTION]];
                     break;
                 case 'unfollow':
                     //UnFollow Here.
-                    $response   = self::newAction( $twitterAction , 'unfollow' , $userId );
+                    $response   = self::newAction( $twitterAction , 'unfollow' , $userId , 'User' );
                     $response   = (is_object($response)) ? (isset($response->screen_name))  ? ['unfollow'=>true] : $twitterAction->setError($response) : ['error'=> [CANNOT_CREATE_YOUR_ACTION]];
                     break;
                 case 'undo_follow_request':
@@ -238,12 +238,11 @@
          *@param type =>type of action (retweet,like,unretweet,unlike) , params => id of the tweet || user_id.
          *@return
          */
-        private static function newAction( TwitterAction $twitterAction , string $type, $params){
-           $data = ['oauth_token'=>$twitterAction->session->getSession('oauth_token'),
-                   'oauth_token_secret'=>$twitterAction->session->getSession('oauth_token_secret'),'parameters'=>$params,
-                   'type'=>$type];
+        private static function newAction( TwitterAction $twitterAction , string $type, $params , string $scope = 'Tweet'){
+           $data = ['parameters'=>$params,
+                   'type'=>$type,'scope'=>$scope];
            $send_to_twitter = new Twitter\Send;
-           return $send_to_twitter->do('writeToTwitter',$data);
+           return $send_to_twitter->do('writeToTwitter',array_merge($data , $twitterAction->getTokens()));
         }
 
     }

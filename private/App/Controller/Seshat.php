@@ -59,4 +59,19 @@
                 $this->rule();
                 SeshatHelper::searchHelper( $this , $params );
               }
+
+              public function controlFollowersAction ( array $params = [] ){
+                $this->rule();
+                SeshatHelper::controlFollowers( $this , $params );
+              }
+
+              public function checkFriendsAction ( array $params = [] ){
+                $this->rule();
+                SeshatHelper::checkFriends( $this , $params );
+              }
+              
+              public function controlFollowersTaskAction ( array $params = [] ){
+                $this->rule();
+                SeshatHelper::controlFollowersTask( $this );
+              }
         }

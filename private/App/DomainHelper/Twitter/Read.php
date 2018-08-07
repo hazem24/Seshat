@@ -66,7 +66,94 @@
                         return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>
                         ['Name'=>"showTweet","parameters"=>['tweet_id'=>$parameter['tweet_id']],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
                         ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
-              } 
+              }
+              
+              /**
+               * @method getFollowersIds.
+               * @return array. 
+               */
+              protected function getFollowersIds (  array $parameter = [] ) {
+                $crusor = $parameter['crusor'] ?? null;      
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>
+                ['Name'=>"getFollowersIds","parameters"=>['user_id'=> $parameter['user_id'] , 'crusor' => $crusor],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
+                ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
+              }
+
+              /**
+               * @method getFriendsIds,
+               * @return array.
+               */
+              protected function getFriendsIds ( array $parameter = [] ) {
+                $crusor = $parameter['crusor'] ?? null; 
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>
+                ['Name'=>"getFriendsIds","parameters"=>['user_id'=> $parameter['user_id'] , 'crusor' => $crusor],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
+                ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);      
+              }
+                /**
+             * @method userTimeLine.
+             * @return array.
+             */
+            protected function userTimeLine (array $params = []) { 
+                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"userTimeLine" , "parameters"=>['screen_name'=>$params['screen_name']] , 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+            }
+            /**
+             * @method getUser.
+             * @return array.
+             */
+            protected function getUser (array $params = []) { 
+                $params_to_api     = (isset( $params['screen_name'] )) ? ['by'=>['screen_name'=>$params['screen_name']]] : ['by'=>['user_id'=>$params['user_id']]];
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"getUser" , "parameters"=>$params_to_api, 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+            }
+            /**
+             * @method lookup.
+             * @return array.
+             */
+            protected function lookup( array $params = [] ){
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"lookup" , "parameters"=>['user_id'=>$params['user_id']] , 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+            }
+
+            /**
+             * @method getFollowersList.
+             * @return array.
+             */
+            protected function getFollowersList ( array $params = []) {
+                $params['cursor'] = ($params['cursor']) ?? '-1';   
+                $params_to_api     = (isset( $params['screen_name'] )) ? ['by'=>['screen_name'=>$params['screen_name'] , 'cursor'=>$params['cursor']]] : ['by'=>['user_id'=>$params['user_id'] , 'cursor'=>$params['cursor']]];
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"getFollowersList" , "parameters"=>$params_to_api, 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+            }
+
+            /**
+             * @method getFriendsList.
+             * @return array.
+             */
+            protected function getFriendsList ( array $params = [] ) {
+                $params['cursor'] = ($params['cursor']) ?? '-1';   
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"getFriendsList" , "parameters"=>['user_id'=>$params['user_id'] , 'cursor'=>$params['cursor']], 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);         
+            }
+
+            /**
+             * @method searchUsers.
+             * @return array.
+             */
+            protected function searchUsers( array $params = [] ){
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"searchUsers" , "parameters"=>['search'=>$params['search']], 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+            }
+
+            /**
+             * @method checkFriends.
+             * @return array.
+             */
+            protected function checkFriends ( array $params = [] ){
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"checkFriends" , "parameters"=>['source_screen_name'=>$params['source'] , 
+                'target_screen_name'=>$params['target']], 
+                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+            }
             /**
              * Twitter Components read section.
              * have all methods that have mixed of one or more than method from read method.
@@ -88,41 +175,69 @@
                 }  
             }
             /**
-             * @method userTimeLine.
+             * return nonFollowers -> people who don't follow you back.
+             * @method nonFollowers.
+             * @param user_id id_str in {{ Media }}.
              * @return array.
              */
-            protected function userTimeLine (array $params = []) { 
-                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"userTimeLine" , "parameters"=>['screen_name'=>$params['screen_name']] , 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
-            }
-            /**
-             * @method getUser.
-             * @return array.
-             */
-            protected function getUser (array $params = []) { 
-                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"getUser" , "parameters"=>['screen_name'=>$params['screen_name']] , 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+            protected function nonFollowers ( array $params = [] ) {
+                return $this->controlFollowers( $params , false );
             }
 
             /**
-             * @method getFollowersList.
+             * return fans -> people who follow you and you not follow back.
+             * @method fans.
              * @return array.
              */
-            protected function getFollowersList ( array $params = []) {
-                $params['cursor'] = ($params['cursor']) ?? '-1';   
-                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"getFollowersList" , "parameters"=>['screen_name'=>$params['screen_name'] , 'cursor'=>$params['cursor']], 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+            protected function fans ( array $params = [] ){
+                return $this->controlFollowers( $params , true );
             }
 
             /**
-             * @method searchUsers.
+             * return recentFollowers -> people who follow you recently.
+             * @method recentFollowers.
              * @return array.
              */
-            protected function searchUsers( array $params = [] ){
-                return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"searchUsers" , "parameters"=>['search'=>$params['search']], 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+            protected function recentFollowers ( array $params = [] ) {
+                $newFollowers = $this->getFollowersList( $params );
+                if ( is_array( $newFollowers )  && array_key_exists( 'error' , $newFollowers ) ) {
+                        $response = ['error'=>$newFollowers['error']];
+                }else if ( is_object( $newFollowers ) && isset( $newFollowers->users ) ) {
+                        if ( !empty( $newFollowers->users ) ){
+                                $response = ['results'=>['from'=>'twitter','type'=>'users','users'=>$newFollowers->users]];
+                        }else{
+                                $response = ['error'=>NO_NEW_DATA];
+                        }
+                }else {
+                        $response = ['error'=>GLOBAL_ERROR];
+                }
+                return $response;
             }
 
+            /**
+             * return recentUnfollow -> people unFollow you recently.
+             * @method recentUnFollow.
+             * @return array. 
+             */
+            protected function recentUnFollow ( array $params = [] ) {
+                $lastList = $params['lastList']; // taken from cache.  
+                $followersIds = $this->getFollowersIds( $params );//5000 ids.
+                if ( is_object( $followersIds ) && isset( $followersIds->ids ) ){
+                        $ids =  array_diff( $lastList , $followersIds->ids );
+                        if ( !empty( $ids ) ){
+                                $ids = (count( $ids ) > 100) ?  array_slice( $ids , 0 , 99 ) : $ids ;
+                                $recent_unfollow = $this->lookup( array_merge( $params , ['user_id'=>implode(',',$ids)] ) ) ;
+                                $response = ['results'=>['from'=>'twitter','type'=>'users','users'=>$recent_unfollow]];   
+                        }else {
+                                $response = ['error'=>NO_NEW_DATA];  
+                        }
+                }else{
+                        $response = ['error'=>$followersIds['error'] ?? GLOBAL_ERROR];
+                }
+                return $response;
+            } 
+
+          
             /**
              * @method getHashtagData.
              */
@@ -169,5 +284,33 @@
                         --$repeat;
                 }
                 return $tweets;
+            }
+            /**
+             * uses to return the data for nonFollowers && Fans features because it has the same logic.
+             * @method controlFollowers.
+             * @return array.
+             */
+            private function controlFollowers ( array $params = [] , bool $fans = false ) {
+                $friendsIds   =  $this->getFriendsIds( $params );
+                $followersIds =  $this->getFollowersIds( $params );
+                if ( is_object( $friendsIds ) && is_object( $followersIds ) && isset( $followersIds->ids ) && isset($friendsIds->ids) ){
+                        if ( $fans === false) {//nonFollowers Logic.
+                                $ids = array_diff( $friendsIds->ids , $followersIds->ids );
+                        }else {//fans logic
+                                $ids = array_diff( $followersIds->ids , $friendsIds->ids);
+                        }
+                        if ( !empty( $ids ) ){
+                                $ids = (count( $ids ) > 100) ?  array_slice( $ids , 0 , 99 ) : $ids ;
+                                $nonFollowers = $this->lookup( array_merge( $params , ['user_id'=>implode(',',$ids)] ) ) ;
+                             $response = ['results'=>['from'=>'twitter','type'=>'users','users'=>$nonFollowers]];   
+                        }else {
+                              $response = ['error'=>NO_NEW_DATA];  
+                        }
+
+                }else{
+                        $response = ['error'=>$followersIds['error'] ?? $friendsIds['error'] ?? GLOBAL_ERROR];
+                }
+                return $response;
+    
             }
         }

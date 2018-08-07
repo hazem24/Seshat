@@ -33,7 +33,6 @@
 
                 public static function scheduleExists($user_id,$date):bool{
                         return self::getFinder()->scheduleExists($user_id,$date);
-                
                 }
 
                 /**
@@ -41,6 +40,14 @@
                 */
                 public function getTweetAsInfo ( int $user_id ){
                         return self::getFinder()->getTweetAsInfo( $user_id );
+                }
+
+                /**
+                 * @method controlFollowersTaskExists.
+                 * @return bool.
+                 */
+                public static function controlFollowersTaskExists( int $user_id , int $task_id ){
+                        return self::getFinder()->controlFollowersTaskExists( $user_id , $task_id ); 
                 }
                 /**
                 * @method getFinder Find The Mapper Which Object Related To It.

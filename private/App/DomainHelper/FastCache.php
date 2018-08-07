@@ -28,16 +28,16 @@
 
 
             public function getItem(string $name){
-                   return $this->cache->getItem($name); //Return Item.
+                return $this->cache->getItem($name); //Return Item.
             }
 
             public function get($item){
-                    return $item->get(); //Return Data.
+                return $item->get(); //Return Data.
             }
             
             public function set($item,$data,int $expire = 0){
-                   $item->set($data)->expiresAfter($expire);
-                   $this->save($item); 
+                $item->set($data)->expiresAfter($expire);
+                $this->save($item); 
             }
 
             public function clear(){

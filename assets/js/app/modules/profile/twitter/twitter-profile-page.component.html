@@ -65,7 +65,7 @@
                         <div class="tab-content gallery">
                             <div class="tab-pane active" id="tweetsReader" role="tabpanel">
                                 <div>
-                                        <section id="feed" ng-if = "!data.tweets.error"><!-- Feed posts -->
+                                        <section id="feed" ng-if = "!data.tweets.error && data.tweets.length > 0"><!-- Feed posts -->
                                             <ul>
                                                 <li  ng-repeat="tweet in data.tweets" class="angular-animate col-md-12" style="margin: auto;width: 100%;padding: 20px;">
                                                     <div class="tile" id="tweet{{$index}}">
@@ -157,7 +157,7 @@
                                                 </li><!---->
                                             </ul>                                            
                                             </section>
-                                            <section ng-if = "data.tweets.error">
+                                            <section ng-if = "data.tweets.error || data.tweets.length <= 0">
                                                     <div>
                                                         <p class="text-center" style="font-size: 20px;color:black;font: bold;">Cannot retrive tweets from this account may be this account is private.</p>
                                                     </div>
