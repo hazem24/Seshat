@@ -56,8 +56,8 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
                 }else {
                     globalMethod.showNotification('danger','top','Right','App Error try again later','body',20000);
                 }
+                spinner.remove( $saveTaskButton , $text , false , true );
             });
-            spinner.remove( $saveTaskButton , $text , false , true );
         };
         //End saveTask Button.
     }
