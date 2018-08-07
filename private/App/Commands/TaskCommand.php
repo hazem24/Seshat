@@ -46,6 +46,7 @@
                         break;
                     case 2:
                         $logic = $this->tweetAsLogic( $task_data );
+                        break;
                     case 31 || 32 || 33:
                         $logic = $this->controlFollowersLogic( $task_data['user_id'] , $task_id );    
                         break;
@@ -155,7 +156,8 @@
                     case 2:// no progress here unlimited until cancel by user or error happen or not re-pay.
                         $details = json_encode(['access_token'=>$data['oauth_token'],
                         'access_token_secret'=>$data['oauth_token_secret'],'lang'=>$data['lang'],
-                        'screen_name'=>$data['screen_name']]); 
+                        'screen_name'=>$data['screen_name']]);
+                        break; 
                     case 31 || 32 || 33://progress = (done/order) * 100.
                         $details = json_encode(['access_token'=>$data['oauth_token'],
                         'access_token_secret'=>$data['oauth_token_secret'],'socialMedia'=>'twitter',
