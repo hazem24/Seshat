@@ -191,12 +191,9 @@ var globalMethod = {
             };
             Chartist.Pie($chartSelector, dataPreferences, optionsPreferences);
 
-        },saveAsTask : function ( $taskType ){
-                /**
-                * 1 - model appear to save new task to seshat with yes and no question.
-                */
-        }
-        ,initEmoj : function($text_areaSelector){
+        },clearStorage : function (){
+                localStorage.clear();  
+        },initEmoj : function($text_areaSelector){
                 $($text_areaSelector).emojioneArea({
                         pickerPosition: "bottom"
                 });        
