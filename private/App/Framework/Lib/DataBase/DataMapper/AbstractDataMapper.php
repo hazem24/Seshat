@@ -78,34 +78,18 @@
 
 
            }
-           /**
-           *@method save Model $model 
-           *The mechainsim Of This Method To Know If Update Query Or Insert Query 
-           *First It Check If The Primary Key Of Specific Table  (Mapper) Exists Or Not 
-           *If Exists This Mean Update Query Must Be Happen Else Insert Query 
-           */
-           public function save(Shared\Model $model){
-                    $c = 'get'.ucfirst($this->columns['primarykey']);
-                    if(!is_null($model->$c()) ){
-                                $this->updateBuilder = Registry::getInstance('updateBuilder');
-                    }else{
-                                $this->insertBuilder = Registry::getInstance('insertBuilder');
-                    }
-                    $this->doSave($model);
-           }
-
-
+         
            protected function bindParamCreator(int $count , \PDOStatement &$create , array $data){
                /**
                 * Must Be Deleted Just for find from where the error of token happen.
                 */
                 if($count != count($data)){
-                        var_dump($data,$count);
-                        exit;
+                    var_dump($data,$count);
+                    exit;
                 }
                 for($i=0; $i<$count ; $i++){
                                 
-                                $create->bindParam($i+1,$data[$i],$this->typeOfDataToEnterDb(gettype($data[$i])));
+                    $create->bindParam($i+1,$data[$i],$this->typeOfDataToEnterDb(gettype($data[$i])));
                 }
            }
            /**

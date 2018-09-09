@@ -63,7 +63,7 @@
                     $publishModel->setProperty('category_id',$category);
                     $publishModel->setProperty('tweet_id',$tweet_id);
                     $publishModel->setProperty('public_access',$publicAccess);
-                    return $publishModel->saveNewPublish();
+                    return $publishModel->save();
 
             }
 

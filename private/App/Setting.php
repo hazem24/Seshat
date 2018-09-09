@@ -136,11 +136,11 @@
 
                
        }catch(CoreException $core){
-
-                echo $core->getMessage();
-
+            echo $core->getMessage();
        }catch(DbException $e){
-                echo $e->getMessage();
+            echo $e->getMessage();
+       }catch(PDOException $e){
+            echo $e->getMessage();
        }   
 
 

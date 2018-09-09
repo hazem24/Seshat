@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
 	<link href="<?=ASSESTS_URI."css"?>/lib/bootstrap-datetimepicker.min.css" rel="stylesheet" type='text/css' />
 	<link href="<?=ASSESTS_URI."css"?>/app/nucleo-icons.css" rel="stylesheet" type='text/css' />
 	<link href="<?=ASSESTS_URI."css"?>/app/seshat.css" rel="stylesheet" type='text/css' />
@@ -358,6 +359,6 @@
 else: ?>
 <body ng-app="seshatApp" style="background-color:#343c55;padding-top: 20px;">
 			<div class="col-4" style="margin: auto;width: 50%;padding: 10px;">
-<a href='<?=BASE_URL.LINK_SIGN.' index/signin '?>' style="margin: auto;width: 50%;padding: 10px;" class='btn btn-twitter'><i class="fab fa-twitter"></i> <?= SIGN_TWITTER ?></a>
+<a href='<?=BASE_URL.LINK_SIGN.'index/signin '?>' style="margin: auto;width: 50%;padding: 10px;" class='btn btn-twitter'><i class="fab fa-twitter"></i> <?= SIGN_TWITTER ?></a>
 			</div>
 <?php endif; ?>

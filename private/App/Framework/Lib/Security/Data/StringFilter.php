@@ -54,8 +54,5 @@
                 $this->santizeData=$clearData; //Data That Can Be Used In Vaildation Process
             }
 
-
-
-
         }
 

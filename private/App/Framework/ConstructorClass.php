@@ -40,6 +40,22 @@
             
         }
         /**
+         * this method used to set value to property.
+         */
+        public function setProperty(string $propertyName,$value){
+            if(property_exists($this,$propertyName)){
+                $this->$propertyName = $value;
+            }
+        }
+        /**
+         * this method used to get value from property.
+         */
+        public function getProperty(string $propertyName){
+            if(property_exists($this,$propertyName)){
+                return $this->$propertyName;
+            } 
+        }
+        /**
         *@method
         * set Values For Specific Property || Return Exception 
         */
@@ -66,18 +82,6 @@
                 // If Method Not Found Return Exception 
                 throw new CoreException("You Don't Have Permission To Call  This Method :  $method");
         }*/
-
-        public function setProperty(string $propertyName,$value){
-            if(property_exists($this,$propertyName)){
-                            $this->$propertyName = $value;
-            }
-        }
-
-        public function getProperty(string $propertyName){
-                if(property_exists($this,$propertyName)){
-                    return $this->$propertyName;
-                } 
-        }
 
         // Isset And Unset Not Completed Here!
         

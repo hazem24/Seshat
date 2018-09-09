@@ -6,7 +6,7 @@
         use Predis\Autoloader as Autoloader;
         use Predis\Client as Client;
         /**
-        *@class This Class Is Factory Class For All Cache System
+        *@class This Class uses redis cache system.
         */
          Class Redis extends Cache
         {

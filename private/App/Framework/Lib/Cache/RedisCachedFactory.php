@@ -3,6 +3,7 @@
 
         use Framework\Lib\Cache\FactoryCache as FactoryCache;
         use Framework\Registry as Registry;
+        
         Class RedisCachedFactory extends FactoryCache
         {
               /**

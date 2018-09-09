@@ -10,6 +10,4 @@
             /**
             *@method __construct void
             */
-
-
         }

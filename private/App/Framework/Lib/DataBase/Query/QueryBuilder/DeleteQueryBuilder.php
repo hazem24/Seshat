@@ -27,11 +27,11 @@
           */
 
           public function delete(string $targetTable , array $moreTableToDeleteFromIt = []):DeleteQueryBuilder{
-                    $this->targetTable = $targetTable;
-                    if(!empty($moreTableToDeleteFromIt)){
-                            $this->multiDelete = $moreTableToDeleteFromIt;
-                    }
-                    return $this;
+            $this->targetTable = $targetTable;
+            if(!empty($moreTableToDeleteFromIt)){
+                  $this->multiDelete = $moreTableToDeleteFromIt;
+            }
+            return $this;
           }
 
           public function createQuery():array{
@@ -42,31 +42,30 @@
               $this->sql .= " FROM " ;
               parent::createQuery();
               if(!empty($this->multiDelete) && is_null($this->join)){
-                        throw new DbException("<br> Syntax Error In Mysql Query You Must Provide Join Method To Delete From More Than One Table @class " . __CLASS__);
+                  throw new DbException("<br> Syntax Error In Mysql Query You Must Provide Join Method To Delete From More Than One Table @class " . __CLASS__);
                         
               }
               if(!is_null($this->join)){
-                        $this->sql .= implode(" ",$this->join);
+                  $this->sql .= implode(" ",$this->join);
               }
               if(!isset($this->where) || empty($this->where)){
-                    throw new DbException("<br>Warning  Dangrous You Try To Delete All Data In This $this->targetTable Please Create Where Conditions To Delete Specfic Data @class " . __CLASS__);
+                  throw new DbException("<br>Warning  Dangrous You Try To Delete All Data In This $this->targetTable Please Create Where Conditions To Delete Specfic Data @class " . __CLASS__);
               }
-                    $this->sql .= $this->where;
+                  $this->sql .= $this->where;
               if(empty($this->multiDelete)&&isset($this->orderBy) && !empty($this->orderBy)){
-                            $this->sql .= $this->orderBy;     
-              }else if(!empty($this->multiDelete)&&!isset($this->orderBy) && empty($this->orderBy))
+                  $this->sql .= $this->orderBy;     
+              }else if(!empty($this->multiDelete) && isset($this->orderBy) && !empty($this->orderBy))
               {
-                    throw new DbException("<br> Syntax Error In Mysql Query You Can Not Provide orderBy Method When Delete From More Than One Table @class " . __CLASS__);
+                  throw new DbException("<br> Syntax Error In Mysql Query You Can Not Provide orderBy Method When Delete From More Than One Table @class " . __CLASS__);
               }
 
               if(empty($this->multiDelete)&&isset($this->limit) && !empty($this->limit)){
-                            $this->sql .= $this->limit;
-              }else if(!empty($this->multiDelete)&&!isset($this->orderBy) && empty($this->orderBy))
+                  $this->sql .= $this->limit;
+              }else if(!empty($this->multiDelete) && isset($this->orderBy) && !empty($this->orderBy))
               {
                 throw new DbException("<br> Syntax Error In Mysql Query You Can Not Provide Limit Method When Delete From More Than One Table @class " . __CLASS__);
-
               }
-                   return ['query'=>sprintf($this->sql) , 'data'=>$this->data];
+                  return ['query'=>sprintf($this->sql) , 'data'=>$this->data];
           }
 
 

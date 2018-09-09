@@ -15,7 +15,7 @@
             /**
              * @property media.
              * */    
-            private static $media = ['twitter'];
+            private static $media = [1=>'twitter'];
                 
             public static function redirectOutSide(string $sessionName = 'id' , string $direction = ""){
                    $sessionInstance = Registry::getInstance('session');
@@ -255,7 +255,16 @@
                 */
 
                 public static function issetMedia ( string $media ) {
-                       return (bool) in_array( $media , self::$media );
+                       return (bool) in_array( strtolower($media) , self::$media );
+                }
+
+                /**
+                 * this media return the number of {{ Media }} .. must be used after issetMedia check method.
+                 * @property mediaToNumber.
+                 * @return int.
+                */
+                public static function mediaToNumber( string $media ){
+                        return array_search( strtolower($media) , self::$media );      
                 }
                /**
                 * @method hashTagStatistics.

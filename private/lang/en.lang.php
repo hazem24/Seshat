@@ -38,6 +38,7 @@ define("EMPTY_FEILD","Please You Can Not Leave The Field Empty Or You Put Illega
 define("EMAIL_EXISTS","This Email Used Please Try With Another Email Address.");
 define("BOT_ACCESS",'Seshat Not Love To Work With Bots.');
 define("INVALIAD_REQUEST","Invailed request.");
+define("MEDIA_NOT_FOUND","Media not found.");
 define("REAOUTH_SESHAT",'Re-authentication With Seshat.');
 define("CAN_NOT_RETREIVE_DATA","Cannot retreive data now try again later.");
 define("TWEET_NOT_SAVED",'I Publish Your Tweet In Twitter But I Can not Save It.');
@@ -239,5 +240,23 @@ define("LANG_NOT_SUPPORTED","Language not supported.");
 //Report Section.
 define("MAKE_YOUR_OWN_WITH_SESHAT","Make Your Own Report !");
 //End Report Section.
+
+//tree name.
+define("TREE_NAME",'Tree name.');
+define("TREE_DESCRIPTION",'Tree description');
+define("MAX_ACCOUNTS_IN_TREE",'Invaild Max accounts in tree.');
+define("INVALID_TREE_NAME",'invailed name for a tree example : seshat');
+define("TREE_NAME_EXISTS","Tree name exists please choose another one.");
+define("MAX_TREES_REACH","Max number of trees you can created is 3 , you reach the limit.");
+define("TREE_UPDATED","Your tree was updated !.");
+define("TREE_DELETED","Your Tree Is deleted.");
+define("TREE_EXIT","You exit from this tree.");
+define("TREE_CREATED","Your tree is created share it now to gain subscribers for same interset.");
+define("MAX_SUB_REACH","You already joined 3 trees , you reach the limit.");
+define("INVAILED_TREE_ID",'This Tree not exists at all.');
+define("JOINED_TREE","You joined this tree !.");
+define("REACH_LIMIT","This tree reach max subscribers , check again later if someone leave it.");
+define("ALREADY_JOINED","You already joined tree.");
+//End tree name.
 
 

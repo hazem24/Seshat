@@ -1,0 +1,254 @@
+<div class="row" style="padding: 25px;" >
+    <div class="col-md-12">
+        <h2 style="color:red;">
+            <i class="fas fa-tree"></i> Trees linked with your accounts.
+        </h2>
+        <button type="button" rel="tooltip" class="btn btn-info pull-right" data-toggle="modal" data-target="#createTree" style="padding: 10px;" >
+            Create New Tree 
+            <i class="fas fa-tree"></i>
+        </button>
+    </div>
+</div>
+<!-- Trees you created. -->
+<div class="row">
+    <div class="col-md-12">
+        <h3 style="color: red;">
+            <i class="fas fa-tree"></i> Trees You Created.
+        </h3>
+    </div>
+    <div ng-if="userTreesData.created_trees.length <= 0" class="col-md-12">
+        <p class="text-center" style="color:black;font-size: 15px;">You not created any tree yet.</p>
+    </div> 
+    <div  ng-if='userTreesData.created_trees.length > 0' class="col-md-12">
+        <div class="card card-plain">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead class="">
+                          
+                            <th>
+                                <strong style="font-weight: 900;">name</strong>
+                            </th>
+                            <th class="text-left">
+                              <strong style="font-weight: 900;">Subscribers</strong>  
+                            </th>
+                            <th class="text-left">
+                               <strong style="font-weight: 900;">Max Subscribers</strong> 
+                            </th>
+                            <th>
+                               <strong style="font-weight: 900;">Description</strong> 
+                            </th>
+                            <th>
+                                <strong style="font-weight: 900;">Media</strong> 
+                             </th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat='tree in userTreesData.created_trees'>
+                                <td class="td-name">
+                                    <a href="/seshat/!followTree/show/{{ tree.name }}">{{ tree.name }}</a>
+                                    <br />
+                                    <small>By You.</small>
+                                </td>
+                                <td class="td-number text-left" style="color:green;">
+                                    {{ tree.subscribers }}
+                                </td>
+                                <td class="td-number text-left" style="color: red;">
+                                    {{ tree.max_accounts }}
+                                </td>
+                                <td>
+                                    {{ tree.description }}
+                                </td>  
+                                <td>
+                                    <i class="fab fa-twitter"></i>
+                                </td>
+                                <td class="td-actions">
+                                    <button type="button" rel="tooltip" data-toggle="modal" data-target="#editTree{{ tree.id  }}" data-placement="left" title="Edit" class="btn btn-neutral">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                                <td class="td-actions">
+                                    <button ng-click = "deleteTree(tree.name, tree.id , $index)" rel="tooltip" data-placement="left" title="Delete" class="btn btn-neutral">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                                <td class="td-actions">
+                                    <button type="button" ng-click = "shareTree(tree.name , tree.description)"  rel="tooltip" data-placement="left" title="Share" class="btn btn-neutral">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End tree you created. -->
+<!-- Show sub trees.-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 style="color: red;">
+            <i class="fas fa-tree"></i> Trees You Subscribed on it.
+        </h3>
+    </div>
+    <div ng-if="userTreesData.sub_trees.length <= 0" class="col-md-12">
+        <p class="danger text-center">You not Subscribed in any tree yet <a href="/seshat/!followTree/showAll" style="color:green;font-size:15px;">Show All Tree</a></p>
+    </div> 
+    
+    <div ng-if="userTreesData.sub_trees.length > 0" class="col-md-12">
+        <div class="card card-plain">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead class="">
+                            <th>
+                                <strong style="font-weight: bold;">name</strong>
+                            </th>
+                            <th class="text-left">
+                              <strong style="font-weight: bold;">Subscribers</strong>  
+                            </th>
+                            <th class="text-left">
+                               <strong style="font-weight: bold;">Max Subscribers</strong> 
+                            </th>
+                            <th>
+                               <strong style="font-weight: bold;">Description</strong> 
+                            </th>
+                            <th>
+                                <strong style="font-weight: bold;">Media</strong> 
+                             </th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat = "sub_tree in userTreesData.sub_trees">
+                                <td class="td-name">
+                                    <a href="/seshat/!followTree/show/{{ sub_tree.name }}">{{ sub_tree.name }}</a>
+                                    <br />
+                                    <small>By <a href="/seshat/!profile/twitter/{{ sub_tree.owner }}">{{ sub_tree.owner }}</a></small>
+                                </td>
+                                <td class="td-number text-left" style="color:green;">
+                                    {{ sub_tree.subscribers }}
+                                </td>
+                                <td class="td-number text-left" style="color: red;">
+                                    {{ sub_tree.max_accounts }}
+                                </td>
+                                <td>
+                                    {{ sub_tree.description }}
+                                </td>
+                                <td>
+                                    <i class="fab fa-twitter"></i>
+                                </td>
+                              
+                                <td class="td-actions">
+                                    <button type="button" ng-click="exitTree(sub_tree.name,sub_tree.id,$index)" rel="tooltip" data-placement="left" title="Exit" class="btn btn-neutral">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </button>
+                                </td>
+                                <td class="td-actions">
+                                    <button type="button" rel="tooltip" ng-click = "shareTree(tree.name , tree.description)"  data-placement="left"  title="Share" class="btn btn-neutral shareTree">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End show sub trees. -->
+<!-- Create Tree Modal -->
+
+<div class="modal fade" id="createTree" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create New Tree</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form name = "createTreeForm" novalidate>
+            <div>
+                <div class="form-group" ng-class="{ 'has-error' : createTreeForm.treeName.$invalid && createTreeForm.treeName.$dirty }">
+
+                    <input type="text" name = "treeName" ng-model="tree_name" class="form-control" style="padding: 10px;"  id="tree_name"  placeholder="Tree name" ng-pattern="/^[A-Za-z0-9_]{2,32}$/" ng-minlength="2" ng-maxlength="100" ng-required = "true">
+                    <p class="help-block" style="color:red;" ng-show="createTreeForm.treeName.$error.minlength && createTreeForm.$dirty">tree name must be greater than 2 letters.</p>
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.treeName.$error.maxlength && createTreeForm.$dirty">tree name must be less than 100 letters.</p>
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.treeName.$error.required && createTreeForm.$dirty">tree name required.</p>
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.treeName.$error.pattern && createTreeForm.$dirty">invailed name for a tree example : seshat.</p>
+                    <br>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createTreeForm.description.$invalid && createTreeForm.description.$dirty }">    
+                    <input type="text" name = "description" ng-model="tree_description" class="form-control"  style="padding: 10px;" id="tree_interset"  placeholder="Tree Interset" ng-minlength="10" ng-maxlength="300" ng-required = "true">
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.description.$error.minlength && createTreeForm.$dirty">description of tree must be greater than 10 letters.</p>
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.description.$error.maxlength && createTreeForm.$dirty">description of tree must be less than 250 letters.</p>
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.description.$error.required && createTreeForm.$dirty">description required.</p>
+                    <br>
+                </div>    
+                    <select name = "maxAccounts"  ng-model="tree_maxAccounts" id="max_tree_accounts" style="padding: 10px;" class="form-control" ng-required = "true">
+                        <option value = "5000">+5000</option>
+                        <option value = "20000">+20000</option>
+                        <option value = "50000">+50000</option>
+                        <option value= "100000">+100000</option>
+                    </select>
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.maxAccounts.$error.required && createTreeForm.$dirty">Max accounts can be linked to tree is required.</p>
+                    <br>
+                    <select name = "media" ng-model="tree_media" id="media"  style="padding: 10px;" class="form-control" ng-required = "true">
+                        <option value = "twitter">Twitter</option>
+                    </select>
+                    <p class="danger help-block" style="color:red;" ng-show="createTreeForm.media.$error.required && createTreeForm.$dirty">tree media required.</p>
+                    <br>
+                    <div  style="padding: 10px;" class="form-check form-check-inline">
+                        <label class="form-check-label">
+                        <input class="form-check-input" name="followMyUsers" ng-model="tree_followMyUsers" type="checkbox" id="follow_users" value="follow_users_in_tree"> Follow Users In your tree.
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                        </label>
+                    </div><br>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt"></i></button>
+          <button type="button" id = "createNewTree" ng-click = "createNewTree(tree_name,tree_description,tree_maxAccounts,tree_media,tree_followMyUsers)" ng-disabled = "createTreeForm.$invalid || createTreeForm.$pristine" class="btn btn-primary"><i class="fas fa-tree"></i></button>
+        </div>
+    </form>
+      </div>
+    </div>
+</div>
+<!--End Create Modal Tree -->
+
+<!-- Edit Tree Modal -->
+<div ng-repeat = "created_tree in userTreesData.created_trees">
+<div class="modal fade" id="editTree{{ created_tree.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Your Tree Settings</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" style="padding: 10px;" value = "{{ created_tree.name }}"  id="tree_name" readonly><br>
+                <form name="updateTreeDescription" novalidate>
+                    <input type="text" class="form-control" name="update_description"  ng-model="update_tree_description"  style="padding: 10px;" id="tree_interset"  placeholder="Tree Interset" ng-minlength="10" ng-maxlength="250" ng-required="true">
+                    <p class="danger help-block" style="color:red;" ng-show="updateTreeDescription.update_description.$error.minlength && updateTreeDescription.$dirty">description of tree must be greater than 10 letters.</p>
+                    <p class="danger help-block" style="color:red;" ng-show="updateTreeDescription.update_description.$error.maxlength && updateTreeDescription.$dirty">description of tree must be less than 250 letters.</p>
+                    <p class="danger help-block" style="color:red;" ng-show="updateTreeDescription.update_description.$error.required && updateTreeDescription.$dirty">description required.</p>
+                    <button id = "descriptionUpdate{{ created_tree.id }}" ng-click="descriptionUpdate(update_tree_description , created_tree.id , $index)" ng-disabled="updateTreeDescription.$invalid || updateTreeDescription.$pristine" class="btn btn-primary btn-sm">Update</button>
+                    <br>
+                </form>
+                <br>
+                <select id="media" style="padding: 10px;" class="form-control" readonly>
+                    <option value="1">Twitter</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!--End Edit Modal Tree -->   

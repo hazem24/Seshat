@@ -45,4 +45,27 @@ is_finished bool default 0,progress int(3) default 0,
 task_name varchar(50) not null);
 
 ALTER TABLE tasks add column (user_id int not null), 
-  ADD CONSTRAINT tasks FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE
+  ADD CONSTRAINT tasks FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+create table follow_tree ( id int auto_increment primary key not null , 
+name varchar( 500 )  not null , description varchar( 500 ) not null , max_accounts int not null);  
+
+ALTER TABLE follow_tree add column (user_id int not null), 
+  ADD CONSTRAINT tree_owner FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+create table subscribed_in_tree ( id int auto_increment primary key not null , 
+tokens text(1000) not null);
+
+ALTER TABLE subscribed_in_tree add column (user_id int not null), 
+  ADD CONSTRAINT sub_user FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE subscribed_in_tree add column (tree_id int not null), 
+  ADD CONSTRAINT sub_tree FOREIGN KEY (tree_id) REFERENCES follow_tree (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+Alter table follow_tree add column (tree_media int not null , created_at datetime not null default NOW());
+Alter table subscribed_in_tree add column ( join_at datetime not null default NOW() );  
+
+ALTER TABLE subscribed_in_tree CHANGE COLUMN user_id sub_user_id int NOT NULL;
+
+

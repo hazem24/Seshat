@@ -1,9 +1,9 @@
 <?php
             namespace App\Model\App\Seshat;
-            use Framework\Shared\Model;
+            use App\Model\BaseModel;
             use App\DomainMapper\Seshat\TaskMapper;
 
-            Class TaskModel extends Model
+            Class TaskModel extends BaseModel
             {
                 /**
                  * Table Of Content Of Tasks.
@@ -23,14 +23,11 @@
 
                 private static $tasksMapper = null;
 
-                /**
-                * @method saveNewPublish 
-                * @return bool.
-                */
-                public  function save():bool{
-                        return self::getFinder()->save($this);        
+                public function save(){
+                        return self::getFinder()->save(  $this );
                 }
 
+                
                 public static function scheduleExists($user_id,$date):bool{
                         return self::getFinder()->scheduleExists($user_id,$date);
                 }

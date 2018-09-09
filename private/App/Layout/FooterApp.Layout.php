@@ -10,6 +10,8 @@
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery.validate.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/html2canvas.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/iziToast.min.js" type="text/javascript"></script>
+<script src="//unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 <script src="//cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-animate.min.js"></script>
@@ -55,6 +57,8 @@
 <script src="<?=ASSESTS_URI."js"?>/app/modules/profile/profile-controller-services.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/search/search-app.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/seshat/seshat.js"></script>
+<script src="<?=ASSESTS_URI."js"?>/app/modules/followTree/follow-tree.js"></script>
+
 <!-- End Angular Section. -->
 <script src="<?=ASSESTS_URI."js"?>/app/lang/en.lang.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/loadingSpinner.js"></script>

@@ -45,6 +45,39 @@ var globalMethod = {
         clearInput : function () {
                 $('form').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file] ,textarea').val('');
         },
+        createTree : function ( $element , $data ) {
+                  console.log( $data );
+
+                  var nodes = [];
+                  var edges = [];
+                  for (var $index in $data) {                        
+                        nodes[$index] = { id:$index , shape:'circularImage' , image:"http://127.0.0.1/seshat/assets/img/seshat.png" , label:'@'+$data[$index].subscriber , color: {highlight: {border: '#2B7CE9',background: '#D2E5FF'}} ,font: {color: 'red' , size: 14}};
+                        edges[$index] = {from:parseInt($index), to:parseInt($index) + 1};// create connections between people
+                  }         
+                  
+                  console.log(edges);
+                  // create a network
+                  var container = document.getElementById($element);
+                  var data = {
+                    nodes: nodes,
+                    edges: edges
+                  };
+                  var options = {
+                    nodes: {
+                      borderWidth:4,
+                      size:30,
+                      color: {
+                        border: '#222222',
+                        background: '#666666'
+                      },
+                      font:{color:'#eeeeee'}
+                    },
+                    edges: {
+                      color: 'lightgray'
+                    }
+                  };
+                  network = new vis.Network(container, data, options);
+        },
         navLocation : function ($navLocation){
                 $navLocation = $navLocation.toLowerCase();
                 //disabled The location which user stop at it.
@@ -66,8 +99,16 @@ var globalMethod = {
                 $('.emojionearea-editor').first().typetype($content_to_share);
                 //Focus on editor emojionarea.
         },
-        share : function($selector){
-              //Share Logic Here.  
+        shareContent : function($content){
+              //Share Logic Here.
+              //Init the editor text.
+                globalMethod.clearInput();
+                $('.emojionearea-editor').first().text('');        
+                //Open Modal.
+                $("#tweetModal").modal();
+                $(".emojionearea-editor").first().focus();
+                $('.emojionearea-editor').first().typetype($content);
+                //Focus on editor emojionarea.
         },
         screenShot :  function ($selector){
                 html2canvas(document.querySelector($selector), {
@@ -300,7 +341,6 @@ $(document).ready(function(){
                                 "cache": false,
                                 "processData":false,                    
                                 "success": function(data)  { 
-                                        console.log(data);
                                         spinner.remove($publish_now_button,$publish_button_text);
                                         if($("#tweetType").attr('name').toLowerCase() == 'publish'){
                                                 spinner.remove($schedule_button,$schedule_button_text,true);

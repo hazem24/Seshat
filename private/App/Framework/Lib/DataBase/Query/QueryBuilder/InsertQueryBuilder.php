@@ -84,7 +84,7 @@
                                          $this->sql .= " ( "  . $this->placeHolder($columns) . " )";
                             }else{
                                     if($limit - 1 == $count){
-                                                // Do Nothing                                           
+                                        // Do Nothing                                           
                                     }else{
                                         $count+=1;   
                                         $this->sql .= " ( "  . $this->placeHolder($columns) . " ),"; 
@@ -102,7 +102,7 @@
                         }
                         $this->data = $merge;
             }else{
-                    $this->sql .= " ( "  . $this->placeHolder(count($this->data)) . " ) ";
+                $this->sql .= " ( "  . $this->placeHolder(count($this->data)) . " ) ";
             }            
             return ['query'=>sprintf($this->sql) , 'data'=>$this->data];
       }

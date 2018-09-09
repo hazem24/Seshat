@@ -101,7 +101,7 @@
           public function having(array $options):SelectQueryBuilder{
                   $optionFilter = $this->arrayFilter($options);
                   if(!$this->dataCount($options , $optionFilter)){
-                              throw new DbException("You Put One Or More Empty Data  To HAVING Not Allowed In Mysql Syntax Please Fix This @class ". __CLASS__);                                    
+                        throw new DbException("You Put One Or More Empty Data  To HAVING Not Allowed In Mysql Syntax Please Fix This @class ". __CLASS__);                                    
                   }
                   $options      =  ArrayHelper::filterDataWithArray($options);// Return Tables Of Conditions as [0] Index And Conditional Values As [1] Index
                   $this->having =   " HAVING ".implode(' ',$options[0])." ". implode(' ',$options[1]); // $option[0] Col + Operator , $option[1] Value
@@ -116,7 +116,7 @@
                         throw new DbException("<br>Syntax Error You Must Add Columns That You Want To Retreive  From DataBase " . __CLASS__);          
                   }
                         $this->sql .= $this->columns;
-                   parent::createQuery(); // For Set TargetTable ..
+                  parent::createQuery(); // For Set TargetTable ..
                   if(isset($this->index)){
                           $this->sql .= $this->index;
                   }
@@ -137,6 +137,13 @@
                   }
                   if(isset($this->limit) && !empty($this->limit)){
                         $this->sql .= $this->limit;
+                  }
+
+                  if(isset($this->union) && !empty($this->union)){
+                        $this->sql.= $this->union;
+                  }
+                  if(isset($this->unionAll) && !empty($this->unionAll)){
+                        $this->sql.= $this->unionAll;
                   }
                   return ['query'=>$this->sql , 'data'=>$this->data];
          } 

@@ -1,11 +1,11 @@
 <?php 
 
         namespace Framework\Lib\Cache;
-        use Framework\ConstructorClass as ConstructorClass;
+        use Framework\ConstructorClass as Base;
         /**
         *@class This Class Is Factory Class For All Cache System
         */
-        Abstract Class FactoryCache extends ConstructorClass
+        Abstract Class FactoryCache extends Base
         {
                 /**
                 *@property host string  for localhost '127.0.0.1'

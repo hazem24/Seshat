@@ -23,6 +23,8 @@
         protected $columns;
         protected $limit;
         protected $orderBy;
+        protected $union;
+        protected $unionAll;
 
 
         /**
@@ -50,22 +52,22 @@
         *@method where used in select and update and delete Only
         */
         public function where(array $conditions = null):AbstractQueryBuilder{
-                  $conditions = $this->arrayFilter($conditions);
-                  if(empty($conditions) || is_null($conditions)){
-                        throw new DbException("You Can Not Create Where Statement With (Empty  || Null) Condition @Class " .__CLASS__);
-                  }
-                  $conditional  = ArrayHelper::filterDataWithArray($conditions);// Return Tables Of Conditions as [0] Index And Conditional Values As [1] Index
-                  $this->data = $conditional[1]; // Data Which Will Uses Inside Prepare Statement
-                  $this->where = ' WHERE ' . implode(' ',$conditional[0]);
-                  return $this;
+            $conditions = $this->arrayFilter($conditions);
+            if(empty($conditions) || is_null($conditions)){
+                  throw new DbException("You Can Not Create Where Statement With (Empty  || Null) Condition @Class " .__CLASS__);
+            }
+            $conditional  = ArrayHelper::filterDataWithArray($conditions);// Return Tables Of Conditions as [0] Index And Conditional Values As [1] Index
+            $this->data   = $conditional[1]; // Data Which Will Uses Inside Prepare Statement
+            $this->where  = ' WHERE ' . implode(' ',$conditional[0]);
+            return $this;
           }
          
         public function createQuery():array{
             if(empty($this->targetTable)){
-                        throw new DbException("<br>Syntax Error You Must Add Table'(s) That You Want To Do Query On It Data  On It @Class" . __CLASS__);          
+                  throw new DbException("<br>Syntax Error You Must Add Table'(s) That You Want To Do Query On It Data  On It @Class" . __CLASS__);          
             }
-                        $this->sql .= $this->targetTable;
-                        return [];
+            $this->sql .= $this->targetTable;
+            return [];
         }
 
           /**
@@ -75,12 +77,12 @@
 
           public function join(string $table2 , string $tableCol1 , string $col2 , string $typeOfJoin = 'LEFT'):AbstractQueryBuilder{
                    if(!in_array(strtoupper($typeOfJoin), self::$joinAllowed)){
-                              throw new DbException("UnAllowed Type Of Join Passed Allowed This Only ***(". implode(',', self::$joinAllowed) . ')*** ' . $typeOfJoin . ' Given @class '.__CLASS__);     
+                        throw new DbException("UnAllowed Type Of Join Passed Allowed This Only ***(". implode(',', self::$joinAllowed) . ')*** ' . $typeOfJoin . ' Given @class '.__CLASS__);     
                    }
                    $arguments = func_get_args();
                    $filter = $this->arrayFilter($arguments);
                    if(!$this->dataCount($arguments , $filter)){
-                              throw new DbException("You Put Empty Arguments @join Method Please Fixed It @class " .__CLASS__);     
+                        throw new DbException("You Put Empty Arguments @join Method Please Fixed It @class " .__CLASS__);     
                    }
                   $this->join[] = " $typeOfJoin JOIN $table2 ON $tableCol1 = $table2.$col2 ";
                   return $this;
@@ -96,7 +98,7 @@
                   $orderStatement = ' ORDER BY '; // Start Query Add For orderBy Syntax
                   $orderData = $this->arrayFilter($orderData);
                   if(empty($orderData)){
-                              throw new DbException("Error Your Order By Data Empty || Not Completed @Class " . __CLASS__ );         
+                        throw new DbException("Error Your Order By Data Empty || Not Completed @Class " . __CLASS__ );         
                   }
                   $this->orderBy  .= $orderStatement;
                   $tableOrderBy = array_keys($orderData);
@@ -113,6 +115,23 @@
                   return $this;
           }
 
+          public function union( string $unionQuery){
+                 if (!empty( $unionQuery )){
+                        $this->union =  ' UNION '.$unionQuery;
+                        return $this;
+                 }else{
+                        throw new DbException("Error you must add the union query to use union method.");
+                 } 
+          }
+
+          public function unionAll( string $unionAllQuery ){
+                  if (!empty( $unionAllQuery )){
+                        $this->unionAll =  ' UNION All '.$unionAllQuery;
+                        return $this;
+                  }else{
+                        throw new DbException("Error you must add the union All query to use union method.");
+                  }  
+          }
 
         /**
          *@method This Method Provide Automatic Solution For Place Holder

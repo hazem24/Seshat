@@ -97,8 +97,6 @@
                                 return false;
             } 
             protected function doSave(Model $model){
-
-
             }
             /**
              * i Can Use PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE Instead Of This.
