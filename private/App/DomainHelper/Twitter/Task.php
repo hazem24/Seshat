@@ -45,7 +45,7 @@
              *                 x hr  => {{ order. }}
              * @return date.
              */
-            private function expectedFinsihed(float $ratioPerDay){
+            private function expectedFinished(float $ratioPerDay){
                 return date('Y-m-d H' , strtotime("+" . ceil((24 * ($ratioPerDay))) . " hours"));//hours.  
             }
             /**
@@ -76,7 +76,7 @@
                         case 31 || 32 || 33:
                         $counter = ($parameters['order']) ?? 50;
                         $logic = ['task_name'=>$this->taskName( AUTOMATIC . ' ' . $this->tasks[$task_id] , true ) , 
-                        'expected_finish'=>$this->expectedFinsihed($counter/720)];
+                        'expected_finish'=>$this->expectedFinished($counter/720)];
                         break; 
                         default:
                                 # code...
