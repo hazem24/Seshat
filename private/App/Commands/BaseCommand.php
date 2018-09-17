@@ -18,8 +18,9 @@
         public function execute(array $data = []){
             $method = $data['Method']['name']; 
             if(method_exists($this,$method)){
-                     return call_user_func_array(array($this,"$method") , array($data['Method']['parameters']));
-            }  
+                return call_user_func_array(array($this,"$method") , array($data['Method']['parameters']));
+            } 
+            return ['code'=>404,"msg"=>"Request Not found."]; 
         }
 
         /**

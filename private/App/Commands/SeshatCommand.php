@@ -3,6 +3,7 @@
     use App\DomainHelper\Twitter;
     use Framework\Helper\ArrayHelper;
     use App\DomainHelper\Helper;
+    use App\System\Notification\Notification;
 
 
     /**
@@ -11,6 +12,10 @@
 
     Class SeshatCommand extends BaseCommand
     {
+        /**
+         * instance of notification instance.
+         */
+        private static $notification = null;
         /**
          * @note any method that want to call it from outside the class must be protected and can be called via "execute" method in the base.
          * incase of parameters must send to method send it as an array of $param.
@@ -36,6 +41,32 @@
                 $retweeters   = $read->do('getRetweets',$data);//Last 100 Person reacted to this tweet.
                 $replies      = $read->do("getReplies",$data);   
                 return ['tweet'=>$show_tweet,'replies'=>$replies,'reacted_user'=>$retweeters];
+        }
+
+        /**
+         * get seshat unRead notifications.
+         */
+        protected function unReadNotifications(array $params){
+            $owner = $params['user_id'];
+            $notifications = $this->notificationInstance( $owner );
+            $notifications = $notifications->unReadNotifications();
+            if ($notifications === false){
+                $notifications = ['AppError'=>true];
+            }
+            return $notifications;
+        }
+
+        /**
+         * get last 100 of user notifications.
+         */
+        protected function getUserNotifications(array $params){
+            $owner = $params['user_id'];
+            $notifications = $this->notificationInstance( $owner );
+            $notifications = $notifications->getUserNotifications();
+            if ($notifications === false){
+                $notifications = ['AppError'=>true];
+            }
+            return $notifications;
         }
 
         /**
@@ -77,5 +108,12 @@
                     return ['AppError'=>true]; //createHashReport must be changed.
                 }
                 return ['report_name'=>$reportName];
+         }
+
+         private function notificationInstance(int $owner){
+            if (is_null(self::$notification) === true){
+                self::$notification = new Notification( $owner );
+            }
+            return self::$notification;
          }
     } 

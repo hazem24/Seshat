@@ -14,6 +14,13 @@
                 //createProfileAction
                 SeshatHelper::createProfileAction( $this );
             }
+            /**
+             * this method have most of user account in seshat.
+             */
+            public function accountAction(){
+              $this->rule();
+              SeshatHelper::account( $this );
+            }
 
             /**
              * @method analyticAction this method responsable for create an analytic for specific tweet id and user.

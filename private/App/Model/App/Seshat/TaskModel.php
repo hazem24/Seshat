@@ -54,7 +54,7 @@
                         if(is_null(self::$tasksMapper) === true){
                                 self::$tasksMapper = new TaskMapper;
                         }
-                                return self::$tasksMapper;
+                        return self::$tasksMapper;
                 }
 
                 

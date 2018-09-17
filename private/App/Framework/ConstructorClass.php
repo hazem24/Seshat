@@ -30,7 +30,7 @@
         *@return call the accessiable method for specific Property || Return Exception 
         */
         public function __get(string $property){
-            $method = 'get' . ucfirst($property);
+            $method = 'get' . ucfirst(strtolower($property));
             if(method_exists($this , $method)){
                   return  call_user_func(array($this,"$method"));
             }
@@ -60,14 +60,13 @@
         * set Values For Specific Property || Return Exception 
         */
         public function __set(string $property , $value){
-            $method = 'set' . ucfirst($property);
+            $method = 'set' . ucfirst(strtolower($property));
             if(method_exists($this , $method)){
-                    // Call To The Method 
-                    return call_user_func_array(array($this,"$method") , array($value));
+                // Call To The Method 
+                return call_user_func_array(array($this,"$method") , array($value));
             }
             // If Method Not Found Return Exception 
             throw new CoreException("You Don't Have Permission To Write To This Property $property");
-
         }
         /**
         *@method This Method Must Be Re-build Or Depercate It Soon @Writtern 22/02/2018 @10:16PM
@@ -84,5 +83,4 @@
         }*/
 
         // Isset And Unset Not Completed Here!
-        
     }

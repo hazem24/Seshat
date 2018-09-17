@@ -40,7 +40,7 @@
                         <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "fr" )'>Français</button>
                     </div>
 
-                    <button ng-if="data.tweets[0]" ng-json-export-excel data="data.tweets" filename="data.profile.screen_name"  class="btn btn-default btn-round btn-lg btn-icon" report-fields="{id: '#', created_at: 'date', org_text: 'tweets',lang:'lang',retweet_count:'retweets',like_count:'likes'}" rel="tooltip" title="download tweets in excel format">
+                    <button ng-if="data.tweets[0]" ng-json-export-excel data="data.tweets" filename="data.profile.screen_name"  class="btn btn-default btn-round btn-lg btn-icon" report-fields="{id: '#', org_text: 'tweets',lang:'lang',retweet_count:'retweets',like_count:'likes'}" rel="tooltip" title="download tweets in excel format">
                         <i class="fas fa-download text-center" style="font-size:20px;"></i>
                     </button>
                 </div>

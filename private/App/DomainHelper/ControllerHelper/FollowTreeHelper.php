@@ -71,7 +71,9 @@
                 if ($tree_id > 0 && $user_id !== false){
                     $cmd = Cmd::getCommand("followTree");
                     $response = $cmd->execute(['Method'=>
-                    ['name'=>'joinTree','parameters'=>['tokens'=>$followTree->getTokens(),'limit'=>self::$treeMaxAccounts,'tree_id'=>$tree_id,'user_id'=>$user_id]]]);
+                    ['name'=>'joinTree','parameters'=>['tokens'=>$followTree->getTokens(),
+                    'limit'=>self::$treeMaxAccounts,'tree_id'=>$tree_id,
+                    'user_id'=>$user_id ,'screen_name'=>$followTree->session->getSession('username')]]]);
                     $followTree->commonError( $response );
                 }else{
                     $response  = ($user_id === false) ? ['redirect'=>BASE_URL . '!index/signin'] : '';

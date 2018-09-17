@@ -255,7 +255,7 @@ define("TREE_CREATED","Your tree is created share it now to gain subscribers for
 define("MAX_SUB_REACH","You already joined 3 trees , you reach the limit.");
 define("INVAILED_TREE_ID",'This Tree not exists at all.');
 define("JOINED_TREE","You joined this tree !.");
-define("REACH_LIMIT","This tree reach max subscribers , check again later if someone leave it.");
+define("REACH_LIMIT","This tree reach max Subscribers , check again later if someone leave it.");
 define("ALREADY_JOINED","You already joined tree.");
 //End tree name.
 

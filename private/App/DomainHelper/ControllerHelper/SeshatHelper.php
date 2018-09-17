@@ -87,6 +87,21 @@
                 } 
             }
 
+            /**
+             * this method has all logic of user seshat account.
+             */
+            public static function account(Seshat $seshat){
+                if (RequestHandler::getRequest()){
+                    $cmd = Shared\CommandFactory::getCommand('seshat');
+                    $response =  $cmd->execute(['Method'=>['name'=>
+                    (string)RequestHandler::get('get'),'parameters'=>['user_id'=>$seshat->session->getSession('id')]]]);
+                    $seshat->commonError( $response );
+                    $response = $seshat->returnResponseToUser( ( $response ) ?? null );
+                    $seshat->encodeResponse( $response );
+                }
+                $seshat->encodeResponse( ['code'=>404,'msg'=>'Request not found.'] );
+            }
+
             public static function createReportHelper ( Seshat $seshatController , array $params = [] ){
                     /**
                       * 1- check params[0] if isset or not && check the type of report if allowable.

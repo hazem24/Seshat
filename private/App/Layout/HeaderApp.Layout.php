@@ -132,46 +132,11 @@
 		<div id="overlay"></div>
 		<!-- Main wrapper -->
 		<div id="container">
-			<header>
+			<header ng-controller = "layoutCtrl">
 				<div class="pull-left">
 					<a><?=NAME;?></a>
 				</div>
-				<nav class="navbar navbar-expand-lg" style="background-color:black;" >
-                                <div class="container">
-								<div class="navbar-translate">
-                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#example-navbar-icons" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                        <span class="navbar-toggler-bar bar1"></span>
-                                        <span class="navbar-toggler-bar bar2"></span>
-                                        <span class="navbar-toggler-bar bar3"></span>
-                                    </button>
-								</div>	
-                                    <div class="collapse navbar-collapse" id="example-navbar-icons">
-                                        <ul class="navbar-nav ml-auto">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#pablo"><i class="now-ui-icons ui-1_send" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#pablo"><i class="now-ui-icons users_single-02" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li class="nav-item dropdown">
-                                                <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                                                    <i class="now-ui-icons ui-1_settings-gear-63" aria-hidden="true"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                                    <a class="dropdown-header">Dropdown header</a>
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                    <div class="divider"></div>
-                                                    <a class="dropdown-item" href="#">Separated link</a>
-                                                    <div class="divider"></div>
-                                                    <a class="dropdown-item" href="<?=BASE_URL?>!index/logout"><?=LOGOUT;?></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </nav>
+				<nav-area></nav-area>
 			</header>
 			<!---->
 			<!-- Sidebar -->

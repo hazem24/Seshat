@@ -68,4 +68,16 @@ Alter table subscribed_in_tree add column ( join_at datetime not null default NO
 
 ALTER TABLE subscribed_in_tree CHANGE COLUMN user_id sub_user_id int NOT NULL;
 
+create table notification (
+id int auto_increment primary key not null ,
+type int not null default 1,
+status int not null default 1 , 
+notify_msg varchar(1000) not null , 
+is_read bool not null default 0);
+
+ALTER TABLE notification add column (user_id int not null), 
+  ADD CONSTRAINT user_notfication FOREIGN KEY (user_id) 
+  REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+alter table notification add column ( created_at datetime not null default NOW());
+
 

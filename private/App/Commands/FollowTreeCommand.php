@@ -1,6 +1,7 @@
 <?php
     namespace App\Commands;
     use App\Model\App\Seshat\FollowTreeModel;
+    use App\System\Notification\TreeNotification;
 
     /**
     *This Class  has all logic for follow tree feature.
@@ -153,21 +154,26 @@
                         *if no nothing return.--Done.    
                  *
                 */
-            $counter = $this->getModel()->countSubTrees( $data['user_id'] );  
+            $model = $this->getModel();
+            $counter = $model->countSubTrees( $data['user_id'] );  
             if ( $counter !== false ){
                 if ( $counter < 3  ){
-                    $already_subscribers = $this->getModel()->alreadySub( $data['user_id'] , $data['tree_id'] );
+                    $already_subscribers = $model->alreadySub( $data['user_id'] , $data['tree_id'] );
                     if ( $already_subscribers === false ){
-                        $subscribers  = $this->getModel()->countSubInTree( $data['tree_id'] );
-                        $tree_data    = $this->getModel()->getTreeById( $data['tree_id'] );
+                        $subscribers  = $model->countSubInTree( $data['tree_id'] );
+                        $tree_data    = $model->getTreeById( $data['tree_id'] );
                         $max_accounts = (int) $tree_data['max_accounts'];
                         if ( $subscribers === false || $tree_data === false ){
                             $response = ['AppError'=>true];
                         }else if ( $subscribers >= $data['limit'][$max_accounts] ){
+                            //Notify the owner to upgrade his/her tree.
+                            $this->notifyTreeOwner( $data['screen_name'] ,  $tree_data['name'] , $tree_data['user_id']  , 4 );
                             $response = ['error'=>REACH_LIMIT];
                         }else{
-                            $response = $this->getModel()->joinTree( $data['user_id'] , $data['tree_id'] , json_encode($data['tokens']) );
+                            $response = $model->joinTree( $data['user_id'] , $data['tree_id'] , json_encode($data['tokens']) );
                             if ( $response === true ){
+                                //notify the owrner of the tree that new subsriber join his/her tree.
+                                $this->notifyTreeOwner( $data['screen_name'] , $tree_data['name']  , $tree_data['user_id'] );
                                 $response = ['joined'=>JOINED_TREE];
                             }else{
                                 $response = ['AppError'=>true];
@@ -183,6 +189,16 @@
                 $response = ['AppError'=>true];
             }
             return $response;
+        }
+
+        /**
+         * this method notify the owner of a tree.
+         */
+        private function notifyTreeOwner( string $screen_name  ,  string $tree_name , int $owner_id , int $status = 1){
+            $notify = new TreeNotification( $owner_id );
+            $notify->setMsg( json_encode(['tree_name'=>$tree_name , 'msg'=>$screen_name]) );
+            $notify->setStatus( $status );
+            $notify->push();
         }
     
         private function saveTree( array $treeData ){

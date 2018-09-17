@@ -50,6 +50,7 @@
 <script type="text/javascript" src="<?=ASSESTS_URI."js"?>/lib/emojionearea.min.js"></script>
 <!-- Angular section -->
 <script src="<?=ASSESTS_URI."js"?>/app/modules/app.js"></script>
+<script src="<?=ASSESTS_URI."js"?>/app/modules/layout/layout.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/reports/report-controller-services.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/reports/hashtag/hashtag-report.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/shared/twitter/global-twitter-controller.js"></script>
