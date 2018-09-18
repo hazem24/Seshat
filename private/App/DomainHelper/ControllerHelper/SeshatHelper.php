@@ -270,6 +270,18 @@
                 }
             }
 
+            public static function statistics (Seshat $seshat){
+                if (RequestHandler::getRequest() && RequestHandler::get('getStatistics')){
+                    $user_id  = $seshat->session->getSession('id'); 
+                    $response = ['now'=>self::getRealTimeData($seshat , $user_id) , 'past'=>self::getPastStatistics($seshat , $user_id)];
+                    $response = $seshat->returnResponseToUser( $response ?? null );
+                    $seshat->encodeResponse( $response );                    
+                }   
+                //render view.
+                $seshat->renderLayout("HeaderApp");
+                $seshat->render();
+                $seshat->renderLayout("FooterApp");
+            }
             public static function controlFollowersTask ( Seshat $seshat ){
                 if ( RequestHandler::postRequest() ) {
                     $task_type    = ( string ) RequestHandler::post('taskType');
@@ -356,13 +368,13 @@
                               * 2-Redirect User To SeshatTimeLine. --Done.
                               * 3- Welcome Msg To User For First Time Only.
                               */
-                             $seshat->session->setSession('wizard',false);
+                    $seshat->session->setSession('wizard',false);
                 }elseif($createProfile === false){
-                             //Error Happen At Inserting Data To DataBase Try Again Later.
-                            $seshat->setError(GLOBAL_ERROR);
+                    //Error Happen At Inserting Data To DataBase Try Again Later.
+                    $seshat->setError(GLOBAL_ERROR);
                 }else if(array_key_exists('emailExists',$createProfile)){
-                             //Email Exists.
-                            $seshat->setError(EMAIL_EXISTS);
+                    //Email Exists.
+                    $seshat->setError(EMAIL_EXISTS);
                 } 
             }
 
@@ -425,7 +437,7 @@
                     //get list and save it in cache.
                     $createFollowersList = $read->do('getFollowersIds',$data);
                     if ( is_object( $createFollowersList ) && isset( $createFollowersList->ids ) ){
-                        $cache->set( $followersList , $createFollowersList->ids , 86400);//one day.
+                        $cache->set( $followersList , $createFollowersList->ids , 10800);//3 hr.
                     }
                     $response = ['error'=>NO_NEW_DATA];
                 }else {
@@ -469,5 +481,41 @@
                     }
                 }
                 return ['error'=>CANNOT_DO_TASK];
+           }
+
+           private static function getPastStatistics( Seshat $seshat , int $user_id ){
+                $cache      = $seshat->fastCache(); 
+                $statistics = $cache->getItem("mediaStatistics".$user_id);
+                $data       = $cache->get($statistics);
+                if (is_null($data) === true){
+                    //get statistics of social media accounts and save it in cache.
+                        //save the data into cache for 48 hr.
+                        $data = self::getRealTimeData($seshat,$user_id);
+                        $cache->set($statistics,$data,172800);//48 hr.              
+                    }
+                return $data;
+           }
+
+           /**
+            * this method get real time data for statistics report .. delayed 3 hr for cache.
+            */
+           private static function getRealTimeData( Seshat $seshat , int $user_id){
+                $cache      = $seshat->fastCache();
+                $statistics = $cache->getItem("realTimeStatistic".$user_id);
+                $data       = $cache->get($statistics);
+                if (is_null($data) === true){
+                    //get data and save it in the cache.
+                    $twitter_id   = $seshat->session->getSession('tw_id'); $tokens = $seshat->getTokens();
+                    $params       = array_merge(['user_id'=>$twitter_id] , $tokens);
+                    $read         = new DomainHelper\Twitter\Read;
+                    $user         = $read->do("getUser",$params);
+                    $nonFollowers = $read->do("nonFollowers",$params);
+                    $fans         = $read->do("fans",$params);
+                    $data         = (['statistics'=>['twitter'=>['followers'=>$user->followers_count,
+                        'following'=>$user->friends_count , 'tweet_count'=>$user->statuses_count,
+                        'nonFollower'=>count( $nonFollowers['results']['users']) , 'fans'=>count( $nonFollowers['results']['users'])]]]);
+                    $cache->set($statistics,$data,10800);// 3 hr.
+                }
+                return $data;
            }
         }

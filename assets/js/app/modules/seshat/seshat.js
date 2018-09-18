@@ -1,7 +1,7 @@
 angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatService){
     $timeline = String(document.location).toLowerCase().indexOf("!seshattimeline");
     $controlFollowers = String(document.location).toLowerCase().indexOf("controlfollowers");
-    $scope.feature_type = false;// flag for uses feature type.
+    $scope.feature_type = false;// flag for uses feature type must be change to search about element.
 
     if ( $timeline > 0 ){
         //get Timeline data.
@@ -77,6 +77,14 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
         } );
     }
     //End getRelation.
+
+    //seshat statistics.
+    if (angular.element("#accounts-statistics").length > 0){
+        seshatService.accountsStatistics( function ( $response ){
+            console.log( $response.data );
+        } );
+    }
+    //End statistics.
 }).directive("timeline",function (){
     return {
         templateUrl : template_url + "feed/posts.component.html",
@@ -92,6 +100,12 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
 }).directive("relation",function () {
     return {
         templateUrl : template_url + "feed/checkRelation.component.html",
+        restrict    : "E",
+        replace     : false
+    };
+}).directive("accountsStatistics",function (){
+    return {
+        templateUrl : template_url + "statistics/accounts/accounts-statistics.component.html",
         restrict    : "E",
         replace     : false
     };
@@ -121,5 +135,11 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
         $http.post(BASE_URL + "!seshat/controlFollowersTask","taskType="+$type +"&order="+$order).then( $callback );
     };
     //End ControlFollowersTask.
+
+    //get accounts statistics.
+    this.accountsStatistics = function ($callback){
+        $http.get(BASE_URL + "!seshat/statistics?getStatistics=true").then( $callback );
+    };
+    //End accounts statistics.
     
 });

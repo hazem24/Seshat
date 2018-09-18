@@ -58,7 +58,16 @@
                * @return json.
                */
               public function reportDataAction(array $params = []){
+                $this->detectLang();
                 SeshatHelper::getReportHelper($this,$params);   
+              }
+
+              /**
+               * get user statics.
+               */
+              public function statisticsAction(){
+                $this->rule();
+                SeshatHelper::statistics( $this );
               }
 
               //search feature. 
