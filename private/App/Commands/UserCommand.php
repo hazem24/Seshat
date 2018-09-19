@@ -61,7 +61,7 @@
              * @return false In Error.
              */
             private function getUserData(string $tw_id){
-                    return UserModel::getUser($tw_id);
+                return UserModel::getUser($tw_id);
             }
 
 
@@ -71,8 +71,8 @@
              */
 
             protected function createProfile(array $parameters){
-                    $createProfile =  UserModel::createProfile($parameters['id'],$parameters['name'],$parameters['email'],$parameters['user_describe'],$parameters['account_type']); 
-                    return $createProfile;   
+                $createProfile =  UserModel::createProfile($parameters['id'],$parameters['name'],$parameters['email'],$parameters['user_describe'],$parameters['account_type']); 
+                return $createProfile;   
             } 
 
 

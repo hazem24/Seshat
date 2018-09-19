@@ -102,6 +102,36 @@
                 $seshat->encodeResponse( ['code'=>404,'msg'=>'Request not found.'] );
             }
 
+            /**
+             * this just render the view of tasks action.
+             */
+            public static function tasks( Seshat $seshat ){
+                $seshat->renderLayout("HeaderApp");
+                $seshat->render();
+                $seshat->renderLayout("FooterApp");
+            }
+
+            /**
+             * delete specific task.
+             */
+            public static function deleteTask( Seshat $seshat ){
+                if (RequestHandler::postRequest() && RequestHandler::post('task_id')){
+                    $task_id = (int) RequestHandler::post("task_id");
+                    if ($task_id > 0){
+                        $user_id  = $seshat->session->getSession("id");
+                        $tasks    = new DomainHelper\Twitter\Task;
+                        $response = (bool) $tasks->do("deleteTask" , ['user_id'=>$user_id,'task_id'=>$task_id] );
+                        if ($response === true){
+                            $response = ['task_deleted'=>TASK_DELETED];
+                        }else{
+                            $response = ['task_not_deleted'=>TASK_CANNOT_DELETED];
+                        } 
+                        $seshat->encodeResponse( $response );
+                    }
+                }
+                $seshat->encodeResponse( ['code'=>404,'msg'=>'Request not found.'] );
+            }
+
             public static function createReportHelper ( Seshat $seshatController , array $params = [] ){
                     /**
                       * 1- check params[0] if isset or not && check the type of report if allowable.

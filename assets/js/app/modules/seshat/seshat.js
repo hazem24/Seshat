@@ -97,6 +97,16 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
         } );
     }
     //End account activity.
+
+    //seshat account tasks.
+    if (angular.element("#account-tasks").length > 0){
+        spinner.onPageLoad(true);
+        seshatService.accountTasks( function( $response ){
+            console.log( ($response.data) );
+            spinner.removeSpinner('.spinner');
+        } );
+    }
+    //End    account tasks. 
 }).directive("timeline",function (){
     return {
         templateUrl : template_url + "feed/posts.component.html",
@@ -124,6 +134,12 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
 }).directive("accountActivity",function (){
     return {
         templateUrl : template_url + "activity/account-activity.component.html",
+        restrict    : "E",
+        replace     : false
+    };
+}).directive("tasks",function (){
+    return {
+        templateUrl : template_url + "tasks/tasks.component.html",
         restrict    : "E",
         replace     : false
     };
@@ -165,4 +181,16 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
         $http.get( BASE_URL + "!seshat/account?get=getUserNotifications" ).then( $callback );
     };
     //End account activity.
+
+    //get tasks of specific account.
+    this.accountTasks = function ( $callback ){
+        $http.get( BASE_URL + "!seshat/account?get=tasks" ).then( $callback );
+    };
+    //End tasks.
+
+    //delete task is ready jsut implement it with the design.
+    this.deleteTask = function ( $task_id ,  $callback ){
+        $http.post(BASE_URL + "!seshat/deleteTask","task_id="+$task_id).then( $callback );
+    };
+    //end delete task.
 });

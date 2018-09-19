@@ -38,6 +38,23 @@
                 }
                 return ['error'=>[CANNOT_DO_TASK]];
             }
+
+            /**
+             * this method used to show tasks.
+             * @method showTasks.
+             * @return array | false in failure.
+             */
+            protected function showTasks(array $paramater){
+                return  $this->command->execute(['Method'=>['name'=>'showTasks','parameters'=>$paramater]]);
+            }
+            /**
+             * this method used to delete a task.
+             * @method deleteTask.
+             * @return bool.
+             */
+            protected function deleteTask( array $params ){
+                return $this->command->execute(['Method'=>['name'=>'deleteTask','parameters'=>$params]]);
+            }
             /**
              * @method expectedFinished Resbonsable For Calcuate Time Which Seshat Will Be Finish The Task.
              * @property ratioPerDay ratio of task refer to day example {{ seshat can do 720 follow || unfollow per day so ratioPerDay is x/720}}

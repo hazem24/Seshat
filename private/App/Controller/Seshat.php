@@ -78,6 +78,22 @@
                 SeshatHelper::accountActivity( $this );
               }
 
+              /**
+               * get account tasks
+               */
+              public function tasksAction(){
+                $this->rule();
+                SeshatHelper::tasks( $this );
+              }
+
+              /**
+               * used to delete task from seshat.
+               */
+              public function deleteTaskAction(){
+                $this->rule();
+                SeshatHelper::deleteTask( $this );
+              }
+
               //search feature. 
               public function searchAction ( array $params = [] ){
                 $this->rule();

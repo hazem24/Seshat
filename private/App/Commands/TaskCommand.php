@@ -38,6 +38,16 @@
                 return ($this->model->save()===true)?['task_save'=>true]:['task_not_save'=>true]; 
              }
 
+             protected function showTasks( array $params ){
+                $user_id = $params['user_id'];
+                return $this->model::showTasks( $user_id );
+             }
+
+             protected function deleteTask( array $params ){
+                $user_id = $params['user_id']; $task_id = $params['task_id'];
+                return $this->model::deleteTask( $user_id , $task_id );
+             }
+
 
             private function checkTask ( int $task_id , array $task_data ) {
                 switch ($task_id) {
@@ -171,13 +181,13 @@
         }
 
         private function handleMedia(int $user_id){
-                $uploadMedia = $this->uploadMedia($user_id);
-                if(is_array($uploadMedia)){
-                    $return = ['uploadError'=>$uploadMedia];//Error At Upload Image To Seshat System.
-                }else if(is_string($uploadMedia)){
-                    $return = $uploadMedia;
-                }
-                    return $return;
+            $uploadMedia = $this->uploadMedia($user_id);
+            if(is_array($uploadMedia)){
+                $return = ['uploadError'=>$uploadMedia];//Error At Upload Image To Seshat System.
+            }else if(is_string($uploadMedia)){
+                $return = $uploadMedia;
+            }
+            return $return;
         }
 
 

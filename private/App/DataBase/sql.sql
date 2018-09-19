@@ -79,5 +79,6 @@ ALTER TABLE notification add column (user_id int not null),
   ADD CONSTRAINT user_notfication FOREIGN KEY (user_id) 
   REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
 alter table notification add column ( created_at datetime not null default NOW());
+alter table tasks add column(status int not null default 0);
 
 

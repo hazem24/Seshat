@@ -6,6 +6,7 @@
     use Framework\Shared\Model;
     use Framework\Lib\DataBase\Query\QueryBuilder\SelectQueryBuilder;
     use Framework\Lib\DataBase\Query\QueryBuilder\InsertQueryBuilder;
+    use Framework\Lib\DataBase\Query\QueryBuilder\DeleteQueryBuilder as Delete;
     use App\Model\App\Seshat\TaskModel;
     use Framework\Lib\DataBase\DataMapper\Collections\AbstractGeneratorCollection as Collection;
 
@@ -15,10 +16,11 @@
         */
         Class TaskMapper extends AbstractDataMapper
         {
-            private $table = 'tasks';
-            private $foreign_key = 'user_id';
-            private $columnsTable = ['primarykey'=>'id','task_id','details','expected_finish','is_finished','progress','task_name'];
-            private $modelName = 'TaskModel';
+            private $table        = 'tasks';
+            private $foreign_key  = 'user_id';
+            private $primaryKey   = 'id';
+            private $columnsTable = ['task_id','details','expected_finish','is_finished','progress','task_name','status'];
+            private $modelName    = 'TaskModel';
             
             public function save(Model $taskModel){
                 return $this->doSave($taskModel); 
@@ -62,6 +64,32 @@
                 }
                     return false;//Not Exists.
             }
+            /**
+             * this method return last 50 tasks.
+             */
+            public function showTasks( int $user_id ){
+                $select    = new SelectQueryBuilder;
+                $select    = $select->select()->from( $this->table )->limit(50)->orderBy([$this->primaryKey=>"DESC"])
+                ->where([$this->foreign_key . ' = ? '=>$user_id])->createQuery();
+                $getTasks  = $this->pdo->prepare( $select['query'] );
+                $this->bindParamCreator( 1 , $getTasks , [$user_id] );
+                $getTasks->execute();
+                $getTasks = $getTasks->fetchAll(\PDO::FETCH_ASSOC);
+                return $getTasks;
+            }
+
+            /**
+             * this method used to delete specific task.
+             */
+            public function deleteTask( int $user_id , int $task_id ){
+                $delete = new Delete;
+                $delete = $delete->delete( $this->table , $this->columnsTable )->where([ $this->primaryKey . " = ? && "=> $task_id , 
+                $this->foreign_key . " = ? " => $user_id])->createQuery();
+                $deleteTask = $this->pdo->prepare( $delete['query'] );
+                $this->bindParamCreator( 2 , $deleteTask , [$task_id,$user_id] );
+                $deleteTask->execute();
+                return (bool) $deleteTask->rowCount();
+            }
             protected function doSave(Model $model){
                     if(is_null($model->getProperty('id'))){
                         //Insert New Publish Model.
@@ -76,7 +104,7 @@
                         if($newTask->rowCount() > 0){
                             return true;  //Saved Succesfully.
                         }
-                            return false; //Not Saved.
+                        return false; //Not Saved.
                     }     
 
             }

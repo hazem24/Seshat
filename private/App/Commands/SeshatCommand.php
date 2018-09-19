@@ -2,7 +2,7 @@
     namespace App\Commands;
     use App\DomainHelper\Twitter;
     use Framework\Helper\ArrayHelper;
-    use App\DomainHelper\Helper;
+    use App\DomainHelper;
     use App\System\Notification\Notification;
 
 
@@ -70,6 +70,16 @@
         }
 
         /**
+         * get last 50 of tasks.
+         */
+       protected function tasks(array $params){
+            $tasks   = new DomainHelper\Twitter\Task;
+            return $tasks->do("showTasks" , $params );
+       }
+
+
+
+        /**
          * @method createHashTagReport create Report For Specfic hashtag
          * @return array.
          */
@@ -99,9 +109,9 @@
           * @return array report_name || array in failure.      
           */
          private function hashReport(array $dataOfReport , string $hashTag,string $screen_name){
-                $reportName  = Helper::createHashReportName();
+                $reportName  = DomainHelper\Helper::createHashReportName();
                 $file_path   = self::HASH_REPORTS_FOLDER . $reportName . '.json';
-                $report_data = Helper::orgHashReportData($dataOfReport , str_ireplace("#","",$hashTag) , $screen_name);
+                $report_data = DomainHelper\Helper::orgHashReportData($dataOfReport , str_ireplace("#","",$hashTag) , $screen_name);
                 if(file_exists($file_path) === false){
                     file_put_contents($file_path,json_encode($report_data));
                 }else{

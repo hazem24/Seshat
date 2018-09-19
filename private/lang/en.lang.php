@@ -175,10 +175,12 @@ define("CANNOT_DO_TASK","Sorry Seshat can not do this task.");
 define("RECENT_FOLLOWERS","follow Accounts follow you recently.");
 define("FANS","Follow Accounts that follow you and you not follow back.");
 define("AUTOMATIC","Automatically ");
-define("CNTROL_FLLOWR_TASK_EXISTS",'This task i still working on it you can do this until i finished it.');
+define("CNTROL_FLLOWR_TASK_EXISTS",'This task i still working on it you can not do this until i finished it.');
 define("MAX_2000","Max number seshat can do for now is 2000 per request.");
 define("CNTROL_FLLOWR_SAVED","Your task saved i will do this for you automatically.");
 define("TASK_NOT_SAVE","Sorry i cannot save your task now try again later.");
+define("TASK_DELETED","Your task deleted successfully !");
+define("TASK_CANNOT_DELETED","Your task can't delete now please try again later.");
 define("HAVE_SCHEDULE_AT_SAME_TIME","You Have Scheduled Tweet At This Time I Cannot Schedule More Than Tweet At Same Date  Please Change The Date.");
 //End Tasks.
 

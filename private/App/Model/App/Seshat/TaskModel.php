@@ -27,9 +27,20 @@
                         return self::getFinder()->save(  $this );
                 }
 
-                
+                /**
+                 * this method return last 50 tasks user created.
+                 */
+                public static function showTasks( int $user_id ){
+                     return self::getFinder()->showTasks($user_id);   
+                }
+                /**
+                 * this method used to delete specific task for specific user.
+                 */
+                public static function deleteTask(int $user_id , int $task_id){
+                    return self::getFinder()->deleteTask( $user_id , $task_id );    
+                }
                 public static function scheduleExists($user_id,$date):bool{
-                        return self::getFinder()->scheduleExists($user_id,$date);
+                     return self::getFinder()->scheduleExists($user_id,$date);
                 }
 
                 /**
