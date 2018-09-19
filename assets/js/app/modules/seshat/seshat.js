@@ -1,9 +1,9 @@
 angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatService){
-    $timeline = String(document.location).toLowerCase().indexOf("!seshattimeline");
+
     $controlFollowers = String(document.location).toLowerCase().indexOf("controlfollowers");
     $scope.feature_type = false;// flag for uses feature type must be change to search about element.
 
-    if ( $timeline > 0 ){
+    if ( angular.element("#media-timeLine").length > 0 ){
         //get Timeline data.
         seshatService.getTimeLine(function ( response ) {
             if( response.data.error !== undefined ){
@@ -80,11 +80,23 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
 
     //seshat statistics.
     if (angular.element("#accounts-statistics").length > 0){
+        spinner.onPageLoad(true);
         seshatService.accountsStatistics( function ( $response ){
             console.log( $response.data );
+            spinner.removeSpinner('.spinner');
         } );
     }
     //End statistics.
+
+    //seshat account activity.
+    if (angular.element("#account-activity").length > 0){
+        spinner.onPageLoad(true);
+        seshatService.accountActivity( function( $response ){
+            console.log( ($response.data) );
+            spinner.removeSpinner('.spinner');
+        } );
+    }
+    //End account activity.
 }).directive("timeline",function (){
     return {
         templateUrl : template_url + "feed/posts.component.html",
@@ -106,6 +118,12 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
 }).directive("accountsStatistics",function (){
     return {
         templateUrl : template_url + "statistics/accounts/accounts-statistics.component.html",
+        restrict    : "E",
+        replace     : false
+    };
+}).directive("accountActivity",function (){
+    return {
+        templateUrl : template_url + "activity/account-activity.component.html",
         restrict    : "E",
         replace     : false
     };
@@ -141,5 +159,10 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
         $http.get(BASE_URL + "!seshat/statistics?getStatistics=true").then( $callback );
     };
     //End accounts statistics.
-    
+
+    //get account activity .. user notifications the same as account activity .. what seshat do in user accounts.
+    this.accountActivity = function ( $callback ){
+        $http.get( BASE_URL + "!seshat/account?get=getUserNotifications" ).then( $callback );
+    };
+    //End account activity.
 });

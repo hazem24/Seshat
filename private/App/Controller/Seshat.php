@@ -70,6 +70,14 @@
                 SeshatHelper::statistics( $this );
               }
 
+              /**
+               * get account activity.
+               */
+              public function activityAction(){
+                $this->rule();
+                SeshatHelper::accountActivity( $this );
+              }
+
               //search feature. 
               public function searchAction ( array $params = [] ){
                 $this->rule();

@@ -1,5 +1,5 @@
 <main>
-<timeline ng-controller="seshatCtrl"></timeline>
+<timeline id="media-timeLine" ng-controller="seshatCtrl"></timeline>
 </main>                     
 
         

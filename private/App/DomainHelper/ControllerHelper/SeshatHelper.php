@@ -295,6 +295,16 @@
             }
 
             /**
+             * this method just render the view of activityAction .. user notifications the same as account activity .. what seshat do in user accounts.
+             */
+
+             public static function accountActivity(Seshat $seshat){
+                $seshat->renderLayout("HeaderApp");
+                $seshat->render();
+                $seshat->renderLayout("FooterApp");
+             }
+
+            /**
               * @method reportType Responsble for check type of report and if exists or not.
               * @return int of type report || false.
               */

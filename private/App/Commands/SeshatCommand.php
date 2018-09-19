@@ -57,7 +57,7 @@
         }
 
         /**
-         * get last 100 of user notifications.
+         * get last 100 of user notifications which mean last (activity) in the account .. account timeLine.
          */
         protected function getUserNotifications(array $params){
             $owner = $params['user_id'];
