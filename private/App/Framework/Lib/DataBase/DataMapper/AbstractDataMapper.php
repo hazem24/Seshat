@@ -88,7 +88,6 @@
                     exit;
                 }
                 for($i=0; $i<$count ; $i++){
-                                
                     $create->bindParam($i+1,$data[$i],$this->typeOfDataToEnterDb(gettype($data[$i])));
                 }
            }
@@ -102,13 +101,13 @@
                             break;
                         case 'string':
                             $this->predifined = \PDO::PARAM_STR;
-                        break;
+                            break;
                         case 'boolean':
                             $this->predifined = \PDO::PARAM_BOOL;
                             break;
                         case 'unknown type':
                             throw new DbException("You Try To Enter DataBase Query With Unknown Type Of Data @class ". get_class($this));    
-                            
+                            break;
                         default:
                             throw new DbException("Oops I See Strange Type Of Data You Want To Enter To DataBase  @class ". get_class($this));    
                         break;

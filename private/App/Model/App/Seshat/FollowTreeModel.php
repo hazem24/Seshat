@@ -152,6 +152,13 @@
         }
 
         /**
+         * this method get all tree subscribers by id.
+         */
+        public function getTreeSubscribersById( int $tree_id ){
+            return self::getFinder()->getTreeSubscribersById( $tree_id );
+        }
+
+        /**
          * this method return how many trees user created.
          * @method countUserTrees.
          * @return int | false in failure.

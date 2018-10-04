@@ -1,9 +1,5 @@
 <?php
         namespace App\DomainHelper;
-        //use Framework\Lib\Security\Data\StringFilter as Filter;
-
-
-
         /**
          * This Class Provide All Static Function That App Need For FrontEnd Like Create Modal For Specific Condation.
          */
@@ -55,8 +51,6 @@ MODAL;
                 //Some Logic Changed When The Tweet Is Retweeted From Another User.
                 $retweeted = isset($tweet->retweeted_status) ? true:false;
                 if($retweeted && $analytic === false):
-                        //var_dump($tweet);
-                        //exit;
                         $like_count = $tweet->retweeted_status->favorite_count;
                         $retweet_count = $tweet->retweeted_status->retweet_count;
                         $org_text   = $tweet->retweeted_status->full_text;

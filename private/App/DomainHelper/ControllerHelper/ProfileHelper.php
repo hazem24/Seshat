@@ -96,7 +96,8 @@
                     if( isset( $profile_reader->status ) ) {
                         //Save Task.
                         $task     = new Twitter\Task;
-                        $response = $task->do('addNewTask' , array_merge($tokens,['task_id'=>2,'screen_name'=>$tweet_as,'lang'=>$options['translate_tweets_to'],'user_id'=>$profile->session->getSession('id')]) );
+                        $response = $task->do('addNewTask' , array_merge($tokens,['task_id'=>2,
+                        'media'=>'twitter','screen_name'=>$tweet_as,'lang'=>$options['translate_tweets_to'],'user_id'=>$profile->session->getSession('id')]) );
                         $profile->commonError( $response );
                         if( is_array( $response )  && array_key_exists('task_not_save',$response)){
                             $profile->setError(TASK_NOT_SAVE);
@@ -185,8 +186,8 @@
             $fakeAccounts = 0;
             $cursor = -1;
             for ($i=1; $i <= $loops ; $i++) { 
-                $followersList = $twitterRead->do('getFollowersList',['screen_name'=>$screen_name,'cursor'=>$cursor,'oauth_token'=>$tokens['oauth_token'] , 
-                'oauth_token_secret'=>$tokens['oauth_token_secret']]);
+                $followersList = $twitterRead->do('getFollowersList',['screen_name'=>$screen_name,'cursor'=>$cursor,'access_token'=>$tokens['access_token'] , 
+                'access_token_secret'=>$tokens['access_token_secret']]);
                 if(isset( $followersList->users ) && !empty( $followersList->users )){
                     //Sample loops.
                     foreach ($followersList->users as $key => $user) {
@@ -227,11 +228,11 @@
          * Check if user exists.
          */
         private static function checkUser (Profile $profile , Twitter\Read $reader , array $tokens  , string $screen_name , bool $return_time_line = false) {
-            $profileReader = $reader->do("getUser",['screen_name'=>$screen_name,'oauth_token'=>$tokens['oauth_token'] , 
-            'oauth_token_secret'=>$tokens['oauth_token_secret']]);
+            $profileReader = $reader->do("getUser",['screen_name'=>$screen_name,'access_token'=>$tokens['access_token'] , 
+            'access_token_secret'=>$tokens['access_token_secret']]);
             if($return_time_line === true) {
-                $tweetsReader = $reader->do("userTimeLine",['screen_name'=>$screen_name,'oauth_token'=>$tokens['oauth_token'] , 
-                'oauth_token_secret'=>$tokens['oauth_token_secret']]);
+                $tweetsReader = $reader->do("userTimeLine",['screen_name'=>$screen_name,'access_token'=>$tokens['access_token'] , 
+                'access_token_secret'=>$tokens['access_token_secret']]);
                 return ['profileReader'=>$profileReader,'timeLine'=>$tweetsReader];
             }
             return $profileReader;

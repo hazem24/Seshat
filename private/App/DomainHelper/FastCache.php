@@ -1,15 +1,17 @@
 <?php
         namespace App\DomainHelper;
         use phpFastCache\CacheManager;
-        
+        use Framework\Exception\CacheException;
+        use Framework\ConstructorClass as Base;
 
 
         /**
          * This Class Provide All Static Function That App Need To Create Cache System Used(PhpFastCache).
          */
 
-        Class FastCache 
+        Class FastCache extends Base
         {
+            private $driver = ['files','redis'];
             /**
              *Important methods in this library 
                 *hasItem($key) // Tests if an item exists
@@ -18,15 +20,19 @@
  
              */    
             private $cache;    
-            public function __construct(){
+            public function __construct( string $cache_type = 'files' ){
+                $cache_type = strtolower( $cache_type );
                 
-                CacheManager::setDefaultConfig([
-                        "path" => sys_get_temp_dir()
-                  ]);
-                $this->cache = CacheManager::getInstance('files');  
+                if (array_search($cache_type , $this->driver) !== false){
+                    $this->cache = CacheManager::getInstance($cache_type);  
+                }else{
+                    throw new CacheException("Cache driver $cache_type not found.");
+                }
             }
 
-
+            public function getCache(){
+                return $this->cache;
+            }
             public function getItem(string $name){
                 return $this->cache->getItem($name); //Return Item.
             }
@@ -108,19 +114,18 @@
                          } 
                 } 
             }
-
-            private function save($item){
-                    $this->cache->save($item);
-            } 
-            
-            /**
+                        /**
              * @method updateExistingItem update data inside specific item.
              * @return void.
              */
-            private function updateExistingItem(string $item_name,$new_data,int $key,int $expire = 0){
+            public function updateExistingItem(string $item_name,$new_data,int $key,int $expire = 0){
                 $item = $this->getItem($item_name);
                 $item_data = $this->get($item);
                 $item_data[$key] = $new_data;
                 $this->set($item,$item_data,$expire);
             }
+            
+            public function save($item){
+                $this->cache->save($item);
+            } 
         }

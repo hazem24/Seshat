@@ -13,7 +13,7 @@ Class Viewer extends AbstractAction
         * @return array.
         */
         public function getUser ( array $parameters = []) {
-            $getUser = $this->connection->get("users/show",array_merge(['include_entities' => "true"],$parameters['by']));
+            $getUser = $this->connection->get("users/show",array_merge(['include_entities' => "true",'tweet_mode'=>'extended'],$parameters['by']));
             return $this->getResponse($getUser);
         }
         /**

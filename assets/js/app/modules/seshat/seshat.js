@@ -26,6 +26,7 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
             // get data from server.
             seshatService.controlFollowers( String(document.location) , function ( $response ) {
                 //save as task.
+                console.log( $response.data );
                 $scope.saveTask = true;//uses this to appear save task button.
                 if ( $response.data.results !== undefined ){
                     $scope.results = $response.data.results;

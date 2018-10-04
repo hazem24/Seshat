@@ -19,11 +19,11 @@
     class TwitterActionHelper extends BaseHelper
     {
         use DateTrait;
-
+     
         public static function composeTweet ( TwitterAction $twitterAction ) {
             /**
             * If Comming Request Is PublishNow  =>User Want To Send Tweet To Twitter.
-            * If Comming Request Is Sechdule => User Want To Scedule.
+            * If Comming Request Is Schedule => User Want To Scedule.
             */
             if(RequestHandler::postRequest()){
                 $publishNow = (bool)RequestHandler::post('publish');
@@ -38,11 +38,12 @@
                     $publishNow = self::newTweet( $twitterAction ,  $category,$tweetContent,$seshatPublicAccess,false,$tweet_id );
                 }elseif($schedule === true){
                     //Schedule Logic=>Table seshat_schedule.
-                    $scehduleTime = (string)RequestHandler::post("scehduleTime");
-                    if(self::validDate($scehduleTime) === false){
+                    $scehduleTime = (string)RequestHandler::post("scehduleTime");// include PM AM.
+                    if(self::validDate($scehduleTime , 'Africa/Cairo') === false){
                         $twitterAction->setError(INVAILD_DATE);
+                    }else{
+                        $schedule = self::newTweet( $twitterAction ,$category,$tweetContent,$seshatPublicAccess,true );
                     }
-                    $schedule = self::newTweet( $twitterAction ,$category,$tweetContent,$seshatPublicAccess,true );
                 }
                 //Return Reponse To User.
                 $response  = $twitterAction->returnResponseToUser((isset($publishNow) && is_array($publishNow))?$publishNow:$schedule);
@@ -138,9 +139,10 @@
         * @return array.
         */
         private static function newTweetLogic(TwitterAction $twitterAction , string $tweetContent,int $categoryType,bool $seshatPublicAccess,bool $schedule=false,bool $media = false,string $tweet_id = ''){
-            $data = ['oauth_token'=>$twitterAction->session->getSession('oauth_token'),
-            'oauth_token_secret'=>$twitterAction->session->getSession('oauth_token_secret'),'tweetContent'=>$tweetContent,'user_id'=>(int)$twitterAction->session->getSession('id'),
-            'category'=>$categoryType,'media'=>$media,'seshatPublicAccess'=>$seshatPublicAccess,'tweet_id'=>$tweet_id];
+            $data = ['access_token'=>$twitterAction->session->getSession('oauth_token'),
+            'access_token_secret'=>$twitterAction->session->getSession('oauth_token_secret'),'tweetContent'=>$tweetContent,
+            'user_id'=>(int)$twitterAction->session->getSession('id'),
+            'category'=>$categoryType,'media'=>$media,'publicAccess'=>$seshatPublicAccess,'tweet_id'=>$tweet_id];
             if($schedule === false){
                 $class = new Twitter\Send;
                 $method = "publishNewTweet";
@@ -148,7 +150,7 @@
                 $class = new Twitter\Task;
                 $method = "addNewTask";
                 $data['task_id'] = 1;
-                $data['expected_finish'] = self::$date;//Coming From Date Trait.
+                $data['expected_finish'] = self::$date . ':00';//Coming From Date Trait.
             }
             return $class->do($method,$data);  
         }
@@ -244,5 +246,4 @@
            $send_to_twitter = new Twitter\Send;
            return $send_to_twitter->do('writeToTwitter',array_merge($data , $twitterAction->getTokens()));
         }
-
     }

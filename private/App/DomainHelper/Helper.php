@@ -109,6 +109,26 @@
                     }
                         return LANG_NOT_SUPPORTED;
              }
+             /**
+              * this method return last post user created as text.
+              * @method getLastPostText.
+              * @return array.
+              */
+             public static function getLastPostTextByUser( $post , string $media ){
+                switch ($media) {
+                        case 'twitter':
+                                if ( is_object( $post ) && isset($post->status) ){
+                                       $text    =  ( isset($post->status->retweeted_status ) ) ? $post->status->retweeted_status->full_text :  $post->status->full_text;
+                                       $return  = ['post_id'=>$post->status->id_str,'text'=>$text];
+                                }
+                                break;
+                        
+                        default:
+                                //Nothing here.
+                                break;
+                }
+                return $return ?? [];
+             }
 
                 /**
                  * @method percentage.
@@ -259,6 +279,26 @@
                 }
 
                 /**
+                 * this method return true if user {{ source }} follow user {{ target }} in specific media.
+                 * @method getRelation.
+                 * @return bool.
+                 */
+                public static function follow( $mediaChecker , string $media ){
+                     switch (strtolower($media)) {
+                             case 'twitter':
+                                $return = ( is_object( $mediaChecker ) && $mediaChecker->relationship ) ?? null;
+                                if ( is_null( $return ) === false){
+                                    $return =  $mediaChecker->relationship->source->following;  
+                                }
+                                break;
+                             default:
+                              $return =  null;  
+                                break;
+                     }
+                     return $return;
+                }
+
+                /**
                  * this media return the number of {{ Media }} .. must be used after issetMedia check method.
                  * @property mediaToNumber.
                  * @return int.
@@ -298,7 +338,4 @@
                         }
                         return $replies;
                 } 
-
-
-
         }

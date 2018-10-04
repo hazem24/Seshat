@@ -2,6 +2,7 @@
 
         namespace App\DomainHelper;
         use \DateTime as Date;
+        use \DateTimeZone;
         /**
          * Trait Handle All Date In The App.
          */
@@ -9,27 +10,44 @@
               private static $format = "Y-m-d H:i";  
               private static $date;  
 
-              public static function validDate(string $date,string $format="m/d/Y g:i"){
-                     $date_only =  trim(str_ireplace(["pm",'am'],"",$date));
-                     $checkDate =  Date::createFromFormat($format, $date_only);
-                     $checkDate =  ($checkDate && $checkDate->format($format) == $date_only) ? true : false;
-                     
-                     if($checkDate === true){
-                        self::$date = new Date($date_only);
-                        $now = new Date("now");
-                        self::dateParser($date);
-                        if(self::$date > $now->format(self::$format)){//In Future.
-                                return true;
+              /**
+               * @property time_zone User time zone.
+               * */  
+              public static function validDate(string $date, string $time_zone = 'UTC' , string $format="m/d/Y g:i" ){
+                     $date_only = self::dateOnly($date);
+                     if ( self::checkDate( $date_only ) !== false ){
+                        $checkDate =  Date::createFromFormat($format, $date_only);
+                        $checkDate =  ($checkDate && $checkDate->format($format) == $date_only) ? true : false;
+                        
+                        if($checkDate === true){
+                          self::$date = self::timeZoneConverter( $date_only , $time_zone ); // converted to server timezone.
+                          $now        = new Date("now");//in server timezone.
+                          self::dateParser($date);// in server time zone.
+                          if(self::$date > $now->format(self::$format)){//In Future.
+                              return true;
+                          }
                         }
                      }
-                        return false;
+                    return false;
+              }
+              /**
+               * this method convert date from specific time zone to server time zone.
+               * @method timeZoneConverter.
+               * @return DateTime.
+               */
+
+              public static function timeZoneConverter( string $date  , string $time_zone ){
+                $server_time_zone = date_default_timezone_get();
+                $date = new Date($date , new DateTimeZone($time_zone));
+                $date->setTimeZone(new DateTimeZone($server_time_zone));
+                return $date;
               }
               /**
                * @method dateParser Parse The Date That Coming From DatetimePicker To Date Vailed By Mysql Datetime (2018-02-28 12:05:00)
                * @convert date=>(2018/02/28 12:05 (PM|AM))) To date=>(2018-02-28 12:05).
                * @return date=>(2018-02-28 12:05)
                */
-              private static function dateParser($date){
+              public static function dateParser($date){
                       $date_items = explode(" ",$date);
                       if(is_array($date_items)){
                             self::$date = (isset($date_items[2])) ? 
@@ -37,10 +55,27 @@
                             date_add(self::$date,date_interval_create_from_date_string('+12 hour')) : self::$date) : null;
                             self::$date = self::$date->format(self::$format);
                             if(strtolower($date_items[2]) == 'am' && stripos(self::$date,"12:")){//Change 12: To 00: At Am Clock.
-                                    self::$date = str_ireplace('12:',"00:",self::$date);
+                                self::$date = str_ireplace('12:',"00:",self::$date);
                             }
-                      }
-                       
+                      }      
+              }
+
+              /**
+               * get list of timezones in php.
+               * @method timezoneList.
+               * @return array || false in failure.
+               */
+              public static function timezoneList(){
+                return DateTimeZone::listAbbreviations();
+              }
+
+              public static function dateOnly(string $date){
+                return trim(str_ireplace(["pm",'am'],"",$date));
+              }
+
+              public static function checkDate(string $date){
+                $timestamp = strtotime($date);
+                return $timestamp ? $date : false;
               }
 
         }

@@ -15,16 +15,59 @@
                 protected $task_id;
                 protected $details;
                 protected $expected_finish;
-                protected $is_finished;
-                protected $progress;
+                protected $is_finished = 0;
+                protected $progress = 0;
                 protected $task_name;
                 protected $user_id;
-
+                protected $status;
 
                 private static $tasksMapper = null;
 
-                public function save(){
-                        return self::getFinder()->save(  $this );
+                public function setId( int $id ){
+                  $this->id = $id;
+                }
+
+                public function setProgress( int $progress ){
+                  $this->progress = $progress;
+                }
+
+                public function setIs_finished( int $is_finished ){
+                  $this->is_finished = $is_finished;
+                }
+
+                public function setStatus( int $status ){
+                  $this->status = $status;
+                }
+
+                public function setUser_id( int $user_id ){
+                   $this->user_id = $user_id;
+                }
+
+                public function setTask_id( int $task_id ){
+                   $this->task_id = $task_id;
+                }
+
+                public function getTask_id(){
+                   return $this->task_id;
+                }
+                public function getId(){
+                   return $this->id;
+                }
+      
+                public function getProgress(){
+                   return $this->progress;
+                }
+      
+                public function getIs_finished(){
+                   return $this->is_finished;
+                }
+      
+                public function getStatus(){
+                   return  $this->status;
+                }
+      
+                public function getUser_id(){
+                   return $this->user_id;
                 }
 
                 /**
@@ -43,11 +86,30 @@
                      return self::getFinder()->scheduleExists($user_id,$date);
                 }
 
+                public function save(){
+                        return self::getFinder()->save(  $this );
+                }
+
                 /**
                 * @method getTweetAsInfo. 
                 */
                 public function getTweetAsInfo ( int $user_id ){
-                        return self::getFinder()->getTweetAsInfo( $user_id );
+                     return self::getFinder()->getTweetAsInfo( $user_id );
+                }
+
+                /**
+                 * this method uses to load schedule posts from DB.
+                 * @method getPosts.
+                 */
+                public function getPosts(){
+                    return self::getFinder()->getPosts();
+                }
+
+                /**
+                 * this method load controlFollowers task from Db.
+                 */
+                public function getControlFollowersTask( string $media ){
+                   return self::getFinder()->getControlFollowersTask( $this  , $media);
                 }
 
                 /**
@@ -56,6 +118,14 @@
                  */
                 public static function controlFollowersTaskExists( int $user_id , int $task_id ){
                         return self::getFinder()->controlFollowersTaskExists( $user_id , $task_id ); 
+                }
+
+                /**
+                 * @method postAsInfo.
+                 * @return array | false in failure.
+                 */
+                public static function postAsInfo( int $user_id , string $media){
+                  return self::getFinder()->postAsInfo( $user_id , $media);
                 }
                 /**
                 * @method getFinder Find The Mapper Which Object Related To It.

@@ -36,8 +36,6 @@
             }
             // If Method Not Found Return Exception 
             throw new CoreException("You Don't Have Permission To Read To This Property $property");
-
-            
         }
         /**
          * this method used to set value to property.

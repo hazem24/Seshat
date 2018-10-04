@@ -80,5 +80,5 @@ ALTER TABLE notification add column (user_id int not null),
   REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
 alter table notification add column ( created_at datetime not null default NOW());
 alter table tasks add column(status int not null default 0);
-
+alter table user_data add column (time_zone varchar(300) not null default 'UTC');
 

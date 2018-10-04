@@ -88,9 +88,9 @@
          * @method fastCache get An Instance of FastCache Class And Prevent dupicate of FastCache Method.
          * @return FastCache.
          */
-        public function fastCache():FastCache{
+        public function fastCache(string $driver = 'files'):FastCache{
               if(is_null($this->cache) === true){
-                        $this->cache = new FastCache();
+                $this->cache = new FastCache( $driver );
               }
               return $this->cache;
         }
@@ -137,7 +137,7 @@
                 //secret value.
                 $oauth_token_secret = $this->session->getSession('oauth_token_secret');
                 $oauth_token_secret = ($oauth_token_secret !== false) ? $oauth_token_secret : 'no_token_secret';
-                return ['oauth_token'=>$oauth_token,'oauth_token_secret'=>$oauth_token_secret];
+                return ['access_token'=>$oauth_token,'access_token_secret'=>$oauth_token_secret];
         }
 
         /**

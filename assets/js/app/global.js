@@ -46,16 +46,12 @@ var globalMethod = {
                 $('form').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file] ,textarea').val('');
         },
         createTree : function ( $element , $data ) {
-                  console.log( $data );
-
                   var nodes = [];
                   var edges = [];
                   for (var $index in $data) {                        
                         nodes[$index] = { id:$index , shape:'circularImage' , image:"http://127.0.0.1/seshat/assets/img/seshat.png" , label:'@'+$data[$index].subscriber , color: {highlight: {border: '#2B7CE9',background: '#D2E5FF'}} ,font: {color: 'red' , size: 14}};
                         edges[$index] = {from:parseInt($index), to:parseInt($index) + 1};// create connections between people
                   }         
-                  
-                  console.log(edges);
                   // create a network
                   var container = document.getElementById($element);
                   var data = {

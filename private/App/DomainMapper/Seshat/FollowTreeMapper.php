@@ -1,7 +1,6 @@
 <?php 
 
     namespace App\DomainMapper\Seshat;
-    use Framework\Lib\DataBase\DataMapper\AbstractDataMapper;
     use Framework\Registry as Registry;
     use Framework\Shared\Model;
     use Framework\Lib\DataBase\Query\QueryBuilder\SelectQueryBuilder as select;
@@ -15,7 +14,7 @@
         /**
         *This Class Is Provide Access Of FollowTree Data In DataBase. 
         */
-        Class FollowTreeMapper extends AbstractDataMapper
+        Class FollowTreeMapper extends BaseMapper
         {
             private $tableA = 'follow_tree';
             private $tableB = 'subscribed_in_tree';
@@ -108,6 +107,30 @@
                     $show = ['tree_data'=>$show];
                 }
                 return $show;
+            }
+
+            public function getTreeSubscribersById( int $tree_id ){
+                $redis          = $this->redis();
+                $tree_data_item = $redis->getItem( "tree_data" . $tree_id );
+                if ( is_null( $redis->get( $tree_data_item ) ) === true ){
+                    $stm       = new select;
+                    $stm       = $stm->select()->from( $this->tableB )->where( [ $this->foreign_key . " = ?" => $tree_id ] )
+                    ->join( "user" , $this->columnsTableB[2] , "id")
+                    ->join( $this->tableA , $this->columnsTableB[1] , 'id')->createQuery();
+                    $tree_data = $this->pdo->prepare( $stm['query'] );
+                    $this->bindParamCreator( 1 , $tree_data , $stm['data'] );
+                    $tree_data->execute();
+                    $tree_data  = $tree_data->fetchAll(\PDO::FETCH_ASSOC);
+                    if ( $tree_data !== false ){
+                        $redis->set( $tree_data_item  , $tree_data , 84600); //24 hr.
+                    }else{
+                        // error happen in connection with DB.
+                        $redis->set( $tree_data_item  , [] , 3600); //1 hr.
+                    }
+                }else{
+                    $tree_data = $redis->get( $tree_data_item );
+                }
+                return $tree_data;
             }
 
             /**

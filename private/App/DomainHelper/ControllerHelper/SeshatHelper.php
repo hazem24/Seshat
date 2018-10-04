@@ -374,7 +374,7 @@
                 $cmd = Shared\CommandFactory::getCommand('seshat');
                 $getHashTagReport =  $cmd->execute(['Method'=>['name'=>"createHashTagReport",'parameters'=>['screenName'=>$screenName,
                 'hashtag'=> urlencode((stripos($hashtag_name,'#') !== false) ? '' : '#').$hashtag_name,
-                'oauth_token'=>$tokens['oauth_token'],'oauth_token_secret'=>$tokens['oauth_token_secret']]]]);
+                'access_token'=>$tokens['access_token'],'access_token_secret'=>$tokens['access_token_secret']]]]);
                 $seshatController->commonError($getHashTagReport); 
                 return $getHashTagReport;
             }
@@ -426,7 +426,7 @@
                 $cmd = Shared\CommandFactory::getCommand('seshat');
                 $analyticData =  $cmd->execute(['Method'=>['name'=>"getAnalytic",'parameters'=>['screenName'=>$screenName,
                   'tweet_id'=>$tweet_id,
-                  'oauth_token'=>$tokens['oauth_token'],'oauth_token_secret'=>$tokens['oauth_token_secret']]]]);
+                  'access_token'=>$tokens['access_token'],'access_token_secret'=>$tokens['access_token_secret']]]]);
                 if(is_array($analyticData) && is_object($analyticData['tweet']) === false && array_key_exists('error',$analyticData['tweet'])){
                     $seshat->setError($analyticData['tweet']['error']);
                 } 
@@ -461,7 +461,14 @@
                 if ( $feature == 'recentUnfollow' ){
                     return self::unrecentFollowersLogic( $seshat , $read , $data );
                 }
-                $response = $read->do($feature,$data);
+                $cache = $seshat->fastCache();
+                $list  = $cache->getItem( "$feature,". $seshat->session->getSession('id'));
+                if (is_null( $cache->get( $list ) ) === true){
+                    $response = $read->do($feature,$data);
+                    $cache->set( $list , $response , 10800);
+                }else{
+                    $response = $cache->get( $list );
+                }
                 return $response;
             }
 
@@ -470,7 +477,7 @@
                  * 1 - get old list from cache.
                     * if found return the list if not found create one and save it in cache.
                  */
-                $itemName = 'followersList' . $seshat->session->getSession('id');
+                $itemName = 'unRecentFollowersList' . $seshat->session->getSession('id');
                 $cache = $seshat->fastCache();
                 $followersList = $cache->getItem( $itemName );
                 if ( is_null($cache->get( $followersList )) === true){
@@ -505,6 +512,7 @@
             private static function controlFollowersSaveTask ( string $task_type , int $order ,  array $tokens , int $user_id){
                 $whiteListOfTasks = ['fans'=>32,'nonfollowers'=>31,'recentfollowers'=>33];
                 $task_id          = ($whiteListOfTasks[strtolower($task_type)]) ?? null;
+                $order            = ($order <= 2000) ? $order : 2000;
                 if ( is_null( $task_id )  === false){
                     if ($order > 0 && $order <= 2000){
                         $task = new DomainHelper\Twitter\Task;

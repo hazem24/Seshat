@@ -139,12 +139,12 @@
          *@used   In Insert Query Builder
          */
          protected function placeHolder(int $count = 0):string{
-                $placeHolder = ($count > 0) ? array_fill(1 , $count , '?') : '';
-                return implode(',',$placeHolder);
+            $placeHolder = ($count > 0) ? array_fill(1 , $count , '?') : '';
+            return implode(',',$placeHolder);
          }
 
          protected function dataCount(array $data , array $columns):bool{
-                return (count($data) == count($columns))  ? true : false;
+            return (count($data) == count($columns))  ? true : false;
          }
 
          /**
@@ -152,7 +152,7 @@
          *I Must Integrate ArrayHelper Inside It 
          */
          protected function arrayFilter(array $array){
-             return array_filter($array);
+            return array_filter($array , 'strlen');
          }                            
 
     }

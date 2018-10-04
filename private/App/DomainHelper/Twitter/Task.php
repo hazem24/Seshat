@@ -71,8 +71,8 @@
              */
             private function taskName(string $content , bool $full_content_as_name = false){
                     $tweetLength = mb_strlen($content);
-                    if($tweetLength > 10 && $full_content_as_name === false){
-                            $taskName = substr($content,0,9) . '...';
+                    if($tweetLength > 20 && $full_content_as_name === false){
+                            $taskName = mb_substr($content,0,20) . ' ...';
                     }else{
                             $taskName = $content;
                     }

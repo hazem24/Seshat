@@ -21,8 +21,8 @@
              */
             protected function readTimeLine(array $parameter = []){
                 return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>
-                ['Name'=>"readTimeLine","parameters"=>[],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
-                ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
+                ['Name'=>"readTimeLine","parameters"=>[],"user_auth"=>['status'=>true,'access_token'=>$parameter["access_token"]
+                ,'access_token_secret'=>$parameter['access_token_secret']]]]);
             }
             /**
              * @method searchTweets search tweets for specific words.
@@ -33,8 +33,8 @@
                 $result_type = (isset($parameter['result_type']) && !empty($parameter['result_type']))?$parameter['result_type']:'mixed';
                 $max_id = (isset($parameter['max_id']) && !empty($parameter['max_id']))?$parameter['max_id']:null;   
                 return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>
-                ['Name'=>"searchTweets","parameters"=>['q'=>$parameter['search'],'result_type'=>$result_type,'max_id'=>$max_id,'until'=>$until,'since_id'=>$since_id],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
-                ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
+                ['Name'=>"searchTweets","parameters"=>['q'=>$parameter['search'],'result_type'=>$result_type,'max_id'=>$max_id,'until'=>$until,'since_id'=>$since_id],"user_auth"=>['status'=>true,'access_token'=>$parameter["access_token"]
+                ,'access_token_secret'=>$parameter['access_token_secret']]]]);
 
             }
 
@@ -45,8 +45,8 @@
              protected function getRetweets(array $parameter = []){
                 $tweet_id = $parameter['tweet_id'] ;
                 return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>
-                ['Name'=>"getRetweets","parameters"=>['tweet_id'=>$tweet_id],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
-                ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
+                ['Name'=>"getRetweets","parameters"=>['tweet_id'=>$tweet_id],"user_auth"=>['status'=>true,'access_token'=>$parameter["access_token"]
+                ,'access_token_secret'=>$parameter['access_token_secret']]]]);
        
              }
 
@@ -55,8 +55,8 @@
               */
               protected function favList(array $parameter = []){
                         return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>
-                        ['Name'=>"favList","parameters"=>['screenName'=>$parameter['screenName']],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
-                        ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
+                        ['Name'=>"favList","parameters"=>['screenName'=>$parameter['screenName']],"user_auth"=>['status'=>true,'access_token'=>$parameter["access_token"]
+                        ,'access_token_secret'=>$parameter['access_token_secret']]]]);
               }
               /**
                * @method showTweet return specific tweet based on id. 
@@ -64,8 +64,8 @@
 
               protected function showTweet(array $parameter = []){
                         return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>
-                        ['Name'=>"showTweet","parameters"=>['tweet_id'=>$parameter['tweet_id']],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
-                        ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
+                        ['Name'=>"showTweet","parameters"=>['tweet_id'=>$parameter['tweet_id']],"user_auth"=>['status'=>true,'access_token'=>$parameter["access_token"]
+                        ,'access_token_secret'=>$parameter['access_token_secret']]]]);
               }
               
               /**
@@ -75,8 +75,8 @@
               protected function getFollowersIds (  array $parameter = [] ) {
                 $crusor = $parameter['crusor'] ?? null;      
                 return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>
-                ['Name'=>"getFollowersIds","parameters"=>['user_id'=> $parameter['user_id'] , 'crusor' => $crusor],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
-                ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);
+                ['Name'=>"getFollowersIds","parameters"=>['user_id'=> $parameter['user_id'] , 'crusor' => $crusor],"user_auth"=>['status'=>true,'access_token'=>$parameter["access_token"]
+                ,'access_token_secret'=>$parameter['access_token_secret']]]]);
               }
 
               /**
@@ -86,8 +86,8 @@
               protected function getFriendsIds ( array $parameter = [] ) {
                 $crusor = $parameter['crusor'] ?? null; 
                 return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>
-                ['Name'=>"getFriendsIds","parameters"=>['user_id'=> $parameter['user_id'] , 'crusor' => $crusor],"user_auth"=>['status'=>true,'access_token'=>$parameter["oauth_token"]
-                ,'access_token_secret'=>$parameter['oauth_token_secret']]]]);      
+                ['Name'=>"getFriendsIds","parameters"=>['user_id'=> $parameter['user_id'] , 'crusor' => $crusor],"user_auth"=>['status'=>true,'access_token'=>$parameter["access_token"]
+                ,'access_token_secret'=>$parameter['access_token_secret']]]]);      
               }
                 /**
              * @method userTimeLine.
@@ -95,7 +95,7 @@
              */
             protected function userTimeLine (array $params = []) { 
                 return $this->command->execute(["ModelClass"=>"Tweet\\Viewer","Method"=>["Name"=>"userTimeLine" , "parameters"=>['screen_name'=>$params['screen_name']] , 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+                "user_auth"=>["status"=>true , "access_token"=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']]]]);   
             }
             /**
              * @method getUser.
@@ -104,7 +104,7 @@
             protected function getUser (array $params = []) { 
                 $params_to_api     = (isset( $params['screen_name'] )) ? ['by'=>['screen_name'=>$params['screen_name']]] : ['by'=>['user_id'=>$params['user_id']]];
                 return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"getUser" , "parameters"=>$params_to_api, 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+                "user_auth"=>["status"=>true , "access_token"=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']]]]);   
             }
             /**
              * @method lookup.
@@ -112,7 +112,7 @@
              */
             protected function lookup( array $params = [] ){
                 return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"lookup" , "parameters"=>['user_id'=>$params['user_id']] , 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);   
+                "user_auth"=>["status"=>true , "access_token"=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']]]]);   
             }
 
             /**
@@ -123,7 +123,7 @@
                 $params['cursor'] = ($params['cursor']) ?? '-1';   
                 $params_to_api     = (isset( $params['screen_name'] )) ? ['by'=>['screen_name'=>$params['screen_name'] , 'cursor'=>$params['cursor']]] : ['by'=>['user_id'=>$params['user_id'] , 'cursor'=>$params['cursor']]];
                 return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"getFollowersList" , "parameters"=>$params_to_api, 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+                "user_auth"=>["status"=>true , "access_token"=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']]]]);       
             }
 
             /**
@@ -133,7 +133,7 @@
             protected function getFriendsList ( array $params = [] ) {
                 $params['cursor'] = ($params['cursor']) ?? '-1';   
                 return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"getFriendsList" , "parameters"=>['user_id'=>$params['user_id'] , 'cursor'=>$params['cursor']], 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);         
+                "user_auth"=>["status"=>true , "access_token"=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']]]]);         
             }
 
             /**
@@ -142,7 +142,7 @@
              */
             protected function searchUsers( array $params = [] ){
                 return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"searchUsers" , "parameters"=>['search'=>$params['search']], 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+                "user_auth"=>["status"=>true , "access_token"=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']]]]);       
             }
 
             /**
@@ -150,9 +150,10 @@
              * @return array.
              */
             protected function checkFriends ( array $params = [] ){
-                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"checkFriends" , "parameters"=>['source_screen_name'=>$params['source'] , 
+                return $this->command->execute(["ModelClass"=>"User\\Viewer","Method"=>["Name"=>"checkFriends" , 
+                "parameters"=>['source_screen_name'=>$params['source'] , 
                 'target_screen_name'=>$params['target']], 
-                "user_auth"=>["status"=>true , "access_token"=>$params['oauth_token'],'access_token_secret'=>$params['oauth_token_secret']]]]);       
+                "user_auth"=>["status"=>true , "access_token"=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']]]]);       
             }
             /**
              * Twitter Components read section.
@@ -165,7 +166,7 @@
             protected function getReplies(array $params = []){
                 $screenName = $params['screenName'];
                 $search = "to:$screenName";
-                $data = ['search'=>"$search",'since_id'=>$params['tweet_id'],'oauth_token'=>$params['oauth_token'],'oauth_token_secret'=>$params['oauth_token_secret']];  
+                $data = ['search'=>"$search",'since_id'=>$params['tweet_id'],'access_token'=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']];  
                 $mentions =  $this->searchTweets($data);
                 $replies  =  Helper::extractReplies($mentions->statuses,$params['tweet_id']);
                 if(!empty($replies)){
@@ -242,7 +243,7 @@
              * @method getHashtagData.
              */
             protected function getHashtagData(array $params){
-                $tweets = $this->searchTweetsSevenDays($params['hashtag'],$params['oauth_token'],$params['oauth_token_secret']);
+                $tweets = $this->searchTweetsSevenDays($params['hashtag'],$params['access_token'],$params['access_token_secret']);
                 return $tweets;
             }
 
@@ -254,13 +255,13 @@
                 * !empty with data.
                 * key error .. error returned from twitter Api.
              */
-            private function searchTweetsSevenDays(string $search, string $oauth_token , string $oauth_token_secret){
+            private function searchTweetsSevenDays(string $search, string $access_token , string $access_token_secret){
                 $tweets = [];
                 $max_id  = null;
                 $repeat  = 20;
                 while ( true ) { 
                         
-                        $search_tweets = $this->searchTweets(['search'=>$search ,'result_type'=>'recent','max_id'=>$max_id,'oauth_token'=>$oauth_token,'oauth_token_secret'=>$oauth_token_secret]);
+                        $search_tweets = $this->searchTweets(['search'=>$search ,'result_type'=>'recent','max_id'=>$max_id,'access_token'=>$access_token,'access_token_secret'=>$access_token_secret]);
                         if(isset($search_tweets->statuses) && !empty($search_tweets->statuses) && is_array($search_tweets->statuses)){
                                 $tweets[]       = $search_tweets->statuses;
                                 $count_statues  = count($search_tweets->statuses); // Count destroyed  the performance!.

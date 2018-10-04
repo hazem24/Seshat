@@ -1,31 +1,28 @@
 <?php
-        require("setting.php");
-
-        /*session_start();
-        require("../vendor/autoload.php");
-        $_SESSION = [];
-        use Framework\Lib\Curl\CurlClass as Curl;
-        use Framework\Lib\Security\Data\FilterDataFactory;
-        use Abraham\TwitterOAuth\TwitterOAuth;
-
-        define("CALL_BACK",'http://127.0.0.1/seshat/private/App/callback.php');
-        define('CONSUMER_KEY', "aunVGBbtjyWAFiZhp9lZJ2pSD");
-        define('CONSUMER_SECRET', "UcuWgqSaruS8o1NY43gKaBZkMDLrJIfOEfLie0nKaPE7Eteey5");
-
-        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
-        $request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => CALL_BACK));
-        $_SESSION['oauth_token'] = $request_token['oauth_token'];
-        $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
-        $url = $connection->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
-        
-        echo "<a href=\"$url\">sign With Twitter !</a>";*/
+use phpFastCache\CacheManager;
 
 
-        /**
-         * Google Translate Section Tests.
-         */
+require("setting.php");
 
-        var_dump(REPORTS_HASH_FOLDER);
+$InstanceCache = CacheManager::getInstance('redis');
+
+      
+$key = "product_page";
+$CachedString = $InstanceCache->getItem($key);
+if (is_null($CachedString->get())) {
+    //$CachedString = "APC Cache --> Cache Enabled --> Well done !";
+    // Write products to Cache in 10 minutes with same keyword
+    $CachedString->set("Redis Cache --> Cache Enabled --> Well done !")->expiresAfter(60);
+    $InstanceCache->save($CachedString);
+    echo "FIRST LOAD // WROTE OBJECT TO CACHE // RELOAD THE PAGE AND SEE // ";
+    echo $CachedString->get();
+} else {
+    echo "READ FROM CACHE // ";
+    echo $CachedString->get();
+}
+echo '<br /><br /><a href="/">Back to index</a>&nbsp;--&nbsp;<a href="./' . basename(__FILE__) . '">Reload</a>';
+
+
 
 
 

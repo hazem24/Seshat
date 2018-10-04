@@ -3,9 +3,6 @@
         use Framework\Shared;
         use App\Model\App\Seshat\TaskModel;
 
-
-
-
         /**
         *This Class Have All Commands That Do Action In Twitter.
         */
@@ -49,7 +46,7 @@
              }
 
 
-            private function checkTask ( int $task_id , array $task_data ) {
+            private function checkTask ( int $task_id , array &$task_data ) {
                 switch ($task_id) {
                     case 1:
                         $logic = $this->scheduleTaskLogic( $task_data );
@@ -57,7 +54,13 @@
                     case 2:
                         $logic = $this->tweetAsLogic( $task_data );
                         break;
-                    case 31 || 32 || 33:
+                    case 31:
+                        $logic = $this->controlFollowersLogic( $task_data['user_id'] , $task_id );    
+                        break;
+                    case 32:
+                        $logic = $this->controlFollowersLogic( $task_data['user_id'] , $task_id );    
+                        break;
+                    case 33:
                         $logic = $this->controlFollowersLogic( $task_data['user_id'] , $task_id );    
                         break;
                     default:
@@ -69,10 +72,10 @@
             /**
             * @method scheduleTaskLogic
             */
-            private function scheduleTaskLogic ( array $task_data ) {
-                $task_data['media'] = ($task_data['media'] === true)?($this->handleMedia($task_data['user_id'])):false;//for schedule part.
-                if(is_array($task_data['media'])){
-                    return $task_data['media'];//Error At Upload Media.
+            private function scheduleTaskLogic ( array &$task_data ) {
+                $task_data['mediaPath']  = ($task_data['media'] === true)?($this->handleMedia($task_data['user_id'])):'';//for schedule part.
+                if(is_array($task_data['mediaPath'])){
+                    return $task_data['mediaPath'];//Error At Upload Media.
                 }
                 if($this->scheduleExists($task_data['user_id'],$task_data['expected_finish']) === true){
                     return ['scheduleExist'=>true];
@@ -157,20 +160,30 @@
             private function taskDetails(int $task_id,array $data){
                 switch ($task_id) {
                     case 1://progress has two values 0 -> 100 only.
-                        $details = json_encode(['access_token'=>$data['oauth_token'],
-                        'access_token_secret'=>$data['oauth_token_secret'],
-                        'media'=>$data['media'],'tweetContent'=>$data['tweetContent']
-                        ,'publicAccess'=>$data['seshatPublicAccess'],
-                        'catgory'=>$data['category']]);
+                        $details = json_encode(['access_token'=>$data['access_token'],
+                        'access_token_secret'=>$data['access_token_secret'],
+                        'media'=>$data['media'],'mediaPath'=>$data['mediaPath'],'tweetContent'=>$data['tweetContent']
+                        ,'publicAccess'=>$data['publicAccess'],
+                        'category'=>$data['category']]);
                         break;
                     case 2:// no progress here unlimited until cancel by user or error happen or not re-pay.
-                        $details = json_encode(['access_token'=>$data['oauth_token'],
-                        'access_token_secret'=>$data['oauth_token_secret'],'lang'=>$data['lang'],
-                        'screen_name'=>$data['screen_name']]);
+                        $details = json_encode(['access_token'=>$data['access_token'],
+                        'access_token_secret'=>$data['access_token_secret'],'lang'=>$data['lang'],
+                        'screen_name'=>$data['screen_name'],'media'=>$data['media']]);
                         break; 
-                    case 31 || 32 || 33://progress = (done/order) * 100.
-                        $details = json_encode(['access_token'=>$data['oauth_token'],
-                        'access_token_secret'=>$data['oauth_token_secret'],'socialMedia'=>'twitter',
+                    case 31://progress = (done/order) * 100.
+                        $details = json_encode(['access_token'=>$data['access_token'],
+                        'access_token_secret'=>$data['access_token_secret'],'socialMedia'=>'twitter',
+                        'order'=>$data['order'],'done'=> 0]);
+                        break;
+                    case 32://progress = (done/order) * 100.
+                        $details = json_encode(['access_token'=>$data['access_token'],
+                        'access_token_secret'=>$data['access_token_secret'],'socialMedia'=>'twitter',
+                        'order'=>$data['order'],'done'=> 0]);
+                        break;       
+                    case 33://progress = (done/order) * 100.
+                        $details = json_encode(['access_token'=>$data['access_token'],
+                        'access_token_secret'=>$data['access_token_secret'],'socialMedia'=>'twitter',
                         'order'=>$data['order'],'done'=> 0]);
                         break;       
                     default:
@@ -189,7 +202,4 @@
             }
             return $return;
         }
-
-
-
     }

@@ -2,8 +2,7 @@
 
         namespace Framework\Exception;
         /**
-        * Handle Core Exception In Framework
-        * Factory Class 
+        * Handle Cache Exception In Framework.
         */
         
         Class CacheException extends \Exception

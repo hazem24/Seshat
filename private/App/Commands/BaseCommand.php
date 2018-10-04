@@ -1,6 +1,7 @@
 <?php
     namespace App\Commands;
     use Framework\Shared;
+    use Framework\Lib\Upload\UploadImage;
 
     /**
      * this class is base class for all commands in the app.
