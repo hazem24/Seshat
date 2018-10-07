@@ -2,6 +2,7 @@
     namespace App\Commands;
     use Framework\Shared;
     use Framework\Lib\Upload\UploadImage;
+    use App\System\License\ControlLicense;
 
     /**
      * this class is base class for all commands in the app.
@@ -11,6 +12,8 @@
     {
         CONST UPLOAD_IMAGE_PATH = UPLOAD_IMAGE_FOLDER_RELATIVE;    
         CONST MAX_IMAGE_SIZE = 5242880;//5MB.
+
+        protected $controlLicenses = null;
 
         /**
          * @method execute.
@@ -33,12 +36,19 @@
                 $uploadMedia->setMaxSize(self::MAX_IMAGE_SIZE);
                 $uploadMedia = $uploadMedia->intelligentUpload("Seshat",$user_id,'');
                 if(array_key_exists('successUpload',$uploadMedia)){
-                          return $uploadMedia['fileName'];  
+                    return $uploadMedia['fileName'];  
                 }else{
-                          return $uploadMedia;  
+                    return $uploadMedia;  
                 }
-
         }
 
+        protected function controlLicenses( int $license_type , int $feature_id ){
+            if ( is_null( $this->controlLicenses ) === true){
+                $this->controlLicenses = new ControlLicense();
+            }
+            $this->controlLicenses->initilzation( $license_type , $feature_id );
+            $this->controlLicenses->media = 'twitter';//hard coded , must be changed based on media.
+            return $this->controlLicenses->feature_license_data();
+        }
 
     } 

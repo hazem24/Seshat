@@ -85,20 +85,25 @@
          */
 
          protected function createHashTagReport(array $params){
-                $read = new Twitter\Read;
-                $hashtag_tweets_data = $read->do("getHashtagData",$params);
-                if(is_array($hashtag_tweets_data)){
-                    if(array_key_exists("error",$hashtag_tweets_data)){
-                        $return = $hashtag_tweets_data;
-                    }else if (empty($hashtag_tweets_data)) {
-                        $return = ['hash_not_active'=>true];
+                $feature = $this->controlLicenses( $params['license_type'] , 4);
+                if ( $feature !== false ){
+                    $read = new Twitter\Read;
+                    $hashtag_tweets_data = $read->do("getHashtagData",$params);
+                    if(is_array($hashtag_tweets_data)){
+                        if(array_key_exists("error",$hashtag_tweets_data)){
+                            $return = $hashtag_tweets_data;
+                        }else if (empty($hashtag_tweets_data)) {
+                            $return = ['hash_not_active'=>true];
+                        }else{
+                            $return = $this->hashReport(ArrayHelper::convertMultiArray($hashtag_tweets_data) , $params['hashtag'],$params['screenName']);
+                        }
                     }else{
-                        $return = $this->hashReport(ArrayHelper::convertMultiArray($hashtag_tweets_data) , $params['hashtag'],$params['screenName']);
+                        $return = ['AppError'=>true];
                     }
                 }else{
-                    $return = ['AppError'=>true];
+                    $return = ['error'=>UPGRADE];
                 }
-                return $return;
+                return $return;    
          }
          /**
           * @method hashReport do the following.

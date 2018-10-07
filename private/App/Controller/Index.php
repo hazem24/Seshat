@@ -93,11 +93,10 @@
                 $cmd = Shared\CommandFactory::getCommand('twitterApi');
                 $confirmUser = $cmd->execute(['ModelClass'=>"TwitterLogin",'Method'=>['Name'=>"confirmUser",'parameters'=>['oauth_verifier'=>$oauth_verifier],'user_auth'=>['status'=>true,'access_token'=>$oauth_token
                 ,'access_token_secret'=>$oauth_token_secret]]]);
-
                 if(array_key_exists('error',$confirmUser)){
-                                $this->error[] = $confirmUser['error'];
+                        $this->error[] = $confirmUser['error'];
                 }else if(array_key_exists('oauth_token',$confirmUser)){
-                                return $confirmUser;
+                        return $confirmUser;
                 }
             }
 
@@ -111,15 +110,15 @@
                     ,'screen_name'=>$screen_name]]]);
                     if(is_array($userStatus)){
                                 if(array_key_exists('error',$userStatus)){
-                                               $this->error[] = $userStatus['error']; 
+                                        $this->error[] = $userStatus['error']; 
                                 }else if(array_key_exists('wizard',$userStatus)){
                                         //User Not Submit The Wizard Redirect It To Wizard (Create Profile).
-                                        $this->openSessionsToUser($userStatus['id'],$tw_id,$oauth_token,$oauth_token_secret,$screen_name,true);
+                                        $this->openSessionsToUser($userStatus['id'],$tw_id,$oauth_token,$oauth_token_secret,$screen_name,$userStatus['license_type'],$userStatus['license_name'],true);
                                         $this->redirectToWizard();              
                                 }
                     }else if(is_object($userStatus)){
-                                        //User Exists And Submit Wizard.
-                                        $this->logUserIn($userStatus,$oauth_token,$oauth_token_secret);
+                        //User Exists And Submit Wizard.
+                        $this->logUserIn($userStatus,$oauth_token,$oauth_token_secret);
                     }
             }
 
@@ -131,7 +130,7 @@
                      * 
                      * */  
                     $this->openSessionsToUser($userModel->getProperty('id'),$userModel->getProperty('tw_id'),
-                    $oauth_token,$oauth_token_secret,$userModel->getProperty('screen_name')); 
+                    $oauth_token,$oauth_token_secret,$userModel->getProperty('screen_name') , $userModel->getProperty('license_type'),$userModel->getProperty('license_name')); 
                     $this->rIn("tw_id","seshatTimeline");
             }
 
@@ -139,10 +138,13 @@
             /**
              * @method openSessionToUser Open The Important Session That App Need.
              */
-            private function openSessionsToUser(int $id,string $tw_id,string $oauth_token,string $oauth_token_secret,string $screen_name,bool $wizard = false){
+            private function openSessionsToUser(int $id,string $tw_id,string $oauth_token,string $oauth_token_secret,string $screen_name, int $license_type , string $license_name , bool $wizard = false){
                     if($wizard === true){
-                                $this->session->setSession('wizard',$wizard);
+                        $this->session->setSession('wizard',$wizard);
                     }
+                    $this->session->setSession('id',$id);
+                    $this->session->setSession('license_type',$license_type);
+                    $this->session->setSession('license_name',$license_name);
                     $this->session->setSession('id',$id);
                     $this->session->setSession('tw_id',$tw_id);
                     $this->session->setSession('userAgent',$_SERVER['HTTP_USER_AGENT']);

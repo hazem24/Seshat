@@ -209,7 +209,7 @@
             $tokens = ( $followUsers ) ? $followTree->getTokens() : false;
             $cmd      = Cmd::getCommand('FollowTree');
             $response = $cmd->execute(['Method'=>['name'=>'createNewTreeLogic','parameters'=>['name'=>$treeName,'description'=>$description
-            ,'tokens'=>$tokens,'max_accounts'=>$maxAccounts,'media'=>$media,'user_id'=>$followTree->session->getSession('id')]]]);
+            ,'tokens'=>$tokens,'max_accounts'=>$maxAccounts,'license_type'=>$followTree->session->getSession('license_type'),'media'=>$media,'user_id'=>$followTree->session->getSession('id')]]]);
             return $response;
         }
 

@@ -80,21 +80,21 @@
                  * this method used to delete specific task for specific user.
                  */
                 public static function deleteTask(int $user_id , int $task_id){
-                    return self::getFinder()->deleteTask( $user_id , $task_id );    
+                  return self::getFinder()->deleteTask( $user_id , $task_id );    
                 }
                 public static function scheduleExists($user_id,$date):bool{
-                     return self::getFinder()->scheduleExists($user_id,$date);
+                  return self::getFinder()->scheduleExists($user_id,$date);
                 }
 
                 public function save(){
-                        return self::getFinder()->save(  $this );
+                  return self::getFinder()->save(  $this );
                 }
 
                 /**
                 * @method getTweetAsInfo. 
                 */
                 public function getTweetAsInfo ( int $user_id ){
-                     return self::getFinder()->getTweetAsInfo( $user_id );
+                  return self::getFinder()->getTweetAsInfo( $user_id );
                 }
 
                 /**
@@ -102,7 +102,7 @@
                  * @method getPosts.
                  */
                 public function getPosts(){
-                    return self::getFinder()->getPosts();
+                  return self::getFinder()->getPosts();
                 }
 
                 /**
@@ -127,15 +127,23 @@
                 public static function postAsInfo( int $user_id , string $media){
                   return self::getFinder()->postAsInfo( $user_id , $media);
                 }
+
+                /**
+                 * @method countScheduled.
+                 * @return int.
+                 */
+                public static function countScheduled( int $user_id ){
+                  return self::getFinder()->countScheduled( $user_id );
+                }
                 /**
                 * @method getFinder Find The Mapper Which Object Related To It.
                 * @return Mapper.
                 */
                 protected static function getFinder(){
-                        if(is_null(self::$tasksMapper) === true){
-                                self::$tasksMapper = new TaskMapper;
-                        }
-                        return self::$tasksMapper;
+                  if(is_null(self::$tasksMapper) === true){
+                    self::$tasksMapper = new TaskMapper;
+                  }
+                  return self::$tasksMapper;
                 }
 
                 

@@ -3,6 +3,7 @@
         use Framework\Shared;
         use App\DomainHelper\FrontEndHelper; 
         use App\DomainHelper\FastCache;
+        use App\System\License\ControlLicense;
         
 
     /**
@@ -15,6 +16,8 @@
         */
         protected $cache = null;
         protected $error = [];
+
+        protected $controlLicenses;
            
         public function setError (string $error) {
                 $this->error[] = $error; 
@@ -191,6 +194,15 @@
 
         public static function stop (){
                 exit;
+        }
+
+        public function controlLicenses( int $license_type , int $feature_id ){
+                if ( is_null( $this->controlLicenses ) === true){
+                    $this->controlLicenses = new ControlLicense();
+                }
+                $this->controlLicenses->initilzation( $license_type , $feature_id );
+                $this->controlLicenses->media = 'twitter';//hard coded , must be changed based on media.
+                return $this->controlLicenses->feature_license_data();
         }
 
     }

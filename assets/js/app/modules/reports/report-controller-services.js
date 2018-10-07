@@ -3,6 +3,7 @@ angular.module('seshatApp').controller('reportCtrl',function($scope,$location,$w
     $scope.window   = $window;
     $scope.url = $location.absUrl();
     $scope.report_name = $scope.url.substr($scope.url.lastIndexOf('/') + 1); //Get Report name.  
+    
 }).service("reportServices",function ($http){
     //Depen. injection style.
     $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";

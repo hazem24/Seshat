@@ -22,6 +22,12 @@
                 protected $iswizard;
                 protected $created_at;
 
+                /**
+                 * Table Contents of license which user have.
+                 */
+                protected $license_type;
+                protected $license_name;
+
                 protected static $userMapper = null;
 
 

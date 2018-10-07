@@ -97,7 +97,7 @@
                         //Save Task.
                         $task     = new Twitter\Task;
                         $response = $task->do('addNewTask' , array_merge($tokens,['task_id'=>2,
-                        'media'=>'twitter','screen_name'=>$tweet_as,'lang'=>$options['translate_tweets_to'],'user_id'=>$profile->session->getSession('id')]) );
+                        'media'=>'twitter','screen_name'=>$tweet_as,'lang'=>$options['translate_tweets_to'],'license_type'=>$profile->session->getSession('license_type'),'user_id'=>$profile->session->getSession('id')]) );
                         $profile->commonError( $response );
                         if( is_array( $response )  && array_key_exists('task_not_save',$response)){
                             $profile->setError(TASK_NOT_SAVE);
@@ -132,26 +132,31 @@
          * @method twitterFakeAccounts.
          */
         public static function twitterFakeAccounts ( Profile $profile , string $screen_name ) {
-            $tokens = $profile->getTokens();
-            $reader = new Twitter\Read;
-            $profileReader = self::checkUser( $profile , $reader  , $tokens , $screen_name );
-            $profile->commonError($profileReader);
-            if (is_object($profileReader) && isset($profileReader->screen_name)) {
-                if(isset($profileReader->status)){
-                    //do calc. here
-                    $loops    = self::followersLoopCalculation($profileReader->followers_count);
-                    $response = self::classifiyFollowers($reader,$loops,$profileReader->followers_count,$tokens,$screen_name);
-                    if ( is_array($response) && array_key_exists('fakePercentage' , $response)) {
-                        $response['profile_img'] = $profileReader->profile_image_url_https;
-                        $response['screen_name'] = $profileReader->screen_name;
-                        $response                = ['fakeFollowersReport'=>FrontEndHelper::fakeFollowersReport($response)];
+            $feature = $profile->controlLicenses( $profile->session->getSession('license_type') , 5 );
+            if ( $feature !== false ){
+                $tokens = $profile->getTokens();
+                $reader = new Twitter\Read;
+                $profileReader = self::checkUser( $profile , $reader  , $tokens , $screen_name );
+                $profile->commonError($profileReader);
+                if (is_object($profileReader) && isset($profileReader->screen_name)) {
+                    if(isset($profileReader->status)){
+                        //do calc. here
+                        $loops    = self::followersLoopCalculation($profileReader->followers_count);
+                        $response = self::classifiyFollowers($reader,$loops,$profileReader->followers_count,$tokens,$screen_name);
+                        if ( is_array($response) && array_key_exists('fakePercentage' , $response)) {
+                            $response['profile_img'] = $profileReader->profile_image_url_https;
+                            $response['screen_name'] = $profileReader->screen_name;
+                            $response                = ['fakeFollowersReport'=>FrontEndHelper::fakeFollowersReport($response)];
+                        }
+                        $profile->commonError($response);
+                    }else { 
+                        $profile->setError(PRIVATE_ACCOUNT);
                     }
-                    $profile->commonError($response);
-                }else { 
-                    $profile->setError(PRIVATE_ACCOUNT);
+                }else {
+                    $profile->commonError(['AppError'=>true]);
                 }
-            }else {
-                $profile->commonError(['AppError'=>true]);
+            }else{
+                $profile->setError(UPGRADE);
             }
             //Incase of request 
             if( !isset( $response ) ){

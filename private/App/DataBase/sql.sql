@@ -82,3 +82,16 @@ alter table notification add column ( created_at datetime not null default NOW()
 alter table tasks add column(status int not null default 0);
 alter table user_data add column (time_zone varchar(300) not null default 'UTC');
 
+
+create table license ( id int not null primary key auto_increment , license_type int not null ,
+license_name varchar(100) not null );
+
+INSERT INTO `seshat`.`license` (`license_type`, `license_name`) VALUES ('0', 'free');
+INSERT INTO `seshat`.`license` (`license_type`, `license_name`) VALUES ('1', 'lvl 1');
+INSERT INTO `seshat`.`license` (`license_type`, `license_name`) VALUES ('2', 'lvl 2');
+INSERT INTO `seshat`.`license` (`license_type`, `license_name`) VALUES ('3', 'lvl 3');
+
+
+ALTER TABLE user_data add column (license_id int not null default 1), 
+  ADD CONSTRAINT user_license FOREIGN KEY (license_id) 
+  REFERENCES license (id) ON DELETE CASCADE ON UPDATE CASCADE;

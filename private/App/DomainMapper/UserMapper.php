@@ -16,12 +16,14 @@
         */
         Class UserMapper extends AbstractDataMapper
         {
-            private $tableA = 'user';
-            private $tableB = 'user_data';
-            private $foreign_key = 'user_id';
+            private $tableA        = 'user';
+            private $tableB        = 'user_data';
+            private $tableC        = 'license';
+            private $foreign_key   = 'user_id';
             private $columnsTableA = ['primarykey'=>'user.id','tw_id','screen_name'];
-            private $columnsTableB = ['email','account_type','user_describe','iswizard','created_at','name'];
-            private $modelName = 'UserModel';
+            private $columnsTableB = ['email','account_type','user_describe','iswizard','created_at','name','license_id'];
+            private $columnsTableC = ['license_type','license_name'];
+            private $modelName     = 'UserModel';
            
                 
             public function stepOne(Model $userModel){
@@ -33,9 +35,9 @@
                     $this->bindParamCreator(2,$insertNewUser,$stm['data']);
                     $insertNewUser->execute();
                     if($insertNewUser->rowCount() > 0){
-                                return ['success'=>true,'id'=>$this->pdo->lastInsertId()];//User Inserted !.
+                        return ['success'=>true,'id'=>$this->pdo->lastInsertId()];//User Inserted !.
                     }
-                                return false;// Something Error.
+                        return false;// Something Error.
             }
 
 
@@ -47,16 +49,19 @@
                    $userExists->execute();
                    $userExists = $userExists->fetch(\PDO::FETCH_ASSOC);
                    if($userExists !== false){
-                                return true;//User Exists.
+                        return true;//User Exists.
                    } 
-                                return false;//User Not Exist.
+                        return false;//User Not Exist.
             }
 
 
             public function getUserData(string $tw_id){
                    $selectBuilder = new SelectQueryBuilder;
-                   $stm = $selectBuilder->select(array_merge($this->columnsTableA,$this->columnsTableB))->from($this->tableA)->
-                   join($this->tableB,$this->columnsTableA['primarykey'],$this->foreign_key)->where([$this->columnsTableA[0] . ' = ?'=>$tw_id])->createQuery();
+                   $stm = $selectBuilder->select(array_merge($this->columnsTableA,$this->columnsTableB,$this->columnsTableC))
+                   ->from($this->tableA)->
+                   join($this->tableB,$this->columnsTableA['primarykey'],$this->foreign_key)->
+                   join($this->tableC,$this->columnsTableB[6],'id')->
+                   where([$this->columnsTableA[0] . ' = ?'=>$tw_id])->createQuery();
                    $findUser = $this->pdo->prepare($stm['query']);
                    $this->bindParamCreator(1,$findUser,$stm['data']);
                    $findUser->execute();
@@ -76,11 +81,11 @@
                     $this->bindParamCreator(6,$createProfile,$stm['data']);
                     $createProfile->execute();
                     if($createProfile->rowCount() > 0){
-                             return true;//Success.
+                        return true;//Success.
                     }
-                             return false;//Fail To Insert.  
+                        return false;//Fail To Insert.  
                 }else{
-                            return ['emailExists'=>true];
+                        return ['emailExists'=>true];
                 }
             }
 
@@ -92,9 +97,9 @@
                     $emailExists->execute();
                     $emailExists = $emailExists->fetch();
                     if(is_array($emailExists) && !empty($emailExists)){
-                                return true;
+                        return true;
                     }
-                                return false;
+                        return false;
             } 
             protected function doSave(Model $model){
             }
@@ -112,6 +117,8 @@
                       $userModel->setProperty("account_type",(int)$fields['account_type']);
                       $userModel->setProperty("user_describe",$fields['user_describe']);
                       $userModel->setProperty("id",(int)$fields['id']);
+                      $userModel->setProperty("license_type",(int)$fields['license_type']);
+                      $userModel->setProperty("license_name",$fields['license_name']);
                       return $userModel;  
             }
             protected function getCollection(array $raw): Collection{

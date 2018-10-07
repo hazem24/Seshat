@@ -18,7 +18,7 @@
          * post content to post in specific media.
          * @property post_content.
          */
-        protected $post_content = null;
+        private $post_content = null;
 
         /**
          * set post content.

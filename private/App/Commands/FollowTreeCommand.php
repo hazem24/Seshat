@@ -22,19 +22,24 @@
                 * also check if the name of tree exists in specific media if true error returned false create tree.
              * 2 - if user want to follow users in his/her tree must be add to subscribed_in_tree table as user.
              */
-            $numberOfTreesUserHas = $this->getModel()->countUserTreesCreated($treeData['user_id'],$treeData['media']);
-            $nameExists           = $this->getModel()->nameExists( $treeData['name'] , $treeData['media'] );
-            if ( $numberOfTreesUserHas !== false ){
-                if( $numberOfTreesUserHas == 3 ){
-                    $response = ['error'=>MAX_TREES_REACH];
-                }else if ( $nameExists !== false ) {
-                    $response = ['error'=>TREE_NAME_EXISTS];
+            $feature = $this->controlLicenses( $treeData['license_type'] , 54 );
+            if ( $feature !== false ){
+                $numberOfTreesUserHas = $this->getModel()->countUserTreesCreated($treeData['user_id'],$treeData['media']);
+                $nameExists           = $this->getModel()->nameExists( $treeData['name'] , $treeData['media'] );
+                if ( $numberOfTreesUserHas !== false ){
+                    if( $numberOfTreesUserHas == 3 ){
+                        $response = ['error'=>MAX_TREES_REACH];
+                    }else if ( $nameExists !== false ) {
+                        $response = ['error'=>TREE_NAME_EXISTS];
+                    }else{
+                        //save new tree.
+                        $response = $this->saveTree( $treeData );
+                    }
                 }else{
-                    //save new tree.
-                    $response = $this->saveTree( $treeData );
-                }
+                    $response = ['error'=>GLOBAL_ERROR];
+                }    
             }else{
-                $response = ['error'=>GLOBAL_ERROR];
+                $response = ['error'=>UPGRADE];
             }
             return $response;
         }
@@ -168,7 +173,7 @@
                         }else if ( $subscribers >= $data['limit'][$max_accounts] ){
                             //Notify the owner to upgrade his/her tree.
                             $this->notifyTreeOwner( $data['screen_name'] ,  $tree_data['name'] , $tree_data['user_id']  , 4 );
-                            $response = ['error'=>REACH_LIMIT];
+                            $response = ['error'=>TREE_REACH_LIMIT];
                         }else{
                             $response = $model->joinTree( $data['user_id'] , $data['tree_id'] , json_encode($data['tokens']) );
                             if ( $response === true ){

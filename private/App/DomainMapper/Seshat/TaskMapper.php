@@ -121,6 +121,23 @@
             }
 
             /**
+             * count unfinished scheduled user have.
+             */
+            public function countScheduled( int $user_id ){
+                $selectBuilder = new SelectQueryBuilder;
+                $stm           = $selectBuilder->select()->from($this->table)->where([ $this->foreign_key . ' = ? && '=>$user_id ,
+                $this->columnsTable[0] . '  = ? && ' => 1 , $this->columnsTable[3] . '  <> ? '=>true])->createQuery();
+                $countScheduled = $this->pdo->prepare($stm['query']);
+                $this->bindParamCreator(3,$countScheduled,[$user_id , 1 , true]);
+                $countScheduled->execute();
+                $countScheduled = $countScheduled->fetchAll(\PDO::FETCH_ASSOC);
+                if (is_array( $countScheduled )){
+                    $countScheduled = count( $countScheduled );
+                }
+                return $countScheduled; 
+            }
+
+            /**
              * this method used to load all schedule posts from DB.
              */
             public function getPosts(){

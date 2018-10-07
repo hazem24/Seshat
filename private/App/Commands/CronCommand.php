@@ -141,12 +141,12 @@
                 $cron->cron_id = $task_id;
                 //load people list.
                 $itemName   = "task,$feature,$user_id,$media";
-                $list = $this->loadList( $itemName , $feature , $user_id );     
+                $list       = $this->loadList( $itemName , $feature , $user_id );     
                 if (is_array($list)  && isset($list['results']) && empty($list['results']) === false){   
                     $cron->list = $list['results']['users'];
                     $doCron = $cron->doCron();
                     $this->taskModel->id = $task_data['id'];
-                    if (is_array( $doCron ) && array_key_exists('success',$doCron)){// -order.
+                    if (is_array( $doCron ) && array_key_exists('success',$doCron)){// -ve order.
                         /*
                         *check if task finished or not if yes update the task and notify user.--Done.
                         *else update the cache and continue the task.--Done.
@@ -247,14 +247,14 @@
             /**
              * 1 - get tree by id.--Done.
                 * get all information about this trees and save it in redis for 24 hr.--Done.
-                * if there's no information stop the proccess.
-                * if there's info in this tree get 2 users and create a relation between them.
-                * if user has reauth problem , exit this user from tree and notify to sub on it again , reauth problem.
+                * if there's no information stop the proccess.--Done.
+                * if there's info in this tree get 2 users and create a relation between them.--Done.
+                * if user has reauth problem , exit this user from tree and notify to sub on it again , reauth problem.--Done.
              */
             $tree_data           =  $this->loadTreeData( $tree_id  );
             $subscribers_counter = count( $tree_data );
             if (!empty( $tree_data ) && $subscribers_counter >= 2){
-                //take two random users the array.
+                //take two random users from the array.
                 $users_index = array_rand( $tree_data , 2);
 
                 $users_list = ['source'=>$tree_data[$users_index[0]]['screen_name'],

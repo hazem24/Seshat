@@ -26,7 +26,7 @@
             /**
             * have all features in specific media.
             * @property features. 
-            * inActiveFollowing => not implemented in version 0.1 && recentUnFollow.
+            * inActiveFollowing => not implemented in version 1.0.0 && recentUnFollow.
             */
             private static $features = [
                 'media'=>['twitter'=>['nonFollowers','recentUnfollow','fans',
@@ -316,7 +316,8 @@
                 if ( RequestHandler::postRequest() ) {
                     $task_type    = ( string ) RequestHandler::post('taskType');
                     $order = ( int )    RequestHandler::post('order');//how many followers/unfollowers seshat will do it automatically.
-                    $response  = self::controlFollowersSaveTask( $task_type  , $order ,  $seshat->getTokens() , $seshat->session->getSession('id'));
+                    $response  = self::controlFollowersSaveTask( $task_type  , $order ,  $seshat->getTokens() , 
+                    $seshat->session->getSession('id') , $seshat->session->getSession('license_type'));
                     $seshat->commonError( $response );
                     $response = $seshat->returnResponseToUser( $response ?? null );
                     $seshat->encodeResponse( $response );
@@ -372,7 +373,8 @@
                 $tokens = $seshatController->getTokens();  
                 $screenName = $seshatController->session->getSession("username");
                 $cmd = Shared\CommandFactory::getCommand('seshat');
-                $getHashTagReport =  $cmd->execute(['Method'=>['name'=>"createHashTagReport",'parameters'=>['screenName'=>$screenName,
+                $getHashTagReport =  $cmd->execute(['Method'=>['name'=>"createHashTagReport",'parameters'=>[
+                    'license_type'=>$seshatController->session->getSession('license_type'),'screenName'=>$screenName,
                 'hashtag'=> urlencode((stripos($hashtag_name,'#') !== false) ? '' : '#').$hashtag_name,
                 'access_token'=>$tokens['access_token'],'access_token_secret'=>$tokens['access_token_secret']]]]);
                 $seshatController->commonError($getHashTagReport); 
@@ -509,14 +511,14 @@
                 return $response;
             }
 
-            private static function controlFollowersSaveTask ( string $task_type , int $order ,  array $tokens , int $user_id){
+            private static function controlFollowersSaveTask ( string $task_type , int $order ,  array $tokens , int $user_id , int $license_type){
                 $whiteListOfTasks = ['fans'=>32,'nonfollowers'=>31,'recentfollowers'=>33];
                 $task_id          = ($whiteListOfTasks[strtolower($task_type)]) ?? null;
                 $order            = ($order <= 2000) ? $order : 2000;
                 if ( is_null( $task_id )  === false){
                     if ($order > 0 && $order <= 2000){
                         $task = new DomainHelper\Twitter\Task;
-                        $task = $task->do("addNewTask",array_merge(['task_id'=>$task_id,'user_id'=>$user_id , 'order'=>$order],$tokens));
+                        $task = $task->do("addNewTask",array_merge(['task_id'=>$task_id,'user_id'=>$user_id , 'license_type'=>$license_type, 'order'=>$order],$tokens));
                         //response from here.
                         if ( is_array( $task ) && array_key_exists('task_save',$task) ){
                             $task = ['success'=>CNTROL_FLLOWR_SAVED];

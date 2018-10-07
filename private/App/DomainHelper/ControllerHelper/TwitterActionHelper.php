@@ -142,6 +142,7 @@
             $data = ['access_token'=>$twitterAction->session->getSession('oauth_token'),
             'access_token_secret'=>$twitterAction->session->getSession('oauth_token_secret'),'tweetContent'=>$tweetContent,
             'user_id'=>(int)$twitterAction->session->getSession('id'),
+            'license_type'=> $twitterAction->session->getSession('license_type') ,
             'category'=>$categoryType,'media'=>$media,'publicAccess'=>$seshatPublicAccess,'tweet_id'=>$tweet_id];
             if($schedule === false){
                 $class = new Twitter\Send;
