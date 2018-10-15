@@ -7,8 +7,7 @@
 	<title>Paper Kit 2 PRO by Creative Tim</title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
-	<link href="<?=ASSESTS_URI."css"?>/lib/bootstrap.min.css" rel="stylesheet" type='text/css' />
-	<link href="<?=ASSESTS_URI."css"?>/app/now-ui-kit.css" rel="stylesheet" type='text/css' />
+
 	<link href="<?=ASSESTS_URI."css"?>/lib/iziToast.min.css" rel="stylesheet" type='text/css' />
 	<!--     Fonts and icons     -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
@@ -19,7 +18,9 @@
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
 	<link href="<?=ASSESTS_URI."css"?>/lib/bootstrap-datetimepicker.min.css" rel="stylesheet" type='text/css' />
-	<link href="<?=ASSESTS_URI."css"?>/app/nucleo-icons.css" rel="stylesheet" type='text/css' />
+	<link type="text/css" href="<?=ASSESTS_URI?>/assets/vendor/highlight.js/styles/atom-one-dark.css" rel="stylesheet">
+	<!-- Theme CSS -->
+	<link href="<?=ASSESTS_URI?>/assets/css/theme.css" rel="stylesheet">
 	<link href="<?=ASSESTS_URI."css"?>/app/seshat.css" rel="stylesheet" type='text/css' />
 	<link href="<?=ASSESTS_URI."css"?>/lib/sweetAlert/jquery.sweet-modal.min.css" rel="stylesheet" type='text/css' />
 	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css">

@@ -6,7 +6,8 @@
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery-ui-1.12.1.custom.min.js" type="text/javascript"></script>
 <script src="//cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/popper.js" type="text/javascript"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?=ASSESTS_URI?>/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?=ASSESTS_URI?>/vendor/in-view/dist/in-view.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery.validate.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/html2canvas.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/iziToast.min.js" type="text/javascript"></script>
@@ -18,7 +19,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-route.min.js"></script>
 <script src="//cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/exporterJson.js" type="text/javascript"></script>
-
+<!-- Page plugins -->
+<script src="<?=ASSESTS_URI?>/assets/vendor/highlight.js/lib/highlight.js"></script>
+<!-- Theme JS -->
+<script src="<?=ASSESTS_URI?>/assets/js/theme.min.js"></script>
 
 <!-- Switches -->
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-switch.min.js"></script>

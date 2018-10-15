@@ -27,6 +27,7 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Log\\' => 8,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'PhpMailer\\' => 10,
@@ -86,6 +87,10 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -141,6 +146,10 @@ class ComposerStaticInit45c2293f5b5807a2e5bb13700f581d63
             'PhantomInstaller\\' => 
             array (
                 0 => __DIR__ . '/..' . '/jakoch/phantomjs-installer/src',
+            ),
+            'PayPal' => 
+            array (
+                0 => __DIR__ . '/..' . '/paypal/rest-api-sdk-php/lib',
             ),
         ),
         'J' => 

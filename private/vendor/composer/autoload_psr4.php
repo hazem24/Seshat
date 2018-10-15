@@ -15,6 +15,7 @@ return array(
     'Symfony\\Component\\Config\\' => array($vendorDir . '/symfony/config'),
     'Statickidz\\' => array($vendorDir . '/statickidz/php-google-translate-free/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'PhpMailer\\' => array($vendorDir . '/phpmailer/phpmailer'),
