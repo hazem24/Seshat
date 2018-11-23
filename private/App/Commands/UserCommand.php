@@ -71,7 +71,7 @@
              */
 
             protected function createProfile(array $parameters){
-                $createProfile =  UserModel::createProfile($parameters['id'],$parameters['name'],$parameters['email'],$parameters['user_describe'],$parameters['account_type']); 
+                $createProfile =  UserModel::createProfile($parameters['id'],$parameters['name'],$parameters['email'],$parameters['user_describe'],$parameters['account_type'],$parameters['time_zone']); 
                 return $createProfile;   
             } 
 

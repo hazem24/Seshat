@@ -6,8 +6,8 @@
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery-ui-1.12.1.custom.min.js" type="text/javascript"></script>
 <script src="//cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/popper.js" type="text/javascript"></script>
-<script src="<?=ASSESTS_URI?>/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?=ASSESTS_URI?>/vendor/in-view/dist/in-view.min.js"></script>
+<script src="<?=ASSESTS_URI?>vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?=ASSESTS_URI?>vendor/in-view/dist/in-view.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/jquery.validate.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/html2canvas.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/iziToast.min.js" type="text/javascript"></script>
@@ -20,19 +20,14 @@
 <script src="//cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/exporterJson.js" type="text/javascript"></script>
 <!-- Page plugins -->
-<script src="<?=ASSESTS_URI?>/assets/vendor/highlight.js/lib/highlight.js"></script>
+<script src="<?=ASSESTS_URI?>vendor/highlight.js/lib/highlight.js"></script>
 <!-- Theme JS -->
-<script src="<?=ASSESTS_URI?>/assets/js/theme.min.js"></script>
-
+<script src="<?=ASSESTS_URI?>js/theme.min.js"></script>
 <!-- Switches -->
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-switch.min.js"></script>
-
 <!--  Plugins for Slider -->
 <script src="<?=ASSESTS_URI."js"?>/lib/nouislider.js"></script>
-
-
 <script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-select.js"></script>
-
 <!--  for fileupload -->
 <script src="<?=ASSESTS_URI."js"?>/lib/jasny.min.js"></script>
 <!--  Plugins for Tags -->
@@ -63,7 +58,6 @@
 <script src="<?=ASSESTS_URI."js"?>/app/modules/search/search-app.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/seshat/seshat.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/modules/followTree/follow-tree.js"></script>
-
 <!-- End Angular Section. -->
 <script src="<?=ASSESTS_URI."js"?>/app/lang/en.lang.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/app/loadingSpinner.js"></script>

@@ -39,7 +39,7 @@
                 }elseif($schedule === true){
                     //Schedule Logic=>Table seshat_schedule.
                     $scehduleTime = (string)RequestHandler::post("scehduleTime");// include PM AM.
-                    if(self::validDate($scehduleTime , 'Africa/Cairo') === false){
+                    if(self::validDate($scehduleTime , $twitterAction->session->getSession('time_zone')) === false){
                         $twitterAction->setError(INVAILD_DATE);
                     }else{
                         $schedule = self::newTweet( $twitterAction ,$category,$tweetContent,$seshatPublicAccess,true );

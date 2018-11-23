@@ -21,7 +21,7 @@
             private $tableC        = 'license';
             private $foreign_key   = 'user_id';
             private $columnsTableA = ['primarykey'=>'user.id','tw_id','screen_name'];
-            private $columnsTableB = ['email','account_type','user_describe','iswizard','created_at','name','license_id'];
+            private $columnsTableB = ['email','account_type','user_describe','iswizard','created_at','name','license_id','time_zone'];
             private $columnsTableC = ['license_type','license_name'];
             private $modelName     = 'UserModel';
            
@@ -72,13 +72,13 @@
                          return false;//Error Happen.!
             }
 
-            public function createProfile(int $id , string $name , string $email,string $account_decribe,int $account_type){
+            public function createProfile(int $id , string $name , string $email,string $account_decribe,int $account_type,string $time_zone){
                 if($this->emailExists($email) === false){
                     $insertBuilder = new InsertQueryBuilder;
                     $stm  = $insertBuilder->insert($this->tableB,[$this->foreign_key=>$id,$this->columnsTableB[0]=>$email
-                    ,$this->columnsTableB[1]=>$account_type,$this->columnsTableB[2]=>$account_decribe,$this->columnsTableB[5]=>$name,$this->columnsTableB[3]=>false])->createQuery();
+                    ,$this->columnsTableB[1]=>$account_type,$this->columnsTableB[7]=>$time_zone,$this->columnsTableB[2]=>$account_decribe,$this->columnsTableB[5]=>$name,$this->columnsTableB[3]=>false])->createQuery();
                     $createProfile = $this->pdo->prepare($stm['query']);
-                    $this->bindParamCreator(6,$createProfile,$stm['data']);
+                    $this->bindParamCreator(7,$createProfile,$stm['data']);
                     $createProfile->execute();
                     if($createProfile->rowCount() > 0){
                         return true;//Success.

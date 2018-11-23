@@ -1,40 +1,38 @@
-<div ng-if="results.type === 'users' ">
+<div ng-if="results.type === 'users' " class="card shadow--hover mb-5">
     <div ng-controller = "globalTwitterCtrl" ng-if="results.from === 'twitter'">
-        <!-- Twitter users sections. -->
-        <div id="comments" ng-if = "results.users.length > 0" style="padding: 40px;">
-            <!-- Save Task Button -->
-            <button type="button" style="padding:20px;" id="saveAsTask" ng-click="saveTaskAction(feature_type)"  ng-if = "saveTask" class="btn btn-primary btn-round btn-md pull-right"><i class="fas fa-tasks" style="font-size: 20px;"></i></button>
-            <div class="row pull-left">
-                <div class="col-md-8 ml-auto mr-auto">
-                    <div class="media-area">
-                    <div ng-repeat = "user in results.users track by $index" class="media-area">
-                        <div  ng-if="user.screen_name" class="media">
-                            <a class="pull-left" href="/seshat/!profile/twitter/{{ user.screen_name }}">
-                                <div class="avatar">
-                                    <img class="media-object img-raised" src="{{ user.profile_image_url_https }}" alt="twitter_profile" />
-                                </div>
-                            </a>
-                            <div class="media-body">
-                                <h5 class="media-heading"><a class="btn btn-link btn-danger" style="font-size: 15px;" href="/seshat/!profile/twitter/{{ user.screen_name }}">@{{ user.screen_name }}</a>
-                                    <small class="text-muted">&middot; {{ user.name }}</small>
-                                </h5>
-                                <a class="pull-right  btn  btn-link btn-danger" style="font-size: 40px;" ng-if="user.following" ng-click="relationOnFly('unfollow',user.id_str,this,$index,feature_type)"><i class="fas fa-minus-circle"></i></a>
-                                <a class="pull-right btn btn-link btn-success" ng-if="!user.following" style="font-size: 40px;" ng-click="relationOnFly('follow',user.id_str,this,$index,feature_type)"><i class="fas fa-plus-circle"></i></a>
-                                <p class="pull-left">{{ user.description }}</p>
-                                <div class="media-footer">
-                                    <a href="" class="btn btn-danger btn-neutral pull-left" style="font-size: 20px;">
+            <!-- Twitter users sections. -->
+            <div class="table-responsive" ng-if = "results.users.length > 0" id="comments">
+                <!-- Save Task Button -->
+                <button type="button" class="btn btn-primary btn-icon pull-right" style="padding:20px;" id="saveAsTask" ng-click="saveTaskAction(feature_type)"  ng-if = "saveTask"><span class="btn-inner--icon"><i class="fas fa-tasks"></i></span></button>
+                    <table class="table table-flush mb-0 align-items-center">
+                        <tbody>
+                            <tr ng-repeat = "user in results.users track by $index">
+                                <td style="width: 40%;">
+                                    <div class="media align-items-center">
+                                        <a href="/seshat/!profile/twitter/{{ user.screen_name }}" class="avatar rounded-circle mr-3">
+                                            <img src="{{ user.profile_image_url_https }}" alt="twitter_profile">
+                                        </a>
+                                        <a style="color:red;" href="/seshat/!profile/twitter/{{ user.screen_name }}">@{{ user.screen_name }}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pull-left" style="font-size: 12px;">{{ user.description }}</span><br><br>
+                                    <a href="" class="btn btn-dark btn-neutral pull-left" style="font-size: 10px;">
                                         Followers : {{ user.followers_count }}   Following : {{ user.friends_count }} tweets : {{ user.statuses_count }}
                                     </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end media-post -->
-                </div>
-            </div>    
-            </div>
-        </div>        
-        <!-- End Twitter users sections. -->
+                                </td>
+                                <td>
+                                    <button type="button" ng-if="!user.following"  ng-click="relationOnFly('follow',user.id_str,this,$index,feature_type)" class="btn btn-success btn-icon-only rounded-circle">
+                                        <span class="btn-inner--icon" ><i class="fas fa-plus-circle"></i></span>
+                                    </button>
+                                    <button type="button" ng-if="user.following" ng-click="relationOnFly('unfollow',user.id_str,this,$index,feature_type)" class="btn btn-danger btn-icon-only rounded-circle">
+                                        <span class="btn-inner--icon" ><i class="fas fa-minus-circle"></i></span>
+                                    </button>                                              
+                                </td>
+                            </tr>
+                        </tbody>
+                </table>
+            </div>        
     </div>
 </div>
 <div ng-if="results.users.length <= 0" >

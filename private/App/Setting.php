@@ -91,13 +91,8 @@
                $insertBuilder  = new InsertQueryBuilder;
                Registry::setInstance('insertBuilder',$insertBuilder);
 
-            
-               $session  = new AppSession;
+               $session  = new AppSession("FILE");
                Registry::setInstance('session',$session);
-
-              
-		
-
 
                 // Error Setup 
                 ErrorConfig::setup([
@@ -114,7 +109,7 @@
                 ]);
                 // This For Test Only 
                 $sessions = Registry::getInstance('session');
-                $sessions->gc(1440);
+                //$sessions->gc(1440);
 
                 $mailerSystem = MailerConfig::setup(
                     [   'service'=>'phpmailer',

@@ -21,6 +21,7 @@
                 protected $user_describe;
                 protected $iswizard;
                 protected $created_at;
+                protected $time_zone;
 
                 /**
                  * Table Contents of license which user have.
@@ -75,8 +76,8 @@
                  * @return bool|array.
                  */
 
-                public static function createProfile(int $id , string $name , string $email,string $account_decribe,int $account_type){
-                       return self::getFinder()->createProfile($id,$name,$email,$account_decribe,$account_type);         
+                public static function createProfile(int $id , string $name , string $email,string $account_decribe,int $account_type,string $time_zone){
+                       return self::getFinder()->createProfile($id,$name,$email,$account_decribe,$account_type,$time_zone);         
                 } 
 
 

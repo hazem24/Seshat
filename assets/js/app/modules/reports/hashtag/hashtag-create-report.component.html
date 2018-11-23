@@ -1,7 +1,8 @@
 <form style="padding-top:120px;" name="createReport" ng-submit="createHashTagReport(hashtagName)" novalidate>
+    <p class="text-center pull-left"  style="color:red; font-size: 15px; font-weight: bold;">Track Any hashtag</p><br><br>
     <div ng-form="createReportForm">
-            <input type="text" name = "hashtag_name" ng-model="hashtagName" placeholder="# hashtag" ng-required="true" ng-minlength="2"/><div class='alert alert-danger' role="alert" ng-show="createReportForm.hashtag_name.$error.minlength">Error 2 lenght is required in hashtagName</div><div class='alert alert-danger' role="alert" ng-show="createReportForm.hashtag_name.$dirty && createReportForm.hashtag_name.$error.required">This Field is required</div>
-            <br>
-            <button type="submit" id="createReport" ng-disabled="createReport.$invalid">create My Report Now !.</button>
+        <input type="text" name = "hashtag_name" class="form-control" ng-model="hashtagName" placeholder="# hashtag" ng-required="true" ng-minlength="2"/><div class='alert alert-danger' role="alert" ng-show="createReportForm.hashtag_name.$error.minlength">Error 2 lenght is required in hashtagName</div><div class='alert alert-danger' role="alert" ng-show="createReportForm.hashtag_name.$dirty && createReportForm.hashtag_name.$error.required">This Field is required</div>
+        <br>
+        <button type="submit" id="createReport" ng-disabled="createReport.$invalid" class="btn btn-dark btn-icon-label"><span class="btn-inner--text">create My Report Now !.</span></button>
     </div>
 </form>

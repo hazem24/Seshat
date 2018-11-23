@@ -31,14 +31,14 @@
                 if(isset($generateUrl['error'])){
                            $return = $generateUrl['error'];// I Must Think For A method to notify User About Any Error In Th App.
                 }else if(isset($generateUrl['url'])){
-                           /**
-                            * 1-save Token In session To Use It In Call Back.
+                        /**
+                                * 1-save Token In session To Use It In Call Back.
                             * 2-Return the generated Url.
-                            */
-                           //Clear All Session Rstore It to empty Data.
-                           $this->session->clear();
-                           $this->saveToken($generateUrl['oauth_token'],$generateUrl['oauth_token_secret']);
-                           $return = $generateUrl['url'];
+                        */
+                        //Clear All Session Rstore It to empty Data.
+                        $this->session->clear();
+                        $this->saveToken($generateUrl['oauth_token'],$generateUrl['oauth_token_secret']);
+                        $return = $generateUrl['url'];
                 }
                 return $return;
         }
@@ -203,6 +203,39 @@
                 $this->controlLicenses->initilzation( $license_type , $feature_id );
                 $this->controlLicenses->media = 'twitter';//hard coded , must be changed based on media.
                 return $this->controlLicenses->feature_license_data();
+        }
+
+        /**
+            *@method detectLang User Can Change Lang.
+            *This method resobonsable for get the lang. User Want 
+            *@return file with specific lang.
+        */
+
+        protected function detectLang(){
+                $userLang = strtolower( ($_COOKIE['lang'] ?? 'notFound') );
+                if(in_array($userLang , $this->supportedLang())){
+                        require(LANG_PATH."$userLang.lang.php");
+                }else {
+                        require(LANG_PATH."en.lang.php"); //Default Lang By Default Is English ! 
+                } 
+                         
+        }
+
+        protected function changeLang(string $lang){
+                /**
+                 * set new lang in the cookies lang.
+                 */
+                if (in_array($lang , $this->supportedLang())){
+                        setcookie("lang", $lang);
+                }else{
+                        //default is english.
+                        setcookie("lang", 'en');
+                        $lang = 'en';
+                }
+                return $lang;
+        }
+        protected function supportedLang():array{
+               return ['ar','en'];
         }
 
     }

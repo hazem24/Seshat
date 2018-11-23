@@ -1,7 +1,81 @@
-<div style="padding-top:120px;" ng-if="hashtag_report_data.created_by">
-    <h3>{{ hashtag_report_data.created_by }}</h3>
-</div>
+
+<!-- wrapper -->
+        <div ng-if="hashtag_report_data.created_by" style="padding-top:100px;">
+            <header>
+                <div class="container-section">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-6 col-lg-6 col-xl-6 margin-auto">
+                            <h1 class="title-site"><i class="fab fa-twitter"></i> socialMedia</h1>
+                            <p class="header-time">{{ hashtag_report_data.created_at }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 float-right">
+                                <p>By : <a href="/seshat/!profile/twitter/{{ hashtag_report_data.created_by }}" class="bg-dark">@{{ hashtag_report_data.created_by }}</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="row default-margin-top all-canvas-container">
+                <!-- big number here -->
+                <p class="bg-primary">#{{ hashtag_report_data.hashtag }}</p>
+                <p class="bg-danger">tweets : {{ hashtag_report_data.number_of_tweets }}</p>
+                <p class="bg-light">Impressions : {{ hashtag_report_data.impressions }}</p>
+            </div>
+            <!-- container of quick info -->
+            <section class="quick-info">
+                <div class="container-section">
+                    <div class="row">
+                        <div class="info-thumb-card">
+                            <div class="info-thumb-container">
+                                <p class="thumb-number">{{ hashtag_report_data.tweets.text.length }}</p>
+                                <p>Text</p>
+                            </div>
+                        </div>
+                        <div class="info-thumb-card">
+                            <div class="info-thumb-container">
+                                <p class="thumb-number">{{ hashtag_report_data.tweets.retweets.length }}</p>
+                                <p>Retweets</p>
+                            </div>
+                        </div>
+                        <div class="info-thumb-card">
+                            <div class="info-thumb-container">
+                                <p class="thumb-number">{{ hashtag_report_data.tweets.media.length }}</p>
+                                <p>Media</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <hr>
+            <section class="most-popular contributers-rank-section">
+                <div class="container-section">
+                    <h3 class="text-center" style="color:black;">CONTRIBUTORS RANKINGS</h3>
+                    <div class="bg-light">
+                        <div class="section-header dark-bg-color default-padding">
+                            <h4 class="text-center" style="color:white;">THE MOST ACTIVE</h4>
+                            <h6 class="text-center" style="color:white;">BY NUMBER OF FOLLOWERS</h6>
+                        </div>
+                        <div class="row-grid-5 grid-gap-10 default-margin-top">
+                                <div ng-repeat="(user,value) in hashtag_report_data.most_users_by_number_of_followers.user" class="col-grid most-active-container">
+                                    <div class="image-container">
+                                        <img class="image-responsive image-radius" ng-src="{{ hashtag_report_data.most_users_by_number_of_followers.profile_img[user] }}">
+                                    </div>
+                                    <a class="most-active-name display-block text-center dark-light-color" href="/seshat/!profile/twitter/{{ user }}">@{{ user }}</a>
+                                    <p class="no-margin most-active-number-posts text-center">{{ value }} Followers</p>
+                                </div>            
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <hr>
+                </div>
+            </div>
+        </div>
+
 <div ng-if="hashtag_report_data.notFound">
-    <h3>Not Found !</h3>
+    <h3 style="color:red;">Not Found !</h3>
 </div>
+
 

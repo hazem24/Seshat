@@ -52,19 +52,21 @@
                                              $name = RequestHandler::post('firstname');
                                              $email = RequestHandler::post('email');
                                              $account_type = RequestHandler::post('account_type');
+                                             $time_zone    = RequestHandler::post('time_zone');
                                              $account_describe = RequestHandler::post('account_describe');
                                              $filter = self::filterWizardForm( $seshat , $name,$email,$account_type,$account_describe);
                                              if($seshat->anyAppError() === true){
                                                         $return = ['error'=>$seshat->getErrors()];
                                              }else{
+                                                    $filter['time_zone'] = $time_zone;
                                                     self::createProfile($seshat , $filter); 
                                                     if($seshat->anyAppError() === true){
                                                         $return = ['error'=>$seshat->getErrors()];       
                                                     }else{
+                                                        $seshat->session->setSession('time_zone',$time_zone);
                                                         $return = ['location'=>BASE_URL.LINK_SIGN.'seshatTimeline'];
                                                     }
                                              }
-                                             
                                      }else{
                                                 //User Not Submit The Form.
                                                 $return = ['error'=>[BOT_ACCESS]];
@@ -403,7 +405,7 @@
                 $name = $data[YOUR_NAME];  $email = $data[EMAIL]; $account_describe = $data[DESCRIBE_YOUR_ACCOUNT]; $account_type = $data['account_type'];
                 $cmd = Shared\CommandFactory::getCommand('user');
                 $createProfile = $cmd->execute(['Method'=>['name'=>'createProfile','parameters'=>['id'=>(int)$seshat->session->getSession('id'),'name'=>$name
-                ,'email'=>$email,'user_describe'=>$account_describe,'account_type'=>$account_type]]]);
+                ,'email'=>$email,'user_describe'=>$account_describe,'account_type'=>$account_type,'time_zone'=>$data['time_zone']]]]);
                 if($createProfile === true){
                              /**
                               * 1-Wizard Session To False. --Done.

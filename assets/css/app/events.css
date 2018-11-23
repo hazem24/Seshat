@@ -1,0 +1,189 @@
+    .wrapper {
+        width: 95%;
+        left: 2.5%;
+        background: #f8f8f8;
+    }
+    
+    .container-events {
+        width: 95%;
+        margin: 50px auto;
+        grid-gap: 20px;
+    }
+    
+    .event-container {
+        display: block;
+        overflow: hidden;
+        height: auto;
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        background: white;
+        padding-bottom: 5px;
+        position: relative;
+        transition: all .3s ease-in-out;
+        -webkit-transition: all .3s ease-in-out;
+        -moz-transition: all .3s ease-in-out;
+        -ms-transition: all .3s ease-in-out;
+        -o-transition: all .3s ease-in-out;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -ms-border-radius: 4px;
+        -o-border-radius: 4px;
+    }
+    
+    @keyframes animateTop {
+        from {
+            bottom: 0;
+            transition: all 4s ease-in-out;
+            -webkit-transition: all 4s ease-in-out;
+            -moz-transition: all 4s ease-in-out;
+            -ms-transition: all 4s ease-in-out;
+            -o-transition: all 4s ease-in-out;
+        }
+        to {
+            bottom: 10px;
+            transition: all 4s ease-in-out;
+            -webkit-transition: all 4s ease-in-out;
+            -moz-transition: all 4s ease-in-out;
+            -ms-transition: all 4s ease-in-out;
+            -o-transition: all 4s ease-in-out;
+        }
+    }
+    
+    .event-container:hover {
+        box-shadow: 0 10px 20px 1px rgba(0, 0, 0, 0.10);
+        transform: scale(1.1);
+        -webkit-transform: scale(1.009);
+        -moz-transform: scale(1.009);
+        -ms-transform: scale(1.009);
+        -o-transform: scale(1.009);
+    }
+    
+    .event-container .event-header {
+        height: 250px;
+    }
+    
+    .event-container .event-header .container-image {
+        height: 100%;
+        width: 100%;
+    }
+    
+    .event-body {
+        display: block;
+    }
+    
+    .event-container .account-name {
+        position: absolute;
+        top: 56%;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: white;
+        display: block;
+        left: 10px;
+        box-shadow: 0 1px 1x 0 #eee;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+    }
+    
+    .event-container .account-name canvas {
+        /* background: #eee; */
+        background: #ff0074;
+        /* border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%; */
+    }
+    
+    .event-body,
+    .event-footer {
+        padding: 10px 25px;
+    }
+    
+    .event-body .event-title {
+        font-size: 18px;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .event-footer {
+        border-top: 1px solid #eeee;
+    }
+    
+    .event-footer .add-to-favorite {
+        border: none;
+        outline: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: all .2s ease-in-out;
+    }
+    
+    .event-footer .add-to-favorite:hover {
+        background: #cecece;
+    }
+    
+    .event-footer .add-to-favorite i {
+        color: var(--main-color);
+    }
+    
+    .event-footer .add-to-favorite i {
+        color: var(--main-color);
+    }
+    
+    .event-footer .menu-icon-container {
+        display: inline-block;
+        margin-left: 15px;
+    }
+    
+    .dropdown-item:hover {
+        transition: all .3s ease-in-out;
+        background: var(--main-color) !important;
+        color: white !important;
+        -webkit-transition: all .3s ease-in-out;
+        -moz-transition: all .3s ease-in-out;
+        -ms-transition: all .3s ease-in-out;
+        -o-transition: all .3s ease-in-out;
+    }
+    
+    .event-footer .event-reactions {
+        float: right;
+    }
+    
+    .event-reactions .reactions-count{
+        margin: 5px;
+        color: #cecece;
+        font-size: 14px;
+    }
+    .event-footer .event-reactions button {
+        border: none;
+        outline: none;
+        padding: 0;
+        background: transparent;
+        color: #cecece;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: all .3s ease-in-out;
+        -webkit-transition: all .3s ease-in-out;
+        -moz-transition: all .3s ease-in-out;
+        -ms-transition: all .3s ease-in-out;
+        -o-transition: all .3s ease-in-out;
+    }
+    
+    .active-btn {
+        background: var(--main-color) !important;
+    }
+    
+    .active-btn i {
+        color: gold !important;
+    }
+    
+    .active-btn:hover {
+        background: var(--main-color);
+    }
+    
+    .active-reaction {
+        color: var(--main-color);
+    }

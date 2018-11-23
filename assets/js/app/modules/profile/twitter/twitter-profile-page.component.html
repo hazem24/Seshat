@@ -1,177 +1,179 @@
 <div ng-if="data.profile.name" class="profile-page">    
-    <div class="wrapper">
-        <div class="page-header page-header-small">
-            <div class="page-header-image" data-parallax="true" style="background-image: url('{{ data.profile.profile_banner_url }}') ;">
-            </div>
-            <div class="content-center">
-                <div class="photo-container">
-                    <img  width="100" ng-src="{{ data.profile.profile_image_url_https }}" alt="twitter_profile_image">
+        <div class="wrapper">
+            <div class="page-header page-header-small">
+                <div class="justify-content-md-center" data-parallax="true">
+                    <img ng-src="{{ data.profile.profile_banner_url }}" alt="TimeLine">
                 </div>
-                <h3 class="title" style="font-size: 30px; color:white;">{{ data.profile.name }}</h3>
-                <span class="title" style="font-size: 15px; color:white;">@{{ data.profile.screen_name }}</span>
-                <div class="content">
-                    <div class="social-description text-center">
-                        <span style="font-size: 25px; font-style: italic bold; color:white;">{{ data.profile.followers_count  }}</span>
-                        <p>Followers</p>
+                <div class="content-center">
+                    <div class="photo-container">
+                        <img  width="100" ng-src="{{ data.profile.profile_image_url_https }}" alt="twitter_profile_image">
                     </div>
-                    <div class="social-description text-center">
-                        <span style="font-size: 25px; font-style: italic bold; color:white;">{{ data.profile.friends_count }}</span>
-                        <p>Following</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="section">
-            <div class="container">
-                <div class="button-container">
-                    <a href="" id="relationButton" ng-if="data.profile.following && data.auth_id !== data.profile.id_str && !data.profile.follow_request_sent" ng-click="createRelation('unfollow',data.profile.id_str)" class="btn btn-info btn-round btn-lg">Unfollow</a>
-                    <a href="" id="relationButton" ng-if="data.profile.follow_request_sent" ng-click="createRelation('undo_follow_request',data.profile.id_str)" class="btn btn-danger btn-round btn-lg">Follow Request Sent.</a>
-                    <a href="" id="relationButton" ng-if="!data.profile.following && data.auth_id !== data.profile.id_str && !data.profile.follow_request_sent" ng-click="createRelation('follow',data.profile.id_str)" class="btn btn-primary btn-round btn-lg">Follow</a>
-                    <button ng-if='data.auth_id !== data.profile.id_str && data.tweets[0]' class="btn btn-primary btn-round dropdown-toggle" id="tweetAs" title="Tweet as {{ data.profile.name }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-copy text-center" style="font-size:20px;"></i>
-                    </button>
-                    <div ng-if='data.auth_id !== data.profile.id_str && data.tweets[0]' class="dropdown-menu" aria-labelledby="tweetAs">
-                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "ar" )'>العربية</button>
-                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "en" )'>English</button>
-                        <button class="dropdown-item"  ng-click='tweetAs( data.profile.screen_name , "ru" )'>русский язык</button>
-                        <button class="dropdown-item"  ng-click='tweetAs( data.profile.screen_name , "tr" )'>Türkçe</button>
-                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "de" )'>Deutsch</button>
-                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "es" )'>Español</button>
-                        <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "fr" )'>Français</button>
-                    </div>
-
-                    <button ng-if="data.tweets[0]" ng-json-export-excel data="data.tweets" filename="data.profile.screen_name"  class="btn btn-default btn-round btn-lg btn-icon" report-fields="{id: '#', org_text: 'tweets',lang:'lang',retweet_count:'retweets',like_count:'likes'}" rel="tooltip" title="download tweets in excel format">
-                        <i class="fas fa-download text-center" style="font-size:20px;"></i>
-                    </button>
-                </div>
-                <h4 class="description text-center" style="font-size: 30px ; color : red;" ng-if="data.profile.description">{{ data.profile.description }}</h4>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="nav-align-center">
-                            <ul class="nav nav-pills nav-pills-info nav-pills-just-icons" role="tablist">
-                                <li class="nav-tweet text-center">
-                                    <a class="nav-link active" data-toggle="tab" href="#tweetsReader" role="tablist">
-                                        <i class="fas fa-book-open text-center" style="font-size:20px;"></i>
-                                    </a>
-                                </li>
-                                <li class="nav-tweet text-center">
-                                    <a class="nav-link" data-toggle="tab" href="#robots" role="tablist">
-                                        <i class="fas fa-robot text-center" style="font-size:20px;"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                    <h3 class="title" style="font-size: 30px; color:white;">{{ data.profile.name }}</h3>
+                    <span class="title" style="font-size: 15px; color:white;">@{{ data.profile.screen_name }}</span>
+                    <div class="content">
+                        <div class="social-description text-center">
+                            <span style="font-size: 25px; font-style: italic bold; color:white;">{{ data.profile.followers_count  }}</span>
+                            <p>Followers</p>
                         </div>
-                        <!-- Tab panes -->
-                        <div class="tab-content gallery">
-                            <div class="tab-pane active" id="tweetsReader" role="tabpanel">
-                                <div>
-                                        <section id="feed" ng-if = "!data.tweets.error && data.tweets.length > 0"><!-- Feed posts -->
-                                            <ul>
-                                                <li  ng-repeat="tweet in data.tweets" class="angular-animate col-md-12" style="margin: auto;width: 100%;padding: 20px;">
-                                                    <div class="tile" id="tweet{{$index}}">
-                                                            <div  class="postPhoto"> 
-                                                                    <h6 class="stats stats-right category-social">
-                                                                            <i class="fab fa-twitter" style="font-size: 25px;"></i>
-                                                                    </h6>
-                                                                <div ng-if="tweet.media.src">                                         
-                                                                        <a ng-if='tweet.media.type == "image"' data-fancybox ng-href='{{ tweet.media.src }}' class="fancybox"  data-caption="{{ tweet.org_text }}" >
-                                                                            <img  ng-src="{{ tweet.media.src }}"    alt="twitter_image" class="img-rounded img-tweet"/>
-                                                                        </a>
-                                                                        <video ng-if=' tweet.media.type == "video"' class ='afterglow'  width="320" height="280" class="col-md-12" poster="{{ tweet.media.poster }}" controls>
-                                                                            <source ng-src="{{ tweet.media.src }}" type="video/mp4">
-                                                                            Your browser does not support HTML5 video.
-                                                                        </video>
-                                                                        <div class="share">
-                                                                            <span class="facebook icon-facebook"  title="" title-top="true"></span>
-                                                                            <span class="twitter icon-twitter"  title="" title-top="true"></span>
-                                                                            <span class="linkedin icon-linkedin"  title="" title-top="true"></span>
-                                                                            <span class="slack icon-slack"  title="" title-bottom="true"></span>
-                                                                        </div>                                            
-                                                                        <span class="badge"></span>
-                                                                </div> 
-                                                            </div>
-                                                            <div  class="postInfo">
-                                                                <div class="source-wrapper">
-                                                                    <span style="padding:10px;float:right;font-size:15px;"><i class="fab fa-twitter" style="font-size: 25px;"></i> </span>
-                                                                    <span style='padding: 10px;'ng-if='tweet.retweeted'>  Retweeted By: <strong style='color:green;'><a href="/seshat/!profile/twitter/{{ tweet.user_retweeted_tweet }}">{{ tweet.user_retweeted_tweet }}</a></strong></span>
-                                                                    <div class='avatar'>
-                                                                        <img style = 'border-radius:50%'  ng-src = "{{ tweet.user_profile }}"  title="" /> <span style='color:red;' dir='{{ tweet.dir }}'> <a  href="/seshat/!profile/twitter/{{ tweet.screenName }}">{{ tweet.screenName }}</a></span>
-                                                                    </div>
-                                                                </div><br>
-                                                                <p ng-if="tweet.full_text" class = 'text-center' style='font-size: 16px;padding:20px; font-weight:bold;'  ng-bind-html="renderHtml(tweet.full_text)"  dir='{{ tweet.dir }}'></p><br><br><br><br>
-                                                            </div>
-                                                        </a>
-                                                        <div style="font-size: 15px;" class="postMeta">
-                                                            <div class="details angular-animate">
-                                                                <div class="post-menu">
-                                                                        <div class="btn-group dropup pull-left">
-                                                                                <button id="dLabel" type="button" class="btn btn-just-icon btn-link btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                  <i class="fa fa-ellipsis-h"></i>
-                                                                                </button>
-                                                                                <div class="dropdown-menu" style="background-color:#FFFFF0; padding:0px;">
-                                                                                    <div class="dropdown-item">
-                                                                                        <a href="/seshat/!seshat/analytic/{{tweet.screen_name}}/{{tweet.tweet_id}}" class="seshatTweetView">
-                                                                                            <i class="fas fa-chart-line"></i>
-                                                                                            <span class="col-sm-2" data-screen-name= "{{ tweet.screen_name }}" data-tweet-id="{{ tweet.tweet_id }}">analytic</span>
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div ng-if="tweet.full_text && tweet.lang != 'und'" class="dropdown-item">
-                                                                                        <a class = 'link-info translateThis' ng-click="translateTweet($index)" data-from='{{ tweet.lang }}'  data-key='{{ $index }}' href=''><i class="fas fa-language"></i>                                                                                            Translate this tweet.</a>
-                                                                                        <input type="hidden" value="{{ tweet.org_text }}" id ="content{{ $index }}" />
-                                                                                    </div>
-                                                                                    <div  class="dropdown-item">
-                                                                                        <a href="">
-                                                                                            <i class="fab fa-twitter-square"></i>
-                                                                                            <span class="col-sm-2 tweetThis" ng-click='copyTweet($event);' data-key='content{{ $index }}'>Tweet this.</span>
-                                                                                        </a>    
-                                                                                    </div> 
-                                                                                    <div ng-if="data.auth_id === data.profile.id_str && !tweet.retweeted" ng-click='deleteTweet(tweet.tweet_id,$index);' class="dropdown-item">
-                                                                                        <a href="">
-                                                                                            <i class="fas fa-trash-alt"></i>
-                                                                                            <span class="col-sm-2 deleteTweet{{$index}}"  data-key='content{{ $index }}'>delete Tweet.</span>
-                                                                                        </a>
-                                                                                    </div>                                                                                           
-                                                                                </div>
-                                                                        </div>                
-                                                                </div><!---->
-                                            
-                                                                <div class="stats pull-right">
-                                                                    <a href=""  ng-click="replayLogic($event)" data-twid = "{{ tweet.tweet_id }}" data-replay-to = "{{ tweet.replay_screen_name }}  {{ tweet.user_retweeted_tweet }}"  class="btn btn-link tweet_replay">
-                                                                        <span class="icon-share" style="font-size:15px;"></span>
-                                                                   </a>
-                                                                    <button ng-click="retweetLogic($event)" id="retweet_unretweet_{{ tweet.tweet_id }}" data-twid = "{{ tweet.tweet_id }}" data-action = '{{ tweet.retweet_type }}' data-key="{{ $index }}" data-replay-context="0"  class="{{ tweet.retweet_button_style }}">
-                                                                        <i class="fas fa-retweet" style="font-size:15px;"></i>
-                                                                        <span class='retweet_counter' style="font-size:15px;">{{ tweet.retweet_count }}</span>
-                                                                    </button>
-                                                                    <button  id="like_unlike_{{ tweet.tweet_id }}" ng-click="likeLogic($event)" data-twid = "{{ tweet.tweet_id }}" data-action = '{{ tweet.like_type }}' data-key="{{ $index }}" data-replay-context="0"  class = "{{ tweet.like_status }}">
-                                                                        <i class="far fa-heart" style="font-size:15px;"></i>
-                                                                        <span class='like_counter' style="font-size:15px;">{{ tweet.like_count }}</span>
-                                                                    </button>                                                                                                              
-                                                                </div>
-                                            
-                                                            </div>
-                                            
-                                                        </div>
-                                                    </div>
-                                            
-                                                </li><!---->
-                                            </ul>                                            
-                                            </section>
-                                            <section ng-if = "data.tweets.error || data.tweets.length <= 0">
-                                                    <div>
-                                                        <p class="text-center" style="font-size: 20px;color:black;font: bold;">Cannot retrive tweets from this account may be this account is private.</p>
-                                                    </div>
-                                            </section>
-                                </div>                     
+                        <div class="social-description text-center">
+                            <span style="font-size: 25px; font-style: italic bold; color:white;">{{ data.profile.friends_count }}</span>
+                            <p>Following</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="container">
+                    <div class="button-container">
+                        <a href="" id="relationButton" ng-if="data.profile.following && data.auth_id !== data.profile.id_str && !data.profile.follow_request_sent" ng-click="createRelation('unfollow',data.profile.id_str)" class="btn btn-info btn-round btn-lg">Unfollow</a>
+                        <a href="" id="relationButton" ng-if="data.profile.follow_request_sent" ng-click="createRelation('undo_follow_request',data.profile.id_str)" class="btn btn-danger btn-round btn-lg">Follow Request Sent.</a>
+                        <a href="" id="relationButton" ng-if="!data.profile.following && data.auth_id !== data.profile.id_str && !data.profile.follow_request_sent" ng-click="createRelation('follow',data.profile.id_str)" class="btn btn-primary btn-round btn-lg">Follow</a>
+                        <button ng-if='data.auth_id !== data.profile.id_str && data.tweets[0]' class="btn btn-primary btn-round dropdown-toggle" id="tweetAs" title="Tweet as {{ data.profile.name }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-copy text-center" style="font-size:20px;"></i>
+                        </button>
+                        <div ng-if='data.auth_id !== data.profile.id_str && data.tweets[0]' class="dropdown-menu" aria-labelledby="tweetAs">
+                            <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "ar" )'>العربية</button>
+                            <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "en" )'>English</button>
+                            <button class="dropdown-item"  ng-click='tweetAs( data.profile.screen_name , "ru" )'>русский язык</button>
+                            <button class="dropdown-item"  ng-click='tweetAs( data.profile.screen_name , "tr" )'>Türkçe</button>
+                            <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "de" )'>Deutsch</button>
+                            <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "es" )'>Español</button>
+                            <button class="dropdown-item" ng-click='tweetAs( data.profile.screen_name , "fr" )'>Français</button>
+                        </div>
+    
+                        <button ng-if="data.tweets[0]" ng-json-export-excel data="data.tweets" filename="data.profile.screen_name"  class="btn btn-default btn-round btn-lg btn-icon" report-fields="{id: '#', org_text: 'tweets',lang:'lang',retweet_count:'retweets',like_count:'likes'}" rel="tooltip" title="download tweets in excel format">
+                            <i class="fas fa-download text-center" style="font-size:20px;"></i>
+                        </button>
+                    </div>
+                    <h4 class="description text-center" style="font-size: 30px ; color : red;" ng-if="data.profile.description">{{ data.profile.description }}</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="nav-align-center">
+                                <ul class="nav nav-pills nav-pills-info nav-pills-just-icons" role="tablist">
+                                    <li class="nav-tweet text-center">
+                                        <a class="nav-link active" data-toggle="tab" href="#tweetsReader" role="tablist">
+                                            <i class="fas fa-book-open text-center" style="font-size:20px;"></i>
+                                        </a>
+                                    </li>
+                                    <li class="nav-tweet text-center">
+                                        <a class="nav-link" data-toggle="tab" href="#robots" role="tablist">
+                                            <i class="fas fa-robot text-center" style="font-size:20px;"></i>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="tab-pane" id="robots" role="tabpanel">
-                                <div class="row">
-                                    <div >
-                                        <p ng-if="data.tweets.error" class="text-center" style="font-size: 20px;color:red;font: bold;"><span style="color:black">{{ data.profile.screen_name }}</span> is a private account you can't use this feature.</p>
-                                            <li ng-if="!data.tweets.error" class="text-center" style="font-size: 20px;color:black;font:bold;">To Calculate How many fake followers <span style="color:red;">{{ data.profile.screen_name }}</span> have just click the button below.</li><br>
-                                            <button ng-if="!data.tweets.error" id="fakeAccountsCalc" ng-click="calculateFakeFollowers(data.profile.screen_name)" class="btn btn-danger">Fake Accounts</button>
+                            <!-- Tab panes -->
+                            <div class="tab-content gallery">
+                                <div class="tab-pane active" id="tweetsReader" role="tabpanel">
+                                    <div>
+                                            <section id="feed" ng-if = "!data.tweets.error && data.tweets.length > 0"><!-- Feed posts -->
+                                                <ul>
+                                                    <li  ng-repeat="tweet in data.tweets" class="angular-animate col-md-12" style="margin: auto;width: 100%;padding: 20px;">
+                                                        <div class="tile" id="tweet{{$index}}">
+                                                                <div  class="postPhoto"> 
+                                                                        <h6 class="stats stats-right category-social">
+                                                                                <i class="fab fa-twitter" style="font-size: 25px;"></i>
+                                                                        </h6>
+                                                                    <div ng-if="tweet.media.src">                                         
+                                                                            <a ng-if='tweet.media.type == "image"' data-fancybox ng-href='{{ tweet.media.src }}' class="fancybox"  data-caption="{{ tweet.org_text }}" >
+                                                                                <img  ng-src="{{ tweet.media.src }}"    alt="twitter_image" class="img-rounded img-tweet"/>
+                                                                            </a>
+                                                                            <video ng-if=' tweet.media.type == "video"' class ='afterglow'  width="320" height="280" class="col-md-12" poster="{{ tweet.media.poster }}" controls>
+                                                                                <source ng-src="{{ tweet.media.src }}" type="video/mp4">
+                                                                                Your browser does not support HTML5 video.
+                                                                            </video>
+                                                                            <div class="share">
+                                                                                <span class="facebook icon-facebook"  title="" title-top="true"></span>
+                                                                                <span class="twitter icon-twitter"  title="" title-top="true"></span>
+                                                                                <span class="linkedin icon-linkedin"  title="" title-top="true"></span>
+                                                                                <span class="slack icon-slack"  title="" title-bottom="true"></span>
+                                                                            </div>                                            
+                                                                            <span class="badge"></span>
+                                                                    </div> 
+                                                                </div>
+                                                                <div  class="postInfo">
+                                                                    <div class="source-wrapper">
+                                                                        <span style="padding:10px;float:right;font-size:15px;"><i class="fab fa-twitter" style="font-size: 25px;"></i> </span>
+                                                                        <span style='padding: 10px;'ng-if='tweet.retweeted'>  Retweeted By: <strong style='color:green;'><a href="/seshat/!profile/twitter/{{ tweet.user_retweeted_tweet }}">{{ tweet.user_retweeted_tweet }}</a></strong></span>
+                                                                        <div class='avatar'>
+                                                                            <img style = 'border-radius:50%'  ng-src = "{{ tweet.user_profile }}"  title="" /> <span style='color:red;' dir='{{ tweet.dir }}'> <a  href="/seshat/!profile/twitter/{{ tweet.screenName }}">{{ tweet.screenName }}</a></span>
+                                                                        </div>
+                                                                    </div><br>
+                                                                    <p ng-if="tweet.full_text" class = 'text-center' style='font-size: 16px;padding:20px; font-weight:bold;'  ng-bind-html="renderHtml(tweet.full_text)"  dir='{{ tweet.dir }}'></p><br><br><br><br>
+                                                                </div>
+                                                            </a>
+                                                            <div style="font-size: 15px;" class="postMeta">
+                                                                <div class="details angular-animate">
+                                                                    <div class="post-menu">
+                                                                            <div class="btn-group dropup pull-left">
+                                                                                    <button id="dLabel" type="button" class="btn btn-just-icon btn-link btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                      <i class="fa fa-ellipsis-h"></i>
+                                                                                    </button>
+                                                                                    <div class="dropdown-menu" style="background-color:#FFFFF0; padding:0px;">
+                                                                                        <div class="dropdown-item">
+                                                                                            <a href="/seshat/!seshat/analytic/{{tweet.screen_name}}/{{tweet.tweet_id}}" class="seshatTweetView">
+                                                                                                <i class="fas fa-chart-line"></i>
+                                                                                                <span class="col-sm-2" data-screen-name= "{{ tweet.screen_name }}" data-tweet-id="{{ tweet.tweet_id }}">analytic</span>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        <div ng-if="tweet.full_text && tweet.lang != 'und'" class="dropdown-item">
+                                                                                            <a class = 'link-info translateThis' ng-click="translateTweet($index)" data-from='{{ tweet.lang }}'  data-key='{{ $index }}' href=''><i class="fas fa-language"></i>                                                                                            Translate this tweet.</a>
+                                                                                            <input type="hidden" value="{{ tweet.org_text }}" id ="content{{ $index }}" />
+                                                                                        </div>
+                                                                                        <div  class="dropdown-item">
+                                                                                            <a href="">
+                                                                                                <i class="fab fa-twitter-square"></i>
+                                                                                                <span class="col-sm-2 tweetThis" ng-click='copyTweet($event);' data-key='content{{ $index }}'>Tweet this.</span>
+                                                                                            </a>    
+                                                                                        </div> 
+                                                                                        <div ng-if="data.auth_id === data.profile.id_str && !tweet.retweeted" ng-click='deleteTweet(tweet.tweet_id,$index);' class="dropdown-item">
+                                                                                            <a href="">
+                                                                                                <i class="fas fa-trash-alt"></i>
+                                                                                                <span class="col-sm-2 deleteTweet{{$index}}"  data-key='content{{ $index }}'>delete Tweet.</span>
+                                                                                            </a>
+                                                                                        </div>                                                                                           
+                                                                                    </div>
+                                                                            </div>                
+                                                                    </div><!---->
+                                                
+                                                                    <div class="stats pull-right">
+                                                                        <a href=""  ng-click="replayLogic($event)" data-twid = "{{ tweet.tweet_id }}" data-replay-to = "{{ tweet.replay_screen_name }}  {{ tweet.user_retweeted_tweet }}"  class="btn btn-link tweet_replay">
+                                                                            <span class="icon-share" style="font-size:15px;"></span>
+                                                                       </a>
+                                                                        <button ng-click="retweetLogic($event)" id="retweet_unretweet_{{ tweet.tweet_id }}" data-twid = "{{ tweet.tweet_id }}" data-action = '{{ tweet.retweet_type }}' data-key="{{ $index }}" data-replay-context="0"  class="{{ tweet.retweet_button_style }}">
+                                                                            <i class="fas fa-retweet" style="font-size:15px;"></i>
+                                                                            <span class='retweet_counter' style="font-size:15px;">{{ tweet.retweet_count }}</span>
+                                                                        </button>
+                                                                        <button  id="like_unlike_{{ tweet.tweet_id }}" ng-click="likeLogic($event)" data-twid = "{{ tweet.tweet_id }}" data-action = '{{ tweet.like_type }}' data-key="{{ $index }}" data-replay-context="0"  class = "{{ tweet.like_status }}">
+                                                                            <i class="far fa-heart" style="font-size:15px;"></i>
+                                                                            <span class='like_counter' style="font-size:15px;">{{ tweet.like_count }}</span>
+                                                                        </button>                                                                                                              
+                                                                    </div>
+                                                
+                                                                </div>
+                                                
+                                                            </div>
+                                                        </div>
+                                                
+                                                    </li><!---->
+                                                </ul>                                            
+                                                </section>
+                                                <section ng-if = "data.tweets.error || data.tweets.length <= 0">
+                                                        <div>
+                                                            <p class="text-center" style="font-size: 20px;color:black;font: bold;">Cannot retrive tweets from this account may be this account is private.</p>
+                                                        </div>
+                                                </section>
+                                    </div>                     
+                                </div>
+                                <div class="tab-pane" id="robots" role="tabpanel">
+                                    <div class="row">
+                                        <div >
+                                            <p ng-if="data.tweets.error" class="text-center" style="font-size: 20px;color:red;font: bold;"><span style="color:black">{{ data.profile.screen_name }}</span> is a private account you can't use this feature.</p>
+                                                <li ng-if="!data.tweets.error" class="text-center" style="font-size: 20px;color:black;font:bold;">To Calculate How many fake followers <span style="color:red;">{{ data.profile.screen_name }}</span> have just click the button below.</li><br>
+                                                <button ng-if="!data.tweets.error" id="fakeAccountsCalc" ng-click="calculateFakeFollowers(data.profile.screen_name)" class="btn btn-danger">Fake Accounts</button>
+                                        </div>
+                                        
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -180,7 +182,6 @@
             </div>
         </div>
     </div>
-</div>
-<div ng-if="data.error && !data.error.reauth" style="margin: auto;padding: 10px;width: 50%;">
-    <li ng-repeat = "error in data.error" class="text-center" style="font-size: 20px;font: bold;color: red;">{{ error }}</li>
-</div>
+    <div ng-if="data.error && !data.error.reauth" style="margin: auto;padding: 10px;width: 50%;">
+        <li ng-repeat = "error in data.error" class="text-center" style="font-size: 20px;font: bold;color: red;">{{ error }}</li>
+    </div>

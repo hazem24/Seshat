@@ -137,12 +137,13 @@ transparent = true;
                                     "dataType":"json",
                                     "success":function(data){
                                             if(data.error != undefined){
-                                                    alert(data.error);
+                                                    globalMethod.showNotification('danger','top','Right',data.error,"body",10000);
                                                     $("#finish_form").attr('disabled',false);
                                             }else if(data.location != undefined){
+                                                    globalMethod.showNotification('success','top','right','You Will Redirect to seshat Now',"body",10000);
                                                     location.href = data.location;
                                             }else{
-                                                    alert("Something Wrong");
+                                                globalMethod.showNotification('danger','top','Right',"App Error Try again latter.","body",10000);
                                                     $("#finish_form").attr('disabled',false);
                                             }
                                     }

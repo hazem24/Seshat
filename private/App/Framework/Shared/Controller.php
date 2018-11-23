@@ -139,28 +139,6 @@
                       $this->viewInstance()->renderLayout($layoutName,$dataToLayoutOrError,$ajax);
             }
 
-
-
-            /**
-            *@method detectLang User Can Change Lang.
-            *This method resobonsable for get the lang. User Want 
-            *@return file with spcefic lang.
-            */
-
-            protected function detectLang(){
-                      $userLang = strtolower((string)$this->session->getSession('lang'));
-                      if(in_array($userLang , $this->supportedLang())){
-                                require(LANG_PATH."$userLang.lang.php");
-                      }else {
-                                require(LANG_PATH."en.lang.php"); //Default Lang By Default Is Arabic ! 
-                      } 
-                               
-            }
-
-
-            protected function supportedLang():array{
-                     return ['ar','en'];
-            }
             /**
             *@method rOut Create Intelligent Redirect Based On User Status.
             */

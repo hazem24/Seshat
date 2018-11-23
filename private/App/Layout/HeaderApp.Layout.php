@@ -4,7 +4,8 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Paper Kit 2 PRO by Creative Tim</title>
+	<link href="<?=ASSESTS_URI?>img/seshat.png" rel="icon" type="image/png">
+	<title><?=NAME;?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
 
@@ -18,12 +19,11 @@
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
 	<link href="<?=ASSESTS_URI."css"?>/lib/bootstrap-datetimepicker.min.css" rel="stylesheet" type='text/css' />
-	<link type="text/css" href="<?=ASSESTS_URI?>/assets/vendor/highlight.js/styles/atom-one-dark.css" rel="stylesheet">
+	<link type="text/css" href="<?=ASSESTS_URI?>/vendor/highlight.js/styles/atom-one-dark.css" rel="stylesheet">
 	<!-- Theme CSS -->
-	<link href="<?=ASSESTS_URI?>/assets/css/theme.css" rel="stylesheet">
+	<link id = "mainView" href="<?=ASSESTS_URI?>css/theme.min.css" rel="stylesheet">
 	<link href="<?=ASSESTS_URI."css"?>/app/seshat.css" rel="stylesheet" type='text/css' />
 	<link href="<?=ASSESTS_URI."css"?>/lib/sweetAlert/jquery.sweet-modal.min.css" rel="stylesheet" type='text/css' />
-	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<link href="<?=ASSESTS_URI."css"?>/lib/charts.css" rel="stylesheet" type='text/css'>
 	<link rel="stylesheet" href="<?=ASSESTS_URI."css"?>/lib/emojionearea.min.css">
@@ -32,19 +32,21 @@
 <div style='padding:10px;margin: auto;top:30%;left:40%;position:fixed;' class='ai-spinner'>
 	<img src='/seshat/assets/spinner/ai_spinner.apng' alt='loading' />
 </div>
-<?php if($this->session->getSession('id') !== false) : ?>
+<?php if($this->session->getSession('id') !== false) : 
+$twitter_screen_name = $this->session->getSession("username");
+//$license           = $this->session->
+?>
 
 <body ng-app="seshatApp" ng-controller = "appCtrl">
-	<div class="modal fade bd-example-modal-lg" id="tweetModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="wrapper">
-					<div class="main">
-						<div class="section" style="background-color:white;">
-							<div class="container">
-								<form id="composeTweetForm" method="post" action="http://127.0.0.1/seshat/!twitterAction/composeTweet" enctype="multipart/form-data">
+<div class="modal fade bd-example-modal-lg" id="tweetModal" tabindex="-1" role="dialog" aria-labelledby="modal_1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+						<form id="composeTweetForm" method="post" action="http://127.0.0.1/seshat/!twitterAction/composeTweet" enctype="multipart/form-data">
 									<div class="row">
-										<div class="col-md-5 col-sm-5">
+										<div class="col-md-2" style="float-left">
 											<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 												<div class="fileinput-new thumbnail img-no-padding" style="max-width: 370px; max-height: 250px;">
 													<img src="http://127.0.0.1/seshat/assets/img/image_placeholder.jpg" alt="...">
@@ -55,8 +57,8 @@
 													</span> <a href="#" class="btn btn-link btn-danger fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> <?=REMOVE?></a>
 												</div>
 											</div>
-											<div id="tags-2">
-												<select name="category" class="selectpicker" data-style="btn-link btn-primary btn-round" data-menu-style="dropdown-success">
+											<div class="col-md-12" style="float-left" id="tags-2">
+												<select name="category"  class="form-control" data-toggle="select" title="Simple select" data-live-search="true" data-live-search-placeholder="Search ...">
 													<option disabled selected>
 														<?=CATEGORIES?>
 													</option>
@@ -68,25 +70,23 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-md-7 col-sm-7">
-											<div class="form-group">
-												<textarea class="form-control textarea-limited quickReplay" id="tweetContent" name="tweetContent" placeholder="<?=LIMITED_TEXT_AREA?>" rows="13" , maxlength="280"></textarea>
+										<div class="col-md-12">
+											<div  class="form-group"> 
+												<textarea  class="form-control quickReplay" id="tweetContent" name="tweetContent" placeholder="<?=LIMITED_TEXT_AREA?>" rows="13" , maxlength="280"></textarea>
 												<h5><small><span id="textarea-limited-message" class="pull-right"><?=CHARS_LEFT?></span></small></h5>
 											</div>
-											<div class="form-check">
-												<label class="form-check-label">
-													<input class="form-check-input" name="seshatPublicAccess" type="checkbox" value="true">
-													<?=SESHAT_PUBLIC_ACCESS?> <span class="form-check-sign"></span>
-												</label>
+											<div class="custom-control custom-checkbox mb-3">
+													<input class="custom-control-input" id="seshatPublicAccess" name="seshatPublicAccess" type="checkbox" value="true">
+													<label class="custom-control-label" for="seshatPublicAccess"><?=SESHAT_PUBLIC_ACCESS?></label>
 											</div>
 											<div class="col-md-12">
 												<div class="title">
 													<h3><?=SCEHDULE?></h3>
 												</div>
-												<div clas="row">
+												<div class="row">
 													<div class="col-md-8">
 														<div class='form-group'>
-															<div class="input-group date" id="datetimepicker">
+															<div class="input-group input-group-transparent mb-4" id="datetimepicker">
 																<input type="text" style="height:30px" id="scehduleTime" name="scehduleTime" class="form-control datetimepicker-input" data-target="#datetimepicker" />
 																<div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
 																	<div class="input-group-text"><i class="fas fa-calendar-alt" style="height:30px;font-size: 1.5em"></i>
@@ -116,215 +116,86 @@
 											</button>
 										</div>
 									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--         default navbar with notifications     -->
+						</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<body style="" ng-app="seshatApp" ng-class="{
-    bootstrapped: bootstrapped,
-    dark: theme === 'dark',
-    menuOpen: menuOpen }" class="halfView feed-all-muzli bootstrapped loading-muzli-complete">
-		<div id="overlay"></div>
-		<!-- Main wrapper -->
-		<div id="container">
-			<header ng-controller = "layoutCtrl">
-				<div class="pull-left">
-					<a><?=NAME;?></a>
+<header ng-controller = "layoutCtrl">
+	<nav-area></nav-area>
+</header>
+<header class="header-account-page bg-gradient-primary d-flex align-items-end">
+            <div class="container">
+                <div class="row">
+				<div class="col-md-4 float-right">
+					<button type="button" data-toggle="modal" data-target="#tweetModal" class="btn btn-danger" styly="padding-bottom:40px;"><?=NEW_POST;?></button>
 				</div>
-				<nav-area></nav-area>
-			</header>
-			<!---->
-			<!-- Sidebar -->
-			<nav id="sidebar" class="sidebar">
-				<header>
-					<!-- Header -->
-					<a class="logo" href="#"></a>
-					<a class="sidebarMenu" href="#" title="">
-						<!---->EDIT</a>
-				</header>
-				<!-- /Header -->
-				<div class="sourceSearch" ng-hide="sourcesDragged">
-					<div class="searchContainer">
-						<input type="text" placeholder="Search for feeds" class="ng-pristine ng-valid ng-empty ng-touched">
-					</div>
-				</div>
-				<ul class="sourcesConstant" muzli-home-switch="homeSwitched" ng-hide="searchSources">
-					<li class="enabled"> <i class="source all-sources-icon"></i>
-						<span>All your feeds</span>
-					</li>
-					<li class="enabled"> <i class="source _muzli"></i>
-						<span>Our Picks</span>
-					</li>
-				</ul>
-				<ul class="sources ng-pristine ng-untouched ng-valid ui-sortable ng-not-empty">
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _muzli_blog"></i>
-						<span>Muzli blog</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled unread ui-sortable-handle"> <i href="#" class="source _dribbble"></i>
-						<span>Dribbble</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _producthunt"></i>
-						<span>Product Hunt</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled unread ui-sortable-handle"> <i href="#" class="source _designer_news"></i>
-						<span>Designer News</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled unread ui-sortable-handle"> <i href="#" class="source _techcrunch"></i>
-						<span>Techcrunch</span>
-						<!---->
-						<a class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _behance"></i>
-						<span>Behance</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _ted"></i>
-						<span>TED</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _vlogs"></i>
-						<span>Vlogs</span>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _fubiz"></i>
-						<span>Fubiz</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _sidebar"></i>
-						<span>Sidebar</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title=""></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _awwwards"></i>
-						<span>Awwwards</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fawwwards.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled unread ui-sortable-handle"> <i href="#" class="source _the_next_web"></i>
-						<span>The Next Web</span>
-						<!---->
-						<a ng-href="https://app.muz.li/go?link=http%3A%2F%2Fthenextweb.com/" target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fthenextweb.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _css_winner"></i>
-						<span>CSS Winner</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fcsswinner.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _abduzeedo"></i>
-						<span>Abduzeedo</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fabduzeedo.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _design_milk"></i>
-						<span>Design Milk</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fdesign-milk.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled unread ui-sortable-handle"> <i href="#" class="source _designboom"></i>
-						<span>Designboom</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fdesignboom.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled unread ui-sortable-handle"> <i href="#" class="source _colossal"></i>
-						<span>Colossal</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fthisiscolossal.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _webdesigner_depot"></i>
-						<span>Webdesigner Depot</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fwebdesignerdepot.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _fast_co_design"></i>
-						<span>Fast Co. Design</span>
-						<!---->
-						<a tabindex="-1" target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Ffastcodesign.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _designspiration"></i>
-						<span>Designspiration</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fdesignspiration.net/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _99u"></i>
-						<span>99u</span>
-						<!---->
-						<a target="_blank" class="feedLink icon-link" title="" href="https://app.muz.li/go?link=http%3A%2F%2F99u.com/"></a>
-						<!---->
-					</li>
-					<!---->
-					<li class="enabled ui-sortable-handle"> <i href="#" class="source _design_you_trust"></i>
-						<span>Design You Trust</span>
-						<!---->
-						<a ng-if="::source.url" tabindex="-1" ng-href="https://app.muz.li/go?link=http%3A%2F%2Fdesignyoutrust.com/" target="_blank" class="feedLink icon-link" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="https://app.muz.li/go?link=http%3A%2F%2Fdesignyoutrust.com/"></a>
-						<!---->
-					</li>
-					<!---->
-				</ul>
-				<div class="moreFeeds ng-hide" ng-click="alert('Hello More Feeds!.')" ng-show="searchSources"> <a href="#">More feeds</a>
-				</div>
-			</nav>
-		</div>
-        <?php //Here mean that user not authincation with seshat a button of authication must be here. 
+
+                    <div class=" col-lg-12">
+                        <!-- Salute + Small stats -->
+                        <div class="row align-items-center mb-4">
+                            <div class="col-md-5 mb-4 mb-md-0">
+                                <span class="h2 mb-0 text-white d-block"><?= $twitter_screen_name; ?></span>
+                                <span class="text-light"><?=NICE_DAY?></span>
+                            </div>
+						</div>
+                        <!-- Account navigation -->
+                        <div class="d-flex">
+                            <a href="<?=BASE_URL?>!profile/twitter/<?=$twitter_screen_name?>" class="btn btn-icon btn-group-nav shadow btn-secondary btn-dark">
+                                <span class="btn-inner--icon"><i class="far fa-user"></i></span>
+                                <span class="btn-inner--text d-none d-md-inline-block"><?=YOUR_PROFILE;?></span>
+							</a>
+							<a href="<?=BASE_URL?>!seshatTimeline" class="btn btn-icon btn-group-nav shadow btn-secondary btn-dark">
+                                <span class="btn-inner--icon"><i class="fas fa-rss-square"></i></span>
+                                <span class="btn-inner--text d-none d-md-inline-block"><?=TWITTER_TIME_LINE;?></span>
+                            </a>
+                            <div class="btn-group btn-group-nav shadow ml-auto" role="group" aria-label="Basic example">
+                                <div class="btn-group" role="group">
+                                    <button id="btn-group-boards" type="button" class="btn btn-secondary btn-dark btn-icon dropdown-toggle" data-toggle="dropdown" data-offset="0,8" aria-haspopup="true" aria-expanded="false">
+                                        <span class="btn-inner--icon"><i class="fas fa-address-book"></i></span>
+                                        <span class="btn-inner--text d-none d-sm-inline-block"><?=FEATURES?></span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" aria-labelledby="btn-group-boards">
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/statistics"><?=STATISTICS?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/checkFriends/twitter"><?=CHECK_FREINDS?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/controlFollowers/twitter/nonFollowers"><?=UNFOLLOW;?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/controlFollowers/twitter/recentUnfollow"><?=RECENT_UNFOLLOW;?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/controlFollowers/twitter/recentFollowers"><?=RECENT_FOLLOWERS;?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/controlFollowers/twitter/fans"><?=FANS;?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/tasks"><?=TASKS;?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!seshat/createReport/hashtag"><?=TRACK_HASHTAG;?></a>
+										<a class="dropdown-item" href="<?=BASE_URL?>!followTree"><?=FOLLOW_TREE;?></a>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button id="btn-group-settings" type="button" class="btn btn-secondary btn-dark btn-icon dropdown-toggle" data-toggle="dropdown" data-offset="0,8" aria-haspopup="true" aria-expanded="false">
+                                        <span class="btn-inner--icon"><i class="fas fa-cogs"></i></span>
+                                        <span class="btn-inner--text d-none d-sm-inline-block"><?=SETTINGS?></span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" aria-labelledby="btn-group-settings">
+                                        <a class="dropdown-item" href="account-profile.html">Profile</a>
+                                        <a class="dropdown-item" href="account-settings.html">Settings</a>
+                                        <a class="dropdown-item" href="account-billing.html">Billing</a>
+                                        <a class="dropdown-item" href="account-notifications.html">Notifications</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+</div>
+<?php //Here mean that user not authincation with seshat a button of authication must be here. 
 else: ?>
-<body ng-app="seshatApp" style="background-color:#343c55;padding-top: 20px;">
-			<div class="col-4" style="margin: auto;width: 50%;padding: 10px;">
-<a href='<?=BASE_URL.LINK_SIGN.'index/signin '?>' style="margin: auto;width: 50%;padding: 10px;" class='btn btn-twitter'><i class="fab fa-twitter"></i> <?= SIGN_TWITTER ?></a>
-			</div>
+<body ng-app="seshatApp" style="background-color:white;padding-top: 20px;">
+<div class="col-4" style="margin: auto;width: 50%;padding: 10px;">
+<a href='<?=BASE_URL.LINK_SIGN.'index/signin '?>' class="btn btn-twitter btn-icon-label">
+    <span class="btn-inner--icon"><i class="fab fa-twitter"></i></span>
+    <span class="btn-inner--text"><?= SIGN_TWITTER ?></span>
+</a>
+</div>
 <?php endif; ?>

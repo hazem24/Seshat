@@ -1,1 +1,3 @@
+<main>
 <div ng-controller="reportCtrl"><div ng-controller="reportHashTagCtrl"><hashtag-report></hashtag-report></div></div>
+</main>

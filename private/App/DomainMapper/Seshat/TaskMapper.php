@@ -86,7 +86,7 @@
              */
             public function deleteTask( int $user_id , int $task_id ){
                 $delete = new Delete;
-                $delete = $delete->delete( $this->table , $this->columnsTable )->where([ $this->primaryKey . " = ? && "=> $task_id , 
+                $delete = $delete->delete( $this->table )->where([ $this->primaryKey . " = ? && "=> $task_id , 
                 $this->foreign_key . " = ? " => $user_id])->createQuery();
                 $deleteTask = $this->pdo->prepare( $delete['query'] );
                 $this->bindParamCreator( 2 , $deleteTask , [$task_id,$user_id] );

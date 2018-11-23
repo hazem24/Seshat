@@ -1,11 +1,14 @@
 angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatService){
 
-    $controlFollowers = String(document.location).toLowerCase().indexOf("controlfollowers");
+    $controlFollowers   = String(document.location).toLowerCase().indexOf("controlfollowers");
     $scope.feature_type = false;// flag for uses feature type must be change to search about element.
+    $scope.loading      = true;// flag detemined that page is loading or send request for data.
 
     if ( angular.element("#media-timeLine").length > 0 ){
         //get Timeline data.
+        angular.element('head').append('<link href="' + css_url + "app/events.css" + '" rel="stylesheet">');
         seshatService.getTimeLine(function ( response ) {
+            console.log( response.data );
             if( response.data.error !== undefined ){
                 $scope.results = response.data;
                 globalMethod.repsonseError( response.data );
@@ -26,7 +29,6 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
             // get data from server.
             seshatService.controlFollowers( String(document.location) , function ( $response ) {
                 //save as task.
-                console.log( $response.data );
                 $scope.saveTask = true;//uses this to appear save task button.
                 if ( $response.data.results !== undefined ){
                     $scope.results = $response.data.results;
@@ -83,13 +85,21 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
     if (angular.element("#accounts-statistics").length > 0){
         spinner.onPageLoad(true);
         seshatService.accountsStatistics( function ( $response ){
-            console.log( $response.data );
+            $scope.loading = false;
+            if( $response.data.now !== undefined ){
+                $scope.statistics      = $response.data;
+                $scope.followers_delta = $scope.statistics.now.statistics.twitter.followers    -  $scope.statistics.past.statistics.twitter.followers;
+                $scope.tweets_delta    = $scope.statistics.now.statistics.twitter.tweet_count  -  $scope.statistics.past.statistics.twitter.tweet_count;
+                $scope.following_delta = $scope.statistics.now.statistics.twitter.following    -  $scope.statistics.past.statistics.twitter.following;
+            }else{
+                globalMethod.repsonseError( $response.data );
+            }
             spinner.removeSpinner('.spinner');
         } );
     }
     //End statistics.
 
-    //seshat account activity.
+    //seshat account activity ( Notifications ).
     if (angular.element("#account-activity").length > 0){
         spinner.onPageLoad(true);
         seshatService.accountActivity( function( $response ){
@@ -103,10 +113,33 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
     if (angular.element("#account-tasks").length > 0){
         spinner.onPageLoad(true);
         seshatService.accountTasks( function( $response ){
-            console.log( ($response.data) );
+            $scope.loading = false;
+            if ( $response.data.error !== undefined ){
+                globalMethod.repsonseError( $response.data );
+            }else {
+                $scope.tasks_data = $response.data;
+            }
             spinner.removeSpinner('.spinner');
         } );
     }
+    //delete Tasks.
+    $scope.deleteTask = function ( $task_id ) {
+        $text = $("#deleteTask" + $task_id).html();
+        $delete_task_button = $("#deleteTask" + $task_id);
+        spinner.button($delete_task_button,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>' , true , true);
+        seshatService.deleteTask( $task_id , function ( $response ) {
+            if ( $response.data.task_deleted !== undefined ){
+                angular.element("#task"+$task_id).remove();    
+                $scope.tasks_data.length =  $scope.tasks_data.length - 1;
+            }else if ( $response.data.task_not_deleted !== undefined ){
+                globalMethod.showNotification('danger','top','Right',$response.data.task_not_deleted,"body",20000);   
+            }else{
+                globalMethod.showNotification('danger','top','Right',"Error Happen Please Try again later.","body",20000);
+            }
+            spinner.remove( $delete_task_button , $text , false , true );
+        } );
+    };
+    //End delete tasks.
     //End    account tasks. 
 }).directive("timeline",function (){
     return {
@@ -189,7 +222,7 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
     };
     //End tasks.
 
-    //delete task is ready jsut implement it with the design.
+    //delete task is ready just implement it with the design.
     this.deleteTask = function ( $task_id ,  $callback ){
         $http.post(BASE_URL + "!seshat/deleteTask","task_id="+$task_id).then( $callback );
     };

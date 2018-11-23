@@ -1,1 +1,42 @@
-<p>account statictics.</p>
+<div ng-if = "statistics.now !== undefined" class = "pull-left">
+    <p style="color:red;font-size:20px;">Data updated Every 48 hour.</p><br>
+        <div class="col-auto flex-fill" >
+                <ul class="list-inline row justify-content-lg-end mb-0">
+                    <li class="list-inline-item col-sm-4 col-md-auto px-3 my-2 mx-0">
+                        <span class="badge badge-dot text-black">
+                    <i class="bg-green"></i>Followers
+                    </span>
+                    <a class="d-sm-block h5 text-black font-weight-bold pl-2" href="">
+                    {{ statistics.now.statistics.twitter.followers }}
+                    <small ng-if="followers_delta > 0" style="color:green;"> ( +{{ followers_delta }} )</small>
+                    <small ng-if="followers_delta <= 0" style="color:red;">   (  {{ followers_delta }} )</small>
+                </a>
+                    </li>
+                    <li class="list-inline-item col-sm-4 col-md-auto px-3 my-2 mx-0">
+                    <span class="badge badge-dot text-black">
+                    <i class="bg-orange"></i>Following
+                </span>
+                    <a class="d-sm-block h5 text-black font-weight-bold pl-2" href="">
+                    {{ statistics.now.statistics.twitter.following }}
+                    <small ng-if="following_delta > 0" style="color:green;"> ( +{{ following_delta }} )</small>
+                    <small ng-if="following_delta <= 0" style="color:red;">   (  {{ following_delta }} )</small>
+
+                </a>
+                    </li>
+                    <li class="list-inline-item col-sm-4 col-md-auto px-3 my-2 mx-0">
+                    <span class="badge badge-dot text-black">
+                    <i class="bg-red"></i>Tweets
+                </span>
+                    <a class="d-sm-block h5 text-black font-weight-bold pl-2" href="">
+                        {{ statistics.now.statistics.twitter.tweet_count }}
+                    <small ng-if="tweets_delta > 0" style="color:green;"> ( +{{ tweets_delta }} )</small>
+                    <small ng-if="tweets_delta <= 0" style="color:red;">   (  {{ tweets_delta }} )</small>
+                </a>
+                    </li>
+                </ul>
+        </div>        
+</div>
+
+<div ng-if="statistics.now === undefined && loading === false">
+    <p style="color:red;">Error Please Try again Later.</p>
+</div>

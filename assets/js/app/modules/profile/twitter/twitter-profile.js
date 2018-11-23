@@ -60,7 +60,7 @@ angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , p
 }).directive("twitterProfilePage",function(){
     return {
         templateUrl : template_url + "profile/twitter/twitter-profile-page.component.html",
-        restrict : "E",
-        replace : false
-    };
+        restrict    : "E",
+        replace     : false
+        };
 });

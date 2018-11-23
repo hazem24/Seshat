@@ -18,6 +18,9 @@ define("SAMPLE","Sample ");
 define("USERS","Users");
 define("TWEETS","Tweets");
 define("FILTER","Filter");
+define("BETA","Beta Version.");
+define("WIKI_MEDIA","Learn More");
+define("NICE_DAY","Have a nice day !");
 define("TOLERANCE","Tolerance ");
 define("REPORTED_BY_SESHAT","Report By Seshat.");
 define("THIS_FEATURE_NOT_FOUND","Sorry this feature cannot created by seshat now but will be found sooner.");
@@ -28,7 +31,14 @@ define("PROFILE","Profile");
 define("TIMELINE","Timeline");
 define("TWITTER_TIME_LINE","TimeLine");
 define("YOUR_PROFILE","Your profile");
-
+define("FEATURES","Features");
+define("STATISTICS","statistics.");
+define("TASKS","Tasks.");
+define("FOLLOW_TREE","Follow Trees.");
+define("SETTINGS","Settings");
+define("NEW_POST","New Post");
+define("CHECK_FREINDS","Check Relation between two accounts.");
+define("TRACK_HASHTAG","Track Hashtags.");
 //End Nav.
 
 
@@ -73,11 +83,27 @@ define("REQUIRED_FIELD",'required');
 
 
 //Login Page.
-
+define("LEARN","Learn ");
 define("AI_AS","Intelligent Social Media Assistant");
 define("PUT_BRAIN","Put Your Brain In,");
 define("SIGN_TWITTER","Sign In With Twitter");
+define("OVERVIEW","Overview");
 define("SESHAT_POWER","Faster Than You, Smarter Than You Also.");
+define("SECTION_ONE","Learn from you.");
+define("SECTION_ONE_DETAILS","Seshat Learn from you and then act like you when you have a computer version 💓");
+
+define("INCREASE_YOUR_FOLLOWERS","Increase Your Followers with seshat.");
+define("INCREASE_YOUR_FOLLOWERS_TREES","Increase your followers with follow tree features and gain more followers love what you do.");
+define("SCHEDULE_POSTS","Schedule posts in your social media accounts");
+define("TASKS_OPERATION","Create Tasks");
+define("CREATE_TASKS","Seshat know that you don't have a time , so create tasks , and seshat will do important social media tasks for you.");
+define("TRACK_HASHTAGS","Track Hashtags");
+define("TRACK_ANY_HASHTAGS","Track any hashtag you want in realtime.");
+define("FAKE_ACCOUNTS","Fake accounts");
+define("KNOW_FAKE_ACCOUNTS","Discover who get fake followers.");
+define("LEARN_WITH_VIDEOS","Learn with videos for free.");
+define("REAL_TIME_DATA","How to get data in real time.");
+define("CREATE_TASKS_GO_SLEEP","Create tasks with seshat and go to sleep seshat will do every thing to you.");
 
 //Wizard Section.
 
@@ -86,7 +112,7 @@ define("ACCOUNT_TYPE","Account Type.");
 define("MORE_INFO","This Information Will let Seshat To Know More About You.");
 define("ABOUT","About");
 define("DESCRIBE_YOUR_ACCOUNT","Describe");
-
+define("TIME_ZONE","Your Time Zone");
 define("TWITTER_DATA","This Information Taken From Your Twitter Account You Can Change It Now Or Later If You Want.");
 define("YOUR_NAME","Your Name");
 define("EMAIL","Email");
@@ -178,6 +204,7 @@ define("TASK_SCHEDULE_SAVED","Your Tweet Scheduled successfully !.");
 define("TASK_NOT_SCHEDULE_SAVED","Error I Cannot Save This Schedule Now Try Again Later.");
 define("CANNOT_DO_TASK","Sorry Seshat can not do this task.");
 define("RECENT_FOLLOWERS","follow Accounts follow you recently.");
+define("RECENT_UNFOLLOW","unfollow Accounts unfollow you recently.");
 define("FANS","Follow Accounts that follow you and you not follow back.");
 define("AUTOMATIC","Automatically ");
 define("CNTROL_FLLOWR_TASK_EXISTS",'This task i still working on it you can not do this until i finished it.');
@@ -242,6 +269,7 @@ define("NO_USERS_REACTED","There is no users reacted to this tweet please come a
 //Translate.
 define("TRANSLATE_CONTENT","Translate Tweet");
 define("LANG_NOT_SUPPORTED","Language not supported.");
+define("LANG","Language");
 //End Translate.
 
 //Report Section.
