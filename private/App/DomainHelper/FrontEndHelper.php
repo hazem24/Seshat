@@ -91,9 +91,9 @@ MODAL;
                 $dir = ($ar)? "rtl" :"";
                 $replay_screen_name = "@" . $screen_name;//For replay logic.
                 $screenName = ($ar) ? $screen_name."@":"@".$screen_name;
-                $retweet_button_style  = ($tweet->retweeted)?'btn  btn-link btn-success retweet_unretweet':'btn btn-link retweet_unretweet';//User retweeted This tweet. class="btn  btn-link btn-success tweet_retweet"
+                $retweet_button_style  = ($tweet->retweeted)?'btn  btn-success retweet_unretweet':'btn btn-link retweet_unretweet';//User retweeted This tweet. class="btn  btn-link btn-success tweet_retweet"
                 $retweet_type = ($tweet->retweeted)?"unretweet":"retweet";
-                $like_status   = ($tweet->favorited)?'btn btn-danger btn-link like_unlike':'btn btn-link  like_unlike';//User Liked This Tweet or not.
+                $like_status   = ($tweet->favorited)?'btn btn-danger like_unlike':'btn btn-link  like_unlike';//User Liked This Tweet or not.
                 $like_type = ($tweet->favorited)?"unlike":"like";
                 
                 /**

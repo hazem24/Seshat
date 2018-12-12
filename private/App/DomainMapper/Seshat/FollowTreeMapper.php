@@ -83,7 +83,6 @@
                 $this->bindParamCreator(1 , $tree_created , [$user_id]);
                 $tree_created->execute();
                 $tree_created = $tree_created->fetchAll(\PDO::FETCH_ASSOC);
-                
                 return $tree_created;
             }
 

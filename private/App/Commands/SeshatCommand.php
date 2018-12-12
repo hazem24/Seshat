@@ -3,6 +3,7 @@
     use App\DomainHelper\Twitter;
     use Framework\Helper\ArrayHelper;
     use App\DomainHelper;
+    use Framework\Shared;
     use App\System\Notification\Notification;
 
 
@@ -34,7 +35,7 @@
                         *some statics from user Reaction to this tweet (GeoLocation).
                    * */
                 $data = ['screenName'=>$params['screenName'],
-                'tweet_id'=>$params['tweet_id'],'oauth_token'=>$params['oauth_token'],'oauth_token_secret'=>$params['oauth_token_secret']];  
+                'tweet_id'=>$params['tweet_id'],'access_token'=>$params['access_token'],'access_token_secret'=>$params['access_token_secret']];  
                 $read = new Twitter\Read;
                 $show_tweet   = $read->do('showTweet',$data);
 
@@ -67,6 +68,18 @@
                 $notifications = ['AppError'=>true];
             }
             return $notifications;
+        }
+        /**
+         * get account information.
+         */
+        protected function getAccountInformation(array $params){
+            $owner = $params['user_id'];
+            $cmd   = Shared\CommandFactory::getCommand('user');
+            $data  = $cmd->getUserData($owner);
+            if ($data === false){
+                return $data = ['error'=>GLOBAL_ERROR];
+            }
+            return $data;
         }
 
         /**

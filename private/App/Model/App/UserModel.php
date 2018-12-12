@@ -50,7 +50,7 @@
                  */
 
                  public static function userExists(string $tw_id):bool{
-                        return (bool)self::getFinder()->userExists($tw_id);
+                     return (bool)self::getFinder()->userExists($tw_id);
                  }
 
                 /**
@@ -58,8 +58,8 @@
                  * @return Model Type User | false in fail.
                 */
 
-                public static function getUser(string $tw_id){
-                       return self::getFinder()->getUserData($tw_id); 
+                public static function getUser(string $user_id){
+                     return self::getFinder()->getUserData($user_id); 
                 }
 
                 /**
@@ -68,7 +68,7 @@
                 */
 
                 public function stepOne(){
-                       return self::getFinder()->stepOne($this);         
+                     return self::getFinder()->stepOne($this);         
                 }
 
                 /**
@@ -77,7 +77,7 @@
                  */
 
                 public static function createProfile(int $id , string $name , string $email,string $account_decribe,int $account_type,string $time_zone){
-                       return self::getFinder()->createProfile($id,$name,$email,$account_decribe,$account_type,$time_zone);         
+                     return self::getFinder()->createProfile($id,$name,$email,$account_decribe,$account_type,$time_zone);         
                 } 
 
 
@@ -86,10 +86,10 @@
                 * @return Mapper.
                 */
                 protected static function getFinder(){
-                        if(is_null(self::$userMapper) === true){
-                                self::$userMapper = new UserMapper;
-                        }
-                                return self::$userMapper;
+                     if(is_null(self::$userMapper) === true){
+                            self::$userMapper = new UserMapper;
+                     }
+                     return self::$userMapper;
                 }
 
                 

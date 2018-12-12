@@ -1,1 +1,31 @@
-<p>Hello Activity.</p>
+<div class="card">
+    <div ng-if="accountActivity.length > 0" class="card-body">
+      <div ng-repeat = "activity in accountActivity">
+        <div ng-if="activity.type == 1">
+            <div ng-if = "activity.status == 1" class="alert alert-primary" role="alert">
+                Task ( {{ activity.notify_msg }} ) 
+            </div>
+            <div ng-if = "activity.status == 2" class="alert alert-success" role="alert">
+                Task ( {{ activity.notify_msg }} ) completed succesfully.
+            </div>
+            <div ng-if = "activity.status == 3" class="alert alert-danger" role="alert">
+                Task ( {{ activity.notify_msg }} ) was failed.
+            </div>
+            <div ng-if = "activity.status == 4" class="alert alert-warning" role="alert">
+                Task ( {{ activity.notify_msg }} ) warning.
+            </div>
+        </div>
+        <div ng-if="activity.type == 2">
+            <div ng-if = "activity.status == 1" class="alert alert-primary" role="alert">
+                {{ jsonParser(activity.notify_msg).msg  }} is subscribed into your {{ jsonParser(activity.notify_msg).tree_name }} tree. 
+            </div>
+            <div ng-if = "activity.status == 4" class="alert alert-warning" role="alert">
+                Tree ({{ activity.notify_msg  }}) reached max number of users.
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div ng-if="accountActivity.length <= 0">
+    <p class="text-center" style="color:red;padding:20px;font-size:30px;">No Activities done by me yet !</p>
+</div>

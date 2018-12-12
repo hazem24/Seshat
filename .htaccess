@@ -4,4 +4,3 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !=/favicon.ico
 RewriteRule ^(.*)$ /seshat/index.php
 
-

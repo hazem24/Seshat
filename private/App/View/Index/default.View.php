@@ -13,7 +13,7 @@
     <!-- Font Awesome 5 -->
 	<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <!-- Theme CSS -->
-	<link id = "mainView" href="<?=ASSESTS_URI?>css/theme.min.css" rel="stylesheet">
+	<link id = "mainView" href="<?=ASSESTS_URI?>css/app/index.css" rel="stylesheet">
 </head>
 <?php 
           $error = $this->session->getSession('error');
@@ -282,7 +282,7 @@
     <script src="<?=ASSESTS_URI?>vendor/in-view/dist/in-view.min.js"></script>
     <script src="<?=ASSESTS_URI."js"?>/lib/exporterJson.js" type="text/javascript"></script>
     <!-- Theme JS -->
-    <script src="<?=ASSESTS_URI?>js/theme.min.js"></script>
+    <script src="<?=ASSESTS_URI?>js/app/index.js"></script>
     <script src="<?=ASSESTS_URI."js"?>/app/modules/app.js"></script>
     
 </body>

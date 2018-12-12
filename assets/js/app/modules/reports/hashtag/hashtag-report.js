@@ -1,8 +1,6 @@
 angular.module('seshatApp').controller("reportHashTagCtrl",function($scope,reportServices){
     $scope.hashtag_name;
     if (angular.element("hashtag-create-report").length <= 0){
-        //inject custom style for hashtag.
-        angular.element('head').append('<link href="' + css_url + "app/hashtag-style.css" + '" rel="stylesheet">');
         //Hashtag report reader section.
         reportServices.getHashtagReport($scope.report_name,function(response){
             //Response Here !.

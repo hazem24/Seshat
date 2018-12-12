@@ -1,48 +1,39 @@
 
 </body>
 <!-- Core JS Files -->
-
-<script src="<?=ASSESTS_URI."js"?>/lib/jquery-3.2.1.min.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/jquery-ui-1.12.1.custom.min.js" type="text/javascript"></script>
-<script src="//cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/popper.js" type="text/javascript"></script>
-<script src="<?=ASSESTS_URI?>vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?=ASSESTS_URI?>vendor/in-view/dist/in-view.min.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/jquery.validate.min.js" type="text/javascript"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/html2canvas.min.js" type="text/javascript"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="<?=ASSESTS_URI?>js/lib/jquery.validate.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/chart.js/dist/Chart.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/chart.js/Chart.extension.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/highlightjs/highlight.pack.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/flatpickr/dist/flatpickr.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/list.js/dist/list.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/quill/dist/quill.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/dropzone/dist/min/dropzone.min.js"></script>
+<script src="<?=ASSESTS_URI?>lib/select2/dist/js/select2.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/iziToast.min.js" type="text/javascript"></script>
+<!-- Theme JS -->
+<script src="<?=ASSESTS_URI?>js/theme.min.js"></script>
+
 <script src="//unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 <script src="//cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-animate.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-route.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="//cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js" type="text/javascript"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/exporterJson.js" type="text/javascript"></script>
 <!-- Page plugins -->
-<script src="<?=ASSESTS_URI?>vendor/highlight.js/lib/highlight.js"></script>
-<!-- Theme JS -->
-<script src="<?=ASSESTS_URI?>js/theme.min.js"></script>
-<!-- Switches -->
-<script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-switch.min.js"></script>
-<!--  Plugins for Slider -->
-<script src="<?=ASSESTS_URI."js"?>/lib/nouislider.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-select.js"></script>
 <!--  for fileupload -->
 <script src="<?=ASSESTS_URI."js"?>/lib/jasny.min.js"></script>
-<!--  Plugins for Tags -->
-<script src="<?=ASSESTS_URI."js"?>/lib/bootstrap-tagsinput.js"></script>
 <!--  Plugins for DateTimePicker -->
 <script src="//momentjs.com/downloads/moment.js"></script>
 <script type="text/javascript" src="<?=ASSESTS_URI."js"?>/lib/bootstrap-datetimepicker.min.js"></script>
-<!-- charlist app -->
-<script src="<?=ASSESTS_URI."js"?>/lib/chartist.min.js"></script>
 
-
-<script src="<?=ASSESTS_URI."js"?>/lib/jquery.typetype.min.js"></script>
-
-<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="<?=ASSESTS_URI."js"?>/app/now-ui-kit.js"></script>
+<script src="<?=ASSESTS_URI?>js/lib/jquery.typetype.min.js"></script>
 <script src="<?=ASSESTS_URI."js"?>/lib/sweetAlert/jquery.sweet-modal.min.js" type="text/javascript"></script>
 <script src="//cdn.jsdelivr.net/npm/afterglowplayer@1.x"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>

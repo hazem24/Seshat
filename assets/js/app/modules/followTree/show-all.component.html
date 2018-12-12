@@ -1,6 +1,6 @@
 <div style="padding:20px;" class="list-group">
     <div ng-if=" allTrees !== undefined && allTrees.length > 0">
-        <a ng-repeat = "tree in allTrees" href="/seshat/!followTree/show/{{ tree.name }}" class="list-group-item list-group-item-action flex-column align-items-start">
+        <a ng-repeat = "tree in allTrees" href="#!/tree/{{ tree.name }}" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ tree.name }}</h5>
                 <small>{{ tree.created_at }}</small>
@@ -10,7 +10,7 @@
     </div>
 
     <div ng-if = "allTrees !== undefined  && allTrees.length <= 0" style="padding:10px;margin:auto;width:50%;">
-        <p style="color:black;font-size:20px;">No trees created yet create your own now <a href="/seshat/!followTree/" class="success">Create one.</a></p>
+        <p style="color:black;font-size:20px;">No trees created yet create your own now <a href="#!/followTree" class="success">Create one.</a></p>
     </div>          
       
 </div>

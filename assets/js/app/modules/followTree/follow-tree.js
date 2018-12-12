@@ -1,14 +1,16 @@
-angular.module("seshatApp").controller("followTreeCtrl" , function ( $scope , followTreeServices ) {
+angular.module("seshatApp").controller("followTreeCtrl" , function ( $scope , followTreeServices , $location , $routeParams) {
     //get users tree created or sub .. main view.
-    if ( angular.element("#mainView").length > 0 ){
-        //get user tree data.
-        spinner.onPageLoad( true );
-        followTreeServices.getTrees( function ( $response ){
-            $scope.userTreesData  =  $response.data;
-            spinner.remove(".spinner");
-        });
-    }
-    //End main View.
+    $scope.userTrees = function( $url ){
+        if ( $url.indexOf('#!/followTree') > 0 ){
+            //get user tree data.
+            spinner.onPageLoad( true );
+            followTreeServices.getTrees( function ( $response ){
+                $scope.userTreesData  =  $response.data;
+                spinner.remove(".spinner");
+            });
+        }
+        //End main View.
+    };
 
     $scope.deleteTree = function ( $treeName , $treeId , $index ){
         swal({
@@ -59,49 +61,57 @@ angular.module("seshatApp").controller("followTreeCtrl" , function ( $scope , fo
     //End share tree.
 
     //show All view.
-    if ( angular.element("#showAllTree").length > 0 ){
-        //show pageSpinner.
-        spinner.onPageLoad( true );
-        followTreeServices.showAllTree( function ( $response  ){
-            if ( $response.data.error !== undefined ){
-                globalMethod.repsonseError( $response.data );
-            }else if ( $response.data.trees !== undefined ){
-                $scope.allTrees = $response.data.trees;
-            }
-            spinner.remove('.spinner');
-        });
-    }
-    //End show All.
-
-    //show section.
-    if ( angular.element("#showTree").length > 0 ) {
-        
-        $treeName = String(document.location).split("/");
-        $treeName =  $treeName[ $treeName.length - 1 ];
-        //show pageSpinner.
-        spinner.onPageLoad( true );
-        /**
-         * 1 - call the server to get data of specific tree.
-         * 2 - if there's a data show it to the screen else error not found appear.
-         */
-        followTreeServices.showTree( $treeName , function ( response ){
-            $scope.treeData  = response.data;
-            if ( $scope.treeData.error !== undefined ) {//data returned from the server.
-                globalMethod.repsonseError( $scope.treeData );
-            }else if ( $scope.treeData.tree_data !== undefined && $scope.treeData.tree_data.length > 0){
-                $scope.tree = {description:response.data.tree_data[0].description,id:response.data.tree_data[0].id};
-                //tree style here.
-                $scope.isMember = response.data.member;
-                if( $scope.treeData.tree_data.length == 1 && $scope.treeData.tree_data[0].sub_user_id == null  ){
-                    $scope.treeData.tree_data.empty = true;
-                }else{
-                    globalMethod.createTree("showTree" , $scope.treeData.tree_data);
+    $scope.showAllTree = function($url){
+        if ( $url.indexOf('showAll') > 0 ){
+            //show pageSpinner.
+            spinner.onPageLoad( true );
+            followTreeServices.showAllTree( function ( $response  ){
+                if ( $response.data.error !== undefined ){
+                    globalMethod.repsonseError( $response.data );
+                }else if ( $response.data.trees !== undefined ){
+                    $scope.allTrees = $response.data.trees;
                 }
-            }
-            spinner.remove('.spinner');
-        } );
-    }
-    //End show section.
+                spinner.remove('.spinner');
+            });
+        }
+    };
+    //End show All.
+    //show section.
+    $scope.getTree = function($url){
+        if ( $url.indexOf("#!/tree") > 0 ) {
+            //create elements.
+            data = angular.element("<data id='tree_data'></data>");
+            tree_circles_position = angular.element("<show id='showTree'></show>");
+            data.appendTo(".main-content");
+            tree_circles_position.appendTo(".main-content");
+            $treeName = String(document.location).split("/");
+            $treeName =  $treeName[ $treeName.length - 1 ];
+            //show pageSpinner.
+            spinner.onPageLoad( true );
+            /**
+             * 1 - call the server to get data of specific tree.
+             * 2 - if there's a data show it to the screen else error not found appear.
+             */
+            followTreeServices.showTree( $treeName , function ( response ){
+                $scope.treeData  = response.data;
+                if ( $scope.treeData.error !== undefined ) {//data returned from the server.
+                    globalMethod.repsonseError( $scope.treeData );
+                }else if ( $scope.treeData.tree_data !== undefined && $scope.treeData.tree_data.length > 0){
+                    $scope.tree = {description:response.data.tree_data[0].description,id:response.data.tree_data[0].id};
+                    //tree style here.
+                    $scope.isMember = response.data.member;
+                    if( $scope.treeData.tree_data.length == 1 && $scope.treeData.tree_data[0].sub_user_id == null  ){
+                        $scope.treeData.tree_data.empty = true;
+                    }else{
+                        $scope.tree.name = $treeName;
+                        globalMethod.createTree("showTree" , $scope.treeData.tree_data);
+                    }
+                }
+                spinner.remove('.spinner');
+            } );
+        }
+        //End show section.
+    };
 
     //join tree.
     $scope.joinTree = function ($treeID){
@@ -158,6 +168,12 @@ angular.module("seshatApp").controller("followTreeCtrl" , function ( $scope , fo
             spinner.remove($("#createNewTree"), $button_content , false , true);
         });
     };
+
+    //Run Main Functions.
+    $scope.userTrees(BASE_URL + '!seshat/' + '#!' + $location.path());
+    $scope.showAllTree(BASE_URL + '!seshat/' + '#!' + $location.path());
+    $scope.getTree(BASE_URL + '!seshat/' + '#!' + $location.path());
+    //End Run Main Functions.
 
 }).directive( "followTree" , function () {//default.
     return {
@@ -229,5 +245,4 @@ angular.module("seshatApp").controller("followTreeCtrl" , function ( $scope , fo
         $http.post( BASE_URL + '!followTree/join' , 'tree_id=' + $tree_id ).then( $callback );
     };
     //End join tree.
-
 });

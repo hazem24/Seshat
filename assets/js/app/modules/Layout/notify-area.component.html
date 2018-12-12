@@ -1,0 +1,26 @@
+<div class="card-body">
+    <!-- List group -->
+    <div ng-if="getNotifications.length > 0" class="list-group list-group-flush my--3">
+      <a ng-repeat="notification in getNotifications"class="list-group-item px-0" href="#!">
+        <div class="row">
+          <div class="col ml--2">
+            <!-- Content -->
+            <div class="small text-muted">
+                <span ng-if = 'notification.status == 1' class="badge badge-primary">info</span>
+                <span ng-if = 'notification.status == 2' class="badge badge-success">Success</span>
+                <span ng-if = 'notification.status == 3' class="badge badge-danger">fail</span>
+                <span ng-if = 'notification.status == 4' class="badge badge-warning">warning</span>
+                <p ng-if='notification.type == 1'>Task {{ notification.notify_msg }}</p>
+                <p ng-if='notification.type == 2'>
+                    <span ng-if = 'notification.status == 1'>{{ jsonParser(notification.notify_msg).msg  }} is subscribed into your {{ jsonParser(notification.notify_msg).tree_name }} tree.</span>
+                    <span ng-if = 'notification.status == 4'>Tree ({{ notification.notify_msg  }}) reached max number of users.</span>
+                </p>
+            </div>
+          </div>
+        </div> <!-- / .row -->
+      </a>
+    </div>
+    <div ng-if="getNotifications.length <= 0">
+        <p class="text-center" style="color:red;">no new activities.</p>
+    </div>
+  </div>

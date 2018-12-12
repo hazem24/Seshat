@@ -83,10 +83,6 @@
                /**
                 * Must Be Deleted Just for find from where the error of token happen.
                 */
-                if($count != count($data)){
-                    var_dump($data,$count);
-                    exit;
-                }
                 for($i=0; $i<$count ; $i++){
                     $create->bindParam($i+1,$data[$i],$this->typeOfDataToEnterDb(gettype($data[$i])));
                 }

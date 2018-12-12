@@ -64,7 +64,7 @@
                                                         $return = ['error'=>$seshat->getErrors()];       
                                                     }else{
                                                         $seshat->session->setSession('time_zone',$time_zone);
-                                                        $return = ['location'=>BASE_URL.LINK_SIGN.'seshatTimeline'];
+                                                        $return = ['location'=>BASE_URL.LINK_SIGN.'seshat/#!timeline'];
                                                     }
                                              }
                                      }else{
@@ -85,7 +85,7 @@
                             $seshat->actionView->setDataInView(["user"=>$send_to_view]);
                             $seshat->render();
                 }else{    
-                     self::rIn("tw_id","seshatTimeline");                        
+                     self::rIn("tw_id","seshat/#!timeline");                        
                 } 
             }
 
@@ -565,7 +565,7 @@
                     $fans         = $read->do("fans",$params);
                     $data         = (['statistics'=>['twitter'=>['followers'=>$user->followers_count,
                         'following'=>$user->friends_count , 'tweet_count'=>$user->statuses_count,
-                        'nonFollower'=>count( $nonFollowers['results']['users']) , 'fans'=>count( $nonFollowers['results']['users'])]]]);
+                        'nonFollower'=>isset($nonFollowers['results'])?count( $nonFollowers['results']['users']) : 0 , 'fans'=>isset($nonFollowers['results'])?count( $nonFollowers['results']['users']):0]]]);
                     $cache->set($statistics,$data,10800);// 3 hr.
                 }
                 return $data;

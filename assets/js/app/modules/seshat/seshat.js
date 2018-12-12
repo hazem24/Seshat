@@ -1,76 +1,78 @@
-angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatService){
+angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatService , $location, $routeParams){
 
-    $controlFollowers   = String(document.location).toLowerCase().indexOf("controlfollowers");
     $scope.feature_type = false;// flag for uses feature type must be change to search about element.
     $scope.loading      = true;// flag detemined that page is loading or send request for data.
-
-    if ( angular.element("#media-timeLine").length > 0 ){
-        //get Timeline data.
-        angular.element('head').append('<link href="' + css_url + "app/events.css" + '" rel="stylesheet">');
-        seshatService.getTimeLine(function ( response ) {
-            console.log( response.data );
-            if( response.data.error !== undefined ){
-                $scope.results = response.data;
-                globalMethod.repsonseError( response.data );
-            }else if ( response.data.results !== undefined ){
-                $scope.results = response.data.results;
-            }
-            spinner.removeSpinner('.spinner');
-        });
-    }
-
-    if ( $controlFollowers > 0 ) {
-        //get type of followers.
-        $scope.feature_type = String(document.location).split("/");
-        $scope.feature_type =  $scope.feature_type[ $scope.feature_type.length - 1 ];
-
-        //get from storage.
-        if (!Cookies.get($scope.feature_type)) {
-            // get data from server.
-            seshatService.controlFollowers( String(document.location) , function ( $response ) {
-                //save as task.
-                $scope.saveTask = true;//uses this to appear save task button.
-                if ( $response.data.results !== undefined ){
-                    $scope.results = $response.data.results;
-                    localStorage.setItem($scope.feature_type,JSON.stringify($response.data.results));
-                    localStorage.setItem("saveTask",true);
-                    Cookies.set($scope.feature_type , 1 , { expires: 0.5 * 0.125 * 1 } );
-                }else { //error happen.
-                    $scope.results = $response.data;
-                    globalMethod.repsonseError( $response.data );
+    
+    // Define Functions.
+    $scope.getTimeLine = function($url){
+        if (  $url.indexOf("#!/timeline") > 0 ){
+            //get Timeline data.
+            seshatService.getTimeLine(function ( response ) {
+                if( response.data.error !== undefined ){
+                    $scope.timeline = response.data;
+                    globalMethod.repsonseError( response.data );
+                }else if ( response.data.results !== undefined ){
+                    $scope.timeline = response.data.results;
                 }
                 spinner.removeSpinner('.spinner');
             });
-        } else {
-            $scope.results  = JSON.parse(localStorage.getItem( $scope.feature_type ));// get data from storage.
-            $scope.saveTask = localStorage.getItem( "saveTask" ); 
+        }    
+    };  
+
+    $scope.controlFollowers = function($url){
+        if ( $url.indexOf("#!/controlfollowers") > 0 ) {
+            //get type of followers.
+            $scope.feature_type = $url.split("/");
+            $scope.feature_type =  $scope.feature_type[ $scope.feature_type.length - 1 ];    
+            //get from storage.
+            if (!Cookies.get($scope.feature_type)) {
+                // get data from server.            
+                seshatService.controlFollowers( BASE_URL + "!seshat/controlFollowers/twitter/" + $scope.feature_type + "/json", function ( $response ) {
+                    //save as task.
+                    $scope.saveTask = true;//uses this to appear save task button.
+                    if ( $response.data.results !== undefined ){
+                        $scope.usersResults = $response.data.results;
+                        localStorage.setItem($scope.feature_type,JSON.stringify($response.data.results));
+                        localStorage.setItem("saveTask",true);
+                        Cookies.set($scope.feature_type , 1 , { expires: 0.5 * 0.125 * 1 } );
+                    }else { //error happen.
+                        $scope.usersResults = $response.data;
+                        globalMethod.repsonseError( $response.data );
+                    }
+                    spinner.removeSpinner('.spinner');
+                });
+            } else {
+                $scope.usersResults  = JSON.parse(localStorage.getItem( $scope.feature_type ));// get data from storage.
+                $scope.saveTask = localStorage.getItem( "saveTask" ); 
+            }
+            //saveTask Button.
+            $scope.saveTaskAction = function( $feature_type ){
+                $order = $scope.usersResults.users.length;
+                $saveTaskButton = $("#saveAsTask");
+                $text   = $("#saveAsTask").html();
+                spinner.button($saveTaskButton,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>' , true , true);
+                seshatService.controlFollowersTask( $feature_type , $order , function ( $response ) {
+                    if ( $response.data.success !== undefined ){
+                        globalMethod.showNotification('success','top','Right',$response.data.success,'body',20000);
+                    }else if ( $response.data.error !== undefined ){
+                        globalMethod.repsonseError( $response.data );
+                    }else {
+                        globalMethod.showNotification('danger','top','Right','App Error try again later','body',20000);
+                    }
+                    spinner.remove( $saveTaskButton , $text , false , true );
+                });
+            };
+            //End saveTask Button.
         }
-        //saveTask Button.
-        $scope.saveTaskAction = function( $feature_type ){
-            $order = $scope.results.users.length;
-            $saveTaskButton = $("#saveAsTask");
-            $text   = $("#saveAsTask").html();
-            spinner.button($saveTaskButton,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>' , true , true);
-            seshatService.controlFollowersTask( $feature_type , $order , function ( $response ) {
-                if ( $response.data.success !== undefined ){
-                    globalMethod.showNotification('success','top','Right',$response.data.success,'body',20000);
-                }else if ( $response.data.error !== undefined ){
-                    globalMethod.repsonseError( $response.data );
-                }else {
-                    globalMethod.showNotification('danger','top','Right','App Error try again later','body',20000);
-                }
-                spinner.remove( $saveTaskButton , $text , false , true );
-            });
-        };
-        //End saveTask Button.
-    }
+    };
+    
 
     //getRelation.
     $scope.getRelation = function ( $source , $target ) {
         $text = $("#checkRelation").html();
         $check_relation_button = $("#checkRelation");
         spinner.button($check_relation_button,'<i style="margin-left: -12px;margin-right: 8px;" class="fa fa-spinner fa-spin"></i>' , true , true);
-        seshatService.getRelation( String(document.location) , $source , $target , function ( $response ) {
+        seshatService.getRelation( BASE_URL + "!seshat/checkFriends/twitter/json" , $source , $target , function ( $response ) {
             if ( $response.data.error !== undefined ){
                 globalMethod.repsonseError( $response.data );
             }else {
@@ -82,47 +84,70 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
     //End getRelation.
 
     //seshat statistics.
-    if (angular.element("#accounts-statistics").length > 0){
-        spinner.onPageLoad(true);
-        seshatService.accountsStatistics( function ( $response ){
-            $scope.loading = false;
-            if( $response.data.now !== undefined ){
-                $scope.statistics      = $response.data;
-                $scope.followers_delta = $scope.statistics.now.statistics.twitter.followers    -  $scope.statistics.past.statistics.twitter.followers;
-                $scope.tweets_delta    = $scope.statistics.now.statistics.twitter.tweet_count  -  $scope.statistics.past.statistics.twitter.tweet_count;
-                $scope.following_delta = $scope.statistics.now.statistics.twitter.following    -  $scope.statistics.past.statistics.twitter.following;
-            }else{
-                globalMethod.repsonseError( $response.data );
-            }
-            spinner.removeSpinner('.spinner');
-        } );
-    }
+    $scope.getStatistics = function($url){
+        if ($url.indexOf('#!/statistics') > 0){
+            spinner.onPageLoad(true);
+            seshatService.accountsStatistics( function ( $response ){
+                $scope.loading = false;
+                if( $response.data.now !== undefined ){
+                    $scope.statistics      = $response.data;
+                    $scope.followers_delta = $scope.statistics.now.statistics.twitter.followers    -  $scope.statistics.past.statistics.twitter.followers;
+                    $scope.tweets_delta    = $scope.statistics.now.statistics.twitter.tweet_count  -  $scope.statistics.past.statistics.twitter.tweet_count;
+                    $scope.following_delta = $scope.statistics.now.statistics.twitter.following    -  $scope.statistics.past.statistics.twitter.following;
+                }else{
+                    globalMethod.repsonseError( $response.data );
+                }
+                spinner.removeSpinner('.spinner');
+            } );
+        }
+    };
     //End statistics.
 
     //seshat account activity ( Notifications ).
-    if (angular.element("#account-activity").length > 0){
-        spinner.onPageLoad(true);
-        seshatService.accountActivity( function( $response ){
-            console.log( ($response.data) );
-            spinner.removeSpinner('.spinner');
-        } );
-    }
-    //End account activity.
+    $scope.activity = function($url){
+        if ($url.indexOf("activity") > 0){
+            spinner.onPageLoad(true);
+            seshatService.accountActivity( function( $response ){
+                $scope.accountActivity = $response.data;
+                spinner.removeSpinner('.spinner');
+            } );
+        }
+        //End account activity.
+    };
 
     //seshat account tasks.
-    if (angular.element("#account-tasks").length > 0){
-        spinner.onPageLoad(true);
-        seshatService.accountTasks( function( $response ){
-            $scope.loading = false;
-            if ( $response.data.error !== undefined ){
-                globalMethod.repsonseError( $response.data );
-            }else {
-                $scope.tasks_data = $response.data;
-            }
-            spinner.removeSpinner('.spinner');
-        } );
-    }
+    $scope.accountTasks = function($url){
+        if ($url.indexOf('#!/tasks') > 0){
+            spinner.onPageLoad(true);
+            seshatService.accountTasks( function( $response ){
+                $scope.loading = false;
+                if ( $response.data.error !== undefined ){
+                    globalMethod.repsonseError( $response.data );
+                }else {
+                    $scope.tasks_data = $response.data;
+                }
+                spinner.removeSpinner('.spinner');
+            } );
+        }
+    };
     //delete Tasks.
+
+    $scope.accountInformation = function($url){
+        if ($url.indexOf('#!/settings') > 0){
+            spinner.onPageLoad(true);
+            seshatService.accountInformation( function( $response ){
+                $scope.loading = false;
+                console.log( $response.data );
+                if ( $response.data.error !== undefined ){
+                    globalMethod.repsonseError( $response.data );
+                }else {
+                    $scope.userAccountData = $response.data;
+                }
+                spinner.removeSpinner('.spinner');
+            } );
+        }
+    };
+
     $scope.deleteTask = function ( $task_id ) {
         $text = $("#deleteTask" + $task_id).html();
         $delete_task_button = $("#deleteTask" + $task_id);
@@ -141,6 +166,14 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
     };
     //End delete tasks.
     //End    account tasks. 
+    //Run main Functions.
+    $scope.getTimeLine(BASE_URL + '!seshat/' + '#!' + $location.path());
+    $scope.getStatistics(BASE_URL + '!seshat/' + '#!' + $location.path());
+    $scope.controlFollowers(BASE_URL + '!seshat/' + '#!' + $location.path());    
+    $scope.accountTasks(BASE_URL + '!seshat/' + '#!' + $location.path());
+    $scope.activity(BASE_URL + '!seshat/' + '#!' + $location.path());
+    $scope.accountInformation(BASE_URL + '!seshat/' + '#!' + $location.path());
+    //End Run Main Functions.
 }).directive("timeline",function (){
     return {
         templateUrl : template_url + "feed/posts.component.html",
@@ -188,13 +221,13 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
     //controlFollowers Services.
     this.controlFollowers = function ( $url , $callback ) {
         spinner.onPageLoad( true );
-        $http.get( $url + "/json" ).then( $callback );
+        $http.get($url).then( $callback );
     };
     //End controlFollowers Services. 
 
     //get Relation.
     this.getRelation = function ( $url , $source , $target , $callback ) {
-        $http.get($url  + "/json/" + encodeURIComponent($source) + "/" + encodeURIComponent($target)).then($callback);
+        $http.get($url + "/" + encodeURIComponent($source) + "/" + encodeURIComponent($target)).then($callback);
     };
     //End get Relation.
     
@@ -209,6 +242,12 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
         $http.get(BASE_URL + "!seshat/statistics?getStatistics=true").then( $callback );
     };
     //End accounts statistics.
+
+    //get account information.
+    this.accountInformation = function ($callback){
+        $http.get(BASE_URL + "!seshat/account?get=getAccountInformation").then( $callback );
+    };
+    //End account information.
 
     //get account activity .. user notifications the same as account activity .. what seshat do in user accounts.
     this.accountActivity = function ( $callback ){

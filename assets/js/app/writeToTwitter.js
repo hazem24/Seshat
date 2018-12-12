@@ -49,7 +49,7 @@ var twitterAction = {
              */
             if($type == 'retweet'){
                     //Retweet Logic.
-                    twitterAction.doLogic($indentifier,$retweet_counter,"btn btn-link btn-success retweet_unretweet",'unretweet');
+                    twitterAction.doLogic($indentifier,$retweet_counter,"btn btn-success retweet_unretweet",'unretweet');
                     $.ajax({
                         "type":"POST",
                         "url":writeToTwitter,
@@ -66,7 +66,7 @@ var twitterAction = {
                 });        
             }else if ($type == 'unretweet'){
                 //Unretweet Logic.
-                twitterAction.unDoLogic($indentifier,$retweet_counter,"btn-link retweet_unretweet",'retweet');
+                twitterAction.unDoLogic($indentifier,$retweet_counter,"btn btn-link retweet_unretweet",'retweet');
                 
                 $.ajax({
                     "type":"POST",
@@ -75,7 +75,7 @@ var twitterAction = {
                     "dataType":"json",
                     "success":function(data){
                         if(data.success == undefined){
-                            twitterAction.doLogic($indentifier,$retweet_counter,"btn btn-link btn-success retweet_unretweet",'unretweet');
+                            twitterAction.doLogic($indentifier,$retweet_counter,"btn btn-success retweet_unretweet",'unretweet');
                         }
                             twitterAction.twitterResponse(data);
                             $(element).attr("disabled",false);
@@ -95,7 +95,7 @@ var twitterAction = {
             $replay_context = $($indentifier).attr("data-replay-context");
             if($type == 'like'){
                     //Like Logic.
-                    twitterAction.doLogic($indentifier,$like_counter,"btn  btn-link  btn-danger like_unlike",'unlike');
+                    twitterAction.doLogic($indentifier,$like_counter,"btn btn-danger like_unlike",'unlike');
                     $.ajax({
                         "type":"POST",
                         "url":writeToTwitter,
@@ -132,7 +132,7 @@ var twitterAction = {
             //create hidden twitter id input.
             $("<input>").attr("type","hidden").attr("name","tweet_id").attr("value",$tweet_id).appendTo("#composeTweetForm");        
             $(".emojionearea-editor").text($replay_to);
-            $("#tweetModal").modal();                    
+            $(".tweetModal").modal();                    
         //End replay area.
     },deleteTweet : function ($tweet_id , element){
             $.ajax({

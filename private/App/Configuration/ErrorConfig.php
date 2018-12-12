@@ -44,7 +44,8 @@
                                 /** i Must Here Use Jquery And Some Thing Like That
                                 *This Error Must Be Appear In Javascript And Design Under Name of Temporary Error 
                                 **/
-                                    echo " Error If You Need Support Contact Us At WhatApp : 00201125724372";
+                                echo json_encode(['AppError'=>'AppError Please Contact The Support.']);
+                                exit;
                             }
                             
 

@@ -1,6 +1,6 @@
-angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , profileReader) {
+angular.module('seshatApp').controller("twitterprofileCtrl",function ($scope , profileReader , $routeParams) {
    
-    profileReader.getProfile( "getTwitterProfile" , $scope.user_name , function ( response ) {
+    profileReader.getProfile( "getTwitterProfile" , $routeParams.profile_screen_name , function ( response ) {
         $scope.data = response.data;
         if($scope.data.error !== undefined || $scope.data.AppError !== undefined){
             globalMethod.repsonseError($scope.data);

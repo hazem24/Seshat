@@ -1,18 +1,18 @@
-<div ng-if="results.type === 'users' " class="card shadow--hover mb-5">
-    <div ng-controller = "globalTwitterCtrl" ng-if="results.from === 'twitter'">
+<div ng-if="usersResults.type === 'users' " class="card shadow--hover mb-5">
+    <div ng-controller = "globalTwitterCtrl" ng-if="usersResults.from === 'twitter'">
             <!-- Twitter users sections. -->
-            <div class="table-responsive" ng-if = "results.users.length > 0" id="comments">
+            <div class="table-responsive" ng-if = "usersResults.users.length > 0" id="comments">
                 <!-- Save Task Button -->
-                <button type="button" class="btn btn-primary btn-icon pull-right" style="padding:20px;" id="saveAsTask" ng-click="saveTaskAction(feature_type)"  ng-if = "saveTask"><span class="btn-inner--icon"><i class="fas fa-tasks"></i></span></button>
+                <button type="button" class="btn btn-primary" style="width:100%;" id="saveAsTask" ng-click="saveTaskAction(feature_type)"  ng-if = "saveTask"><i class="fas fa-tasks"></i></button>
                     <table class="table table-flush mb-0 align-items-center">
                         <tbody>
-                            <tr ng-repeat = "user in results.users track by $index">
+                            <tr ng-repeat = "user in usersResults.users track by $index">
                                 <td style="width: 40%;">
                                     <div class="media align-items-center">
-                                        <a href="/seshat/!profile/twitter/{{ user.screen_name }}" class="avatar rounded-circle mr-3">
+                                        <a href="#!/profile/twitter/{{ user.screen_name }}" class="avatar rounded-circle mr-3">
                                             <img src="{{ user.profile_image_url_https }}" alt="twitter_profile">
                                         </a>
-                                        <a style="color:red;" href="/seshat/!profile/twitter/{{ user.screen_name }}">@{{ user.screen_name }}</a>
+                                        <a style="color:red;" href="#!/profile/twitter/{{ user.screen_name }}">@{{ user.screen_name }}</a>
                                     </div>
                                 </td>
                                 <td>
@@ -35,11 +35,11 @@
             </div>        
     </div>
 </div>
-<div ng-if="results.users.length <= 0" >
+<div ng-if="usersResults.users.length <= 0" >
     <p class = "text-center danger" style="padding: 20px; color: red; font-size: 15px;">No data to retreive.</p>
 </div>
-<div ng-if="results.error.length > 0 && !results.error.reauth" >
-    <div ng-repeat="err in results.error">
+<div ng-if="usersResults.error.length > 0 && !usersResults.error.reauth" >
+    <div ng-repeat="err in usersResults.error">
         <p class = "text-center danger" style="padding: 20px; color:red; font-size: 15px;">{{ err }}</p>
     </div>
 </div>

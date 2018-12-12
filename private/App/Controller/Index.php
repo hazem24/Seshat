@@ -13,7 +13,7 @@
             */    
              public function defaultAction(){
                 $this->redirectToWizard();
-                $this->rIn("tw_id","seshatTimeline");
+                $this->rIn("tw_id","seshat");
                 $this->detectLang();
                 $this->actionView->setDataInView(["login_url"=>(object)['generatedUrl'=>$this->generateTwitterLoginUrl()]]);
                 $this->render();
@@ -27,7 +27,7 @@
              */
             public function signInAction(){
                 $this->rOut("id","index");
-                $this->rIn("tw_id","seshatTimeline");
+                $this->rIn("tw_id","seshat/#!timeline");
             }
 
             public function logoutAction(){
@@ -132,11 +132,10 @@
                     /**
                      * 1- Open Sessions To User. --Done.
                      * 2- Redirect User To seshatReader. --Done.
-                     * 
                      * */  
                     $this->openSessionsToUser($userModel->getProperty('id'),$userModel->getProperty('tw_id'),
-                    $oauth_token,$oauth_token_secret,$userModel->getProperty('screen_name') , $userModel->getProperty('license_type'),$userModel->getProperty('license_name'),$userModel->getProperty('time_zone')); 
-                    $this->rIn("tw_id","seshatTimeline");
+                    $oauth_token,$oauth_token_secret,$userModel->getProperty('screen_name') , $userModel->getProperty('license_type'),$userModel->getProperty('license_name'),false,$userModel->getProperty('time_zone')); 
+                    $this->rIn("tw_id","seshat/#!timeline");
             }
 
            

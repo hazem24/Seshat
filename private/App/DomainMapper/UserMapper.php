@@ -55,21 +55,21 @@
             }
 
 
-            public function getUserData(string $tw_id){
+            public function getUserData(string $user_id){
                    $selectBuilder = new SelectQueryBuilder;
                    $stm = $selectBuilder->select(array_merge($this->columnsTableA,$this->columnsTableB,$this->columnsTableC))
                    ->from($this->tableA)->
                    join($this->tableB,$this->columnsTableA['primarykey'],$this->foreign_key)->
                    join($this->tableC,$this->columnsTableB[6],'id')->
-                   where([$this->columnsTableA[0] . ' = ?'=>$tw_id])->createQuery();
+                   where([$this->columnsTableA['primarykey'] . ' = ?'=>$user_id])->createQuery();
                    $findUser = $this->pdo->prepare($stm['query']);
                    $this->bindParamCreator(1,$findUser,$stm['data']);
                    $findUser->execute();
                    $findUser = $findUser->fetch(\PDO::FETCH_ASSOC);
                    if($findUser !== false && is_array($findUser) && !empty($findUser)){
-                         return $this->createObject($findUser);
+                        return $findUser;
                    } 
-                         return false;//Error Happen.!
+                        return false;//Error Happen.!
             }
 
             public function createProfile(int $id , string $name , string $email,string $account_decribe,int $account_type,string $time_zone){
@@ -119,6 +119,7 @@
                       $userModel->setProperty("id",(int)$fields['id']);
                       $userModel->setProperty("license_type",(int)$fields['license_type']);
                       $userModel->setProperty("license_name",$fields['license_name']);
+                      $userModel->setProperty("time_zone",$fields['time_zone']);
                       return $userModel;  
             }
             protected function getCollection(array $raw): Collection{

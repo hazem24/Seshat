@@ -1,9 +1,9 @@
 <div class="row" style="padding: 25px;" >
     <div class="col-md-12">
-        <h2 style="color:red;">
+        <h2 style="color:red;" class="text-center">
             <i class="fas fa-tree"></i> Trees linked with your accounts.
         </h2>
-        <button type="button" rel="tooltip" class="btn btn-info pull-right" data-toggle="modal" data-target="#createTree" style="padding: 10px;" >
+        <button type="button" rel="tooltip" class="btn btn-info" style="float:right;" data-toggle="modal" data-target="#createTree" style="padding: 10px;" >
             Create New Tree 
             <i class="fas fa-tree"></i>
         </button>
@@ -12,12 +12,12 @@
 <!-- Trees you created. -->
 <div class="row">
     <div class="col-md-12">
-        <h3 style="color: red;">
-            <i class="fas fa-tree"></i> Trees You Created.
+        <h3 style="color: red;" class="text-center">
+            <i class="fas fa-tree" ></i> Trees You Created.
         </h3>
     </div>
     <div ng-if="userTreesData.created_trees.length <= 0" class="col-md-12">
-        <p class="text-center" style="color:black;font-size: 15px;">You not created any tree yet.</p>
+        <p class="text-center" style="color:black;font-size: 25px;">You not created any tree yet.</p>
     </div> 
     <div  ng-if='userTreesData.created_trees.length > 0' class="col-md-12">
         <div class="card card-plain">
@@ -41,11 +41,20 @@
                             <th>
                                 <strong style="font-weight: 900;">Media</strong> 
                              </th>
+                             <th>
+                                <i class="fas fa-share"></i>
+                             </th>
+                             <th>
+                                <i class="fas fa-trash-alt"></i>
+                             </th>
+                             <th>
+                                <i class="fas fa-edit"></i>
+                             </th>
                         </thead>
                         <tbody>
                             <tr ng-repeat='tree in userTreesData.created_trees'>
                                 <td class="td-name">
-                                    <a href="/seshat/!followTree/show/{{ tree.name }}">{{ tree.name }}</a>
+                                    <a href="#!/tree/{{ tree.name }}">{{ tree.name }}</a>
                                     <br />
                                     <small>By You.</small>
                                 </td>
@@ -67,13 +76,14 @@
                                     </button>
                                 </td>
                                 <td class="td-actions">
-                                    <button ng-click = "deleteTree(tree.name, tree.id , $index)" rel="tooltip" data-placement="left" title="Delete" class="btn btn-neutral">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                                <td class="td-actions">
                                     <button type="button" ng-click = "shareTree(tree.name , tree.description)"  rel="tooltip" data-placement="left" title="Share" class="btn btn-neutral">
                                         <i class="fas fa-share"></i>
+                                    </button>
+    
+                                </td>
+                                <td class="td-actions">
+                                    <button ng-click = "deleteTree(tree.name, tree.id , $index)" rel="tooltip" data-placement="left" title="Delete" class="btn btn-neutral">
+                                        <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -88,12 +98,12 @@
 <!-- Show sub trees.-->
 <div class="row">
     <div class="col-md-12">
-        <h3 style="color: red;">
+        <h3 style="color: red;" class="text-center">
             <i class="fas fa-tree"></i> Trees You Subscribed on it.
         </h3>
     </div>
     <div ng-if="userTreesData.sub_trees.length <= 0" class="col-md-12">
-        <p class="danger text-center">You not Subscribed in any tree yet <a href="/seshat/!followTree/showAll" style="color:green;font-size:15px;">Show All Tree</a></p>
+        <p class="danger text-center">You not Subscribed in any tree yet <a href="#!/trees/showAll" style="color:green;font-size:15px;">Show All Tree</a></p>
     </div> 
     
     <div ng-if="userTreesData.sub_trees.length > 0" class="col-md-12">
@@ -116,14 +126,20 @@
                             </th>
                             <th>
                                 <strong style="font-weight: bold;">Media</strong> 
-                             </th>
+                            </th>
+                            <th>
+                                <i class="fas fa-share"></i>
+                            </th>
+                            <th>
+                                <i class="fas fa-trash-alt"></i>
+                            </th>
                         </thead>
                         <tbody>
                             <tr ng-repeat = "sub_tree in userTreesData.sub_trees">
                                 <td class="td-name">
-                                    <a href="/seshat/!followTree/show/{{ sub_tree.name }}">{{ sub_tree.name }}</a>
+                                    <a href="#!/tree/{{ sub_tree.name }}">{{ sub_tree.name }}</a>
                                     <br />
-                                    <small>By <a href="/seshat/!profile/twitter/{{ sub_tree.owner }}">{{ sub_tree.owner }}</a></small>
+                                    <small>By <a href="#!/profile/twitter/{{ sub_tree.owner }}">{{ sub_tree.owner }}</a></small>
                                 </td>
                                 <td class="td-number text-left" style="color:green;">
                                     {{ sub_tree.subscribers }}
@@ -137,18 +153,16 @@
                                 <td>
                                     <i class="fab fa-twitter"></i>
                                 </td>
-                              
-                                <td class="td-actions">
-                                    <button type="button" ng-click="exitTree(sub_tree.name,sub_tree.id,$index)" rel="tooltip" data-placement="left" title="Exit" class="btn btn-neutral">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                    </button>
-                                </td>
                                 <td class="td-actions">
                                     <button type="button" rel="tooltip" ng-click = "shareTree(sub_tree.name , sub_tree.description)"  data-placement="left"  title="Share" class="btn btn-neutral shareTree">
                                         <i class="fas fa-share"></i>
                                     </button>
                                 </td>
-
+                                <td class="td-actions">
+                                    <button type="button" ng-click="exitTree(sub_tree.name,sub_tree.id,$index)" rel="tooltip" data-placement="left" title="Exit" class="btn btn-neutral">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

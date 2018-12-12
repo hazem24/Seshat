@@ -9,6 +9,14 @@
         Class Seshat extends AppShared
         {
 
+              public function defaultAction( array $params = [] ){
+                $this->rule();
+                //renderView.
+                $this->renderLayout("HeaderApp");     
+                $this->render();
+                $this->renderLayout("FooterApp");
+            }
+
             public function createProfileAction(){
                 $this->rule();
                 //createProfileAction

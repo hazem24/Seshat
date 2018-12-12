@@ -1,16 +1,26 @@
 <div ng-if="treeData.tree_data.length > 0" >
    <div>
-        <button ng-if="isMember == false" id="joinTree" ng-click="joinTree(tree.id)" class="btn btn-info">
+        <button ng-if="isMember == false" id="joinTree" ng-click="joinTree(tree.id)" style="width:100%" class="btn btn-info">
             <i class="fas fa-tree"></i> Join This Tree !
         </button><br>
-        <button ng-if="isMember == true" ng-disabled="true" class="btn btn-success">
+        <button ng-if="isMember == true" ng-disabled="true" style="width:100%" class="btn btn-success">
             <i class="fas fa-tree"></i> You are a member of this tree.
         </button><br>
-    
-        <p style="color:black;font-size: 20px;">Interseted in : {{ tree.description }}</p>
+        <div class="card">
+            <div class="card-header">
+              <h4 class="card-header-title">
+                {{ tree.name }}
+              </h4>        
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{ tree.description }}
+                </p>
+              </div>            
+          </div>
    </div>
    <div  ng-if="treeData.tree_data.empty == true" style="font-size:20px;margin: auto;width: 50%;padding: 10px;">
-       <p style="color:red;">No subscribers in this tree be the first one.</p>
+       <p style="color:black;">No subscribers in this tree be the first one.</p>
    </div> 
 </div>
 

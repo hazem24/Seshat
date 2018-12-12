@@ -13,19 +13,19 @@
     <div class="card-body">
         <div class="d-flex" style="padding: 10px;">
             <img src="{{ relation.source_data.profile.profile_image_url_https }}" alt="twitter_profile" class="rounded-circle shadow">
-            <span><a href="/seshat/!profile/twitter/{{relation.source_data.profile.screen_name}}">@{{ relation.source_data.profile.screen_name  }}</a></span>
+            <span><a href="#!/profile/twitter/{{relation.source_data.profile.screen_name}}">@{{ relation.source_data.profile.screen_name  }}</a></span>
             <span ng-if="relation.relation.relationship.source.following" style="color:red; padding: 10px;">follows</span>
             <span ng-if="!relation.relation.relationship.source.following" style="color:red; padding: 10px;">not following</span>
             <img src="{{ relation.target.profile.profile_image_url_https }}" alt="twitter_profile" class="rounded-circle shadow">
-            <span> <a href="/seshat/!profile/twitter/{{relation.target.profile.screen_name}}"> @{{ relation.target.profile.screen_name  }}</a></span>
+            <span> <a href="#!/profile/twitter/{{relation.target.profile.screen_name}}"> @{{ relation.target.profile.screen_name  }}</a></span>
         </div>
         <div class="author" style="padding: 10px;">
             <img src="{{ relation.target.profile.profile_image_url_https }}" alt="twitter_profile" class="rounded-circle shadow">
-            <span> <a href="/seshat/!profile/twitter/{{relation.target.profile.screen_name}}"> @{{ relation.target.profile.screen_name  }}</a></span>
+            <span> <a href="#!/profile/twitter/{{relation.target.profile.screen_name}}"> @{{ relation.target.profile.screen_name  }}</a></span>
             <span ng-if="relation.relation.relationship.target.following" style="color:red; padding: 10px;">follows</span>
             <span ng-if="!relation.relation.relationship.target.following" style="color:red; padding: 10px;">not following</span>
             <img src="{{ relation.source_data.profile.profile_image_url_https }}" alt="twitter_profile" class="rounded-circle shadow">
-            <span><a href="/seshat/!profile/twitter/{{relation.source_data.profile.screen_name}}">@{{ relation.source_data.profile.screen_name  }}</a></span>
+            <span><a href="#!/profile/twitter/{{relation.source_data.profile.screen_name}}">@{{ relation.source_data.profile.screen_name  }}</a></span>
         </div>
         <div class="card-footer">
         </div>

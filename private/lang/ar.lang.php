@@ -29,16 +29,25 @@ define("THIS_FEATURE_NOT_FOUND","Sorry this feature cannot created by seshat now
 define("TWEET","Tweet");
 define("PROFILE","Profile");
 define("TIMELINE","Timeline");
+define("ACTIVITY","النشاط");
+define("SESHAT_ACTIVITY","النشاط الخاص بي");
 define("TWITTER_TIME_LINE","TimeLine");
 define("YOUR_PROFILE","Your profile");
 define("FEATURES","Features");
 define("STATISTICS","statistics.");
+define("HOME","الرئيسي");
+define("FOLLOWERS_FEATURES","المتابعين");
 define("TASKS","Tasks.");
 define("FOLLOW_TREE","Follow Trees.");
+define("INFLUENCER_FEATURES","خصائص صانعي المحتوي");
+define("ADD_MEDIA","اضافه حساب تواصل اجتماعي");
+define("CUSTOMIZE","اختيار التصميم");
+define("NOTIFICATIONS","التنبيهات");
 define("SETTINGS","Settings");
 define("NEW_POST","New Post");
 define("CHECK_FREINDS","Check Relation between two accounts.");
 define("TRACK_HASHTAG","Track Hashtags.");
+define("UPGRADE_BUTTON","ترقيه");
 //End Nav.
 
 

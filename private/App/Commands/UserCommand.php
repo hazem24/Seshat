@@ -11,6 +11,15 @@
         {
             private $userModel;
 
+            /**
+             * @method getUserData.
+             * @return object of UserModel In Success.
+             * @return false In Error.
+             */
+            public function getUserData(string $user_id){
+                return UserModel::getUser($user_id);
+            }
+
             protected function checkUserStatus(array $parameters){
                 $tw_id = $parameters['tw_id'];
                 $userExists = UserModel::userExists($tw_id);
@@ -55,16 +64,7 @@
 
             }
 
-            /**
-             * @method getUserData.
-             * @return object of UserModel In Success.
-             * @return false In Error.
-             */
-            private function getUserData(string $tw_id){
-                return UserModel::getUser($tw_id);
-            }
-
-
+            
             /**
              * @method createProfile Responsable For Create Profile For New User.
              * @return bool|array.

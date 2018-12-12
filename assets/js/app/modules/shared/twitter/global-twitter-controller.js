@@ -32,10 +32,10 @@ angular.module("seshatApp").controller("globalTwitterCtrl",function ( $scope ) {
         $response = twitterAction.createRelation( $type , $user_id , true);
         switch ($type.toLowerCase()) {
             case 'follow':
-                $childScope.results.users[$index].following = true;
+                $childScope.usersResults.users[$index].following = true;
                 break;
             case 'unfollow':
-                $childScope.results.users[$index].following = false;
+                $childScope.usersResults.users[$index].following = false;
                 break;
             default:
                 //nothing.
@@ -43,7 +43,7 @@ angular.module("seshatApp").controller("globalTwitterCtrl",function ( $scope ) {
         }
         if ( $feature !== false) {
             //update localstorge for this feature.
-            localStorage.setItem( $feature , JSON.stringify( $childScope.results ) );
+            localStorage.setItem( $feature , JSON.stringify( $childScope.usersResults ) );
         }
     };
 });

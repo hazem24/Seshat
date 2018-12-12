@@ -31,7 +31,7 @@ var globalMethod = {
         },repsonseError : function(data, element='body'){
                 if(data.error.reauth !== undefined ){
                         //Reauth Logic.
-                        $("#tweetModal").modal("hide");
+                        $(".tweetModal").modal("hide");
                         $(".navbar").hide();
                         $("<script>").text(data.error.reauth).appendTo("body");           
                 }else if (data.AppError !== undefined){
@@ -58,7 +58,9 @@ var globalMethod = {
                     nodes: nodes,
                     edges: edges
                   };
+                  
                   var options = {
+                    height: '800px',
                     nodes: {
                       borderWidth:4,
                       size:30,
@@ -90,7 +92,7 @@ var globalMethod = {
                 //Open Modal.
                 $key = $(element).data("key");
                 $content_to_share = $("#"+$key).val();
-                $("#tweetModal").modal();
+                $(".tweetModal").modal();
                 $(".emojionearea-editor").first().focus();
                 $('.emojionearea-editor').first().typetype($content_to_share);
                 //Focus on editor emojionarea.
@@ -101,7 +103,7 @@ var globalMethod = {
                 globalMethod.clearInput();
                 $('.emojionearea-editor').first().text('');        
                 //Open Modal.
-                $("#tweetModal").modal();
+                $(".tweetModal").modal();
                 $(".emojionearea-editor").first().focus();
                 $('.emojionearea-editor').first().typetype($content);
                 //Focus on editor emojionarea.
@@ -128,7 +130,7 @@ var globalMethod = {
                         $from = $selector.data("from");
                         $.sweetModal({
                                 title   : '<div style="overflow:hidden;width:auto;height:auto;"><button value="en" class="btn btn-info translateTo">English</button> <button value="ru" class="btn btn-info translateTo">русский язык</button> <button value="tr" class="btn btn-info translateTo">Türkçe</button> <button value="de"class="btn btn-info translateTo">Deutsch</button> <button value="es"class="btn btn-info translateTo">Español</button> <button value="fr"class="btn btn-info translateTo">Français</button> <button value="ar" class="btn btn-info translateTo">العربية</button></div>',
-                                content : '<div style="float:left;width: 100%;padding: 10px;"><form><textarea id="translated_tweet" data-org_tweet="'+$selector.val()+'" class="form-control border-input"  rows="3"></textarea><button type="button" id="tweet_translated_tweeta" style=" margin-top:10px;width: 50%;padding-top: 5px;" class="btn btn-danger" disabled>'+$tweet_translated_tweet_lang+'</button></div>',
+                                content : '<div style="float:left;width: 100%;padding: 20px;"><form><textarea id="translated_tweet" data-org_tweet="'+$selector.val()+'" class="form-control border-input"  rows="3"></textarea><button type="button" id="tweet_translated_tweeta" style=" margin-top:10px;width: 50%;padding-top: 5px;" class="btn btn-danger" disabled>'+$tweet_translated_tweet_lang+'</button></div>',
                                 theme: $.sweetModal.THEME_DARK,
                         });
                         //init Emoj.
@@ -287,7 +289,7 @@ $(document).ready(function(){
         //End Share Button.
 
         //seshat analytic view.
-        globalMethod.seshatAnalytic("#tweetStatics",[$("#rt_precent").val(),$("#like_precent").val()]);
+        //globalMethod.seshatAnalytic("#tweetStatics",[$("#rt_precent").val(),$("#like_precent").val()]);
         //End seshat analytic v view.
 
           
@@ -345,10 +347,10 @@ $(document).ready(function(){
                                         }
                                         //Only One Error Come To This Not Need Any Array.
                                         if(data.error != undefined){
-                                                globalMethod.repsonseError(data,'#tweetModal');
+                                                globalMethod.repsonseError(data,'.tweetModal');
                                         }else if (data.success != undefined){
                                                 //Success.
-                                                $("#tweetModal").modal("hide");
+                                                $(".tweetModal").modal("hide");
                                                 globalMethod.showNotification('success','top','Right',data.success,'body',3000);
                                         }
                                 }
@@ -391,15 +393,17 @@ $(document).ready(function(){
          * fancy Library Settings.
          */
         $(".fancybox").fancybox({
-                buttons : [
-                        'slideShow',
-                        'fullScreen',
-                        'thumbs',
-                        'share',
-                        'download',
-                        'zoom',
-                        'close'
-                ]                
+                btnTpl: {
+                        download:
+                          '<a download data-fancybox-download class="fancybox-button fancybox-button--download" title="{{DOWNLOAD}}" href="javascript:;">' +
+                          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.62 17.09V19H5.38v-1.91zm-2.97-6.96L17 11.45l-5 4.87-5-4.87 1.36-1.32 2.68 2.64V5h1.92v7.77z"/></svg>' +
+                          "</a>",
+                    
+                        zoom:
+                          '<button data-fancybox-zoom class="fancybox-button fancybox-button--zoom" title="{{ZOOM}}">' +
+                          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.7 17.3l-3-3a5.9 5.9 0 0 0-.6-7.6 5.9 5.9 0 0 0-8.4 0 5.9 5.9 0 0 0 0 8.4 5.9 5.9 0 0 0 7.7.7l3 3a1 1 0 0 0 1.3 0c.4-.5.4-1 0-1.5zM8.1 13.8a4 4 0 0 1 0-5.7 4 4 0 0 1 5.7 0 4 4 0 0 1 0 5.7 4 4 0 0 1-5.7 0z"/></svg>' +
+                          "</button>"
+                }                
         });
       
         

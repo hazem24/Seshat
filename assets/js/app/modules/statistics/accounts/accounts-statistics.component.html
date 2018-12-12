@@ -1,42 +1,109 @@
-<div ng-if = "statistics.now !== undefined" class = "pull-left">
-    <p style="color:red;font-size:20px;">Data updated Every 48 hour.</p><br>
-        <div class="col-auto flex-fill" >
-                <ul class="list-inline row justify-content-lg-end mb-0">
-                    <li class="list-inline-item col-sm-4 col-md-auto px-3 my-2 mx-0">
-                        <span class="badge badge-dot text-black">
-                    <i class="bg-green"></i>Followers
-                    </span>
-                    <a class="d-sm-block h5 text-black font-weight-bold pl-2" href="">
-                    {{ statistics.now.statistics.twitter.followers }}
-                    <small ng-if="followers_delta > 0" style="color:green;"> ( +{{ followers_delta }} )</small>
-                    <small ng-if="followers_delta <= 0" style="color:red;">   (  {{ followers_delta }} )</small>
-                </a>
-                    </li>
-                    <li class="list-inline-item col-sm-4 col-md-auto px-3 my-2 mx-0">
-                    <span class="badge badge-dot text-black">
-                    <i class="bg-orange"></i>Following
-                </span>
-                    <a class="d-sm-block h5 text-black font-weight-bold pl-2" href="">
-                    {{ statistics.now.statistics.twitter.following }}
-                    <small ng-if="following_delta > 0" style="color:green;"> ( +{{ following_delta }} )</small>
-                    <small ng-if="following_delta <= 0" style="color:red;">   (  {{ following_delta }} )</small>
+<div class="row" style="padding-top:30px;">
+    <div class="col-12 col-lg-6 col-xl">
+      <!-- Card -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
 
-                </a>
-                    </li>
-                    <li class="list-inline-item col-sm-4 col-md-auto px-3 my-2 mx-0">
-                    <span class="badge badge-dot text-black">
-                    <i class="bg-red"></i>Tweets
+              <!-- Title -->
+              <h6 class="card-title text-uppercase text-muted mb-2">
+                Followers
+              </h6>
+              
+              <!-- Heading -->
+              <span class="h2 mb-0">
+                {{ statistics.now.statistics.twitter.followers }}
+              </span>
+
+              <!-- Badge -->
+              <span ng-if="followers_delta > 0" class="badge badge-soft-success mt--1">
+                +{{ followers_delta }}
+              </span>
+              <span ng-if="followers_delta <= 0" class="badge badge-soft-danger mt--1">
+                {{ followers_delta }}
+              </span>
+            </div>
+            <div class="col-auto">
+              <!-- Icon -->
+            </div>
+          </div> <!-- / .row -->
+
+        </div>
+      </div>
+
+    </div>
+    <div class="col-12 col-lg-6 col-xl">
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+  
+                <!-- Title -->
+                <h6 class="card-title text-uppercase text-muted mb-2">
+                    Following
+                </h6>
+                
+                <!-- Heading -->
+                <span class="h2 mb-0">
+                    {{ statistics.now.statistics.twitter.following }}
                 </span>
-                    <a class="d-sm-block h5 text-black font-weight-bold pl-2" href="">
-                        {{ statistics.now.statistics.twitter.tweet_count }}
-                    <small ng-if="tweets_delta > 0" style="color:green;"> ( +{{ tweets_delta }} )</small>
-                    <small ng-if="tweets_delta <= 0" style="color:red;">   (  {{ tweets_delta }} )</small>
-                </a>
-                    </li>
-                </ul>
-        </div>        
+  
+                <!-- Badge -->
+                <span ng-if="following_delta > 0" class="badge badge-soft-success mt--1">
+                    +{{ following_delta }} 
+                </span>
+                <span ng-if="following_delta <= 0" class="badge badge-soft-danger mt--1">
+                    {{ following_delta }}
+                </span>
+              </div>
+              <div class="col-auto">
+                <!-- Icon -->  
+              </div>
+            </div> <!-- / .row -->
+  
+          </div>
+        </div>
+  
+      </div>
+      <div class="col-12 col-lg-6 col-xl">
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+  
+                <!-- Title -->
+                <h6 class="card-title text-uppercase text-muted mb-2">
+                    Tweets
+                </h6>
+                
+                <!-- Heading -->
+                <span class="h2 mb-0">
+                    {{ statistics.now.statistics.twitter.tweet_count }}
+                </span>
+  
+                <!-- Badge -->
+                <span ng-if="tweets_delta > 0" class="badge badge-soft-success mt--1">
+                    +{{ tweets_delta }}
+                </span>
+                <span ng-if="tweets_delta <= 0" class="badge badge-soft-danger mt--1">
+                    {{ tweets_delta }}
+                </span>
+              </div>
+              <div class="col-auto">
+                <!-- Icon -->  
+              </div>
+            </div> <!-- / .row -->
+  
+          </div>
+        </div>
+  
+      </div>
+
 </div>
 
 <div ng-if="statistics.now === undefined && loading === false">
-    <p style="color:red;">Error Please Try again Later.</p>
+    <p style="color:red;" class="text-center">Error Please Try again Later.</p>
 </div>

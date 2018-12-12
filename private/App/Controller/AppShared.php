@@ -226,10 +226,10 @@
                  * set new lang in the cookies lang.
                  */
                 if (in_array($lang , $this->supportedLang())){
-                        setcookie("lang", $lang);
+                        setcookie("lang", $lang,0,'/');
                 }else{
                         //default is english.
-                        setcookie("lang", 'en');
+                        setcookie("lang", 'en',0,'/');
                         $lang = 'en';
                 }
                 return $lang;

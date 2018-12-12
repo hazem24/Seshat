@@ -29,16 +29,25 @@ define("THIS_FEATURE_NOT_FOUND","Sorry this feature cannot created by seshat now
 define("TWEET","Tweet");
 define("PROFILE","Profile");
 define("TIMELINE","Timeline");
+define("ACTIVITY","Activity");
+define("SESHAT_ACTIVITY","Seshat Activity.");
 define("TWITTER_TIME_LINE","TimeLine");
 define("YOUR_PROFILE","Your profile");
 define("FEATURES","Features");
+define("HOME","Home");
 define("STATISTICS","statistics.");
+define("FOLLOWERS_FEATURES","Followers Features");
+define("INFLUENCER_FEATURES","Influencer features");
+define("ADD_MEDIA","Add Social media account.");
 define("TASKS","Tasks.");
+define("CUSTOMIZE","Customize");
+define("NOTIFICATIONS","Notifications");
 define("FOLLOW_TREE","Follow Trees.");
 define("SETTINGS","Settings");
 define("NEW_POST","New Post");
 define("CHECK_FREINDS","Check Relation between two accounts.");
 define("TRACK_HASHTAG","Track Hashtags.");
+define("UPGRADE_BUTTON","Upgrade");
 //End Nav.
 
 
