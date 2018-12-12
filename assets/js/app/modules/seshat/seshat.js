@@ -137,7 +137,6 @@ angular.module("seshatApp").controller("seshatCtrl",function( $scope , seshatSer
             spinner.onPageLoad(true);
             seshatService.accountInformation( function( $response ){
                 $scope.loading = false;
-                console.log( $response.data );
                 if ( $response.data.error !== undefined ){
                     globalMethod.repsonseError( $response.data );
                 }else {

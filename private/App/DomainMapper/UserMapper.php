@@ -55,18 +55,22 @@
             }
 
 
-            public function getUserData(string $user_id){
+            public function getUserData(string $user_id,bool $by_tw_id = false){
+                   $col_to_get_by = ($by_tw_id)? $this->columnsTableA[0] : $this->columnsTableA['primarykey'];
                    $selectBuilder = new SelectQueryBuilder;
                    $stm = $selectBuilder->select(array_merge($this->columnsTableA,$this->columnsTableB,$this->columnsTableC))
                    ->from($this->tableA)->
                    join($this->tableB,$this->columnsTableA['primarykey'],$this->foreign_key)->
                    join($this->tableC,$this->columnsTableB[6],'id')->
-                   where([$this->columnsTableA['primarykey'] . ' = ?'=>$user_id])->createQuery();
+                   where([$col_to_get_by . ' = ?'=>$user_id])->createQuery();
                    $findUser = $this->pdo->prepare($stm['query']);
                    $this->bindParamCreator(1,$findUser,$stm['data']);
                    $findUser->execute();
                    $findUser = $findUser->fetch(\PDO::FETCH_ASSOC);
                    if($findUser !== false && is_array($findUser) && !empty($findUser)){
+                        if ($by_tw_id){
+                            return $this->createObject( $findUser );
+                        }
                         return $findUser;
                    } 
                         return false;//Error Happen.!

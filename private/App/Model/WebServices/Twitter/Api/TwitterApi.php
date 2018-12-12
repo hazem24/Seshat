@@ -94,7 +94,7 @@
                     *@return string if there is any Error.
              */
             final protected function anyApiError($response){
-                        if(isset($response->errors) === true){//There's An Error.
+                        if(isset($response->errors) === true){//There's An Error.            
                                 switch ((int)$response->errors[0]->code) {
                                     case 50:
                                         $error = USER_NOT_FOUND;

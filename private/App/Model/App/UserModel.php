@@ -58,8 +58,8 @@
                  * @return Model Type User | false in fail.
                 */
 
-                public static function getUser(string $user_id){
-                     return self::getFinder()->getUserData($user_id); 
+                public static function getUser(string $user_id,bool $by_tw_id = false){
+                     return self::getFinder()->getUserData($user_id,$by_tw_id); 
                 }
 
                 /**

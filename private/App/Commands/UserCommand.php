@@ -16,8 +16,8 @@
              * @return object of UserModel In Success.
              * @return false In Error.
              */
-            public function getUserData(string $user_id){
-                return UserModel::getUser($user_id);
+            public function getUserData(string $user_id,bool $by_tw_id = false){    
+                return UserModel::getUser($user_id,$by_tw_id);
             }
 
             protected function checkUserStatus(array $parameters){
@@ -38,7 +38,7 @@
                      * @return object of UserModel In Success.
                      * @return false In Error/
                      * */
-                    $userData = $this->getUserData($tw_id);
+                    $userData = $this->getUserData($tw_id,true);
                     if($userData === false){
                             $return = ['error'=>GLOBAL_ERROR];
                     }else{

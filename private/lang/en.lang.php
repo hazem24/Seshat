@@ -48,6 +48,9 @@ define("NEW_POST","New Post");
 define("CHECK_FREINDS","Check Relation between two accounts.");
 define("TRACK_HASHTAG","Track Hashtags.");
 define("UPGRADE_BUTTON","Upgrade");
+define("PRICE","Price");
+define("PAID","The upgrade process was successful. It took some time for me to upgrade myself to the next level. Normally, this process takes two minutes.");
+
 //End Nav.
 
 

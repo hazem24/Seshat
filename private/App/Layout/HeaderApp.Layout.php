@@ -484,7 +484,7 @@ $license             = $this->session->getSession("license_type");
                 <?php 
                 if ($license == 0):
                 ?>
-                 <a href="." class="btn btn-block btn-danger mb-4" data-toggle="modal">
+                 <a href="<?=BASE_URL . 'paypal'?>" class="btn btn-block btn-danger mb-4" >
                   <i class="fas fa-arrow-up"></i> <?=UPGRADE_BUTTON?>
                 </a>
                 <?php
@@ -582,7 +582,7 @@ $license             = $this->session->getSession("license_type");
                   </a>
                   <!-- Menu -->
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a href="settings.html" class="dropdown-item">Settings</a>
+                    <a href="#!/settings" class="dropdown-item">Settings</a>
                     <hr class="dropdown-divider">
                     <a href="<?=BASE_URL?>!index/logout" class="dropdown-item"><?=LOGOUT;?></a>
                   </div>
@@ -654,7 +654,7 @@ $license             = $this->session->getSession("license_type");
 							<?=ACTIVITY;?>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="topnavTeam">
-                          <a class="dropdown-item" href="#!followTree">
+                          <a class="dropdown-item" href="#!/activity">
 						  	<?=SESHAT_ACTIVITY;?>
                           </a>
                         </div>
@@ -698,11 +698,17 @@ $license             = $this->session->getSession("license_type");
                   			<?=NEW_POST?>
                 		</a>
                     </li>
+                    <?php 
+                    if ($license == 0):
+                    ?>
                     <li class="nav-item">
-                		<a class="nav-link" style="color:red;" href="." data-toggle="modal">
+                		<a class="nav-link" style="color:red;" href="<?=BASE_URL . 'paypal'?>">
                   			<?=UPGRADE_BUTTON?>
                 		</a>
-              	  	</li>
+                    </li>
+                    <?php
+                    endif;
+                    ?>
                 </ul>
     
               </div>
@@ -764,7 +770,7 @@ $license             = $this->session->getSession("license_type");
                     </a>
                     <!-- Menu -->
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a href="settings.html" class="dropdown-item">Settings</a>
+                      <a href="#!/settings" class="dropdown-item">Settings</a>
                       <hr class="dropdown-divider">
                       <a href="<?=BASE_URL?>!index/logout" class="dropdown-item"><?=LOGOUT;?></a>
                     </div>
@@ -772,7 +778,6 @@ $license             = $this->session->getSession("license_type");
                 </div>
               </div>
             </nav>
-
 <main class="ng-view">
 </main>
 
@@ -780,7 +785,7 @@ $license             = $this->session->getSession("license_type");
 else: ?>
 <body ng-app="seshatApp" style="background-color:white;padding-top: 20px;">
 <div class="col-4" style="margin: auto;width: 50%;padding: 10px;">
-<a href='<?=BASE_URL.LINK_SIGN.'index/signin '?>' class="btn btn-twitter btn-icon-label">
+<a href='<?=BASE_URL.LINK_SIGN.'index/signin '?>' class="btn btn-white">
     <span class="btn-inner--icon"><i class="fab fa-twitter"></i></span>
     <span class="btn-inner--text"><?= SIGN_TWITTER ?></span>
 </a>

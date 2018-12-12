@@ -13,14 +13,18 @@
             */    
              public function defaultAction(){
                 $this->redirectToWizard();
-                $this->rIn("tw_id","seshat");
+                $this->rIn("tw_id","seshat/#!timeline");
                 $this->detectLang();
                 $this->actionView->setDataInView(["login_url"=>(object)['generatedUrl'=>$this->generateTwitterLoginUrl()]]);
                 $this->render();
              }   
 
-
-
+             public function priceAction(){
+                $this->detectLang();
+                $this->renderLayout("HeaderApp");
+                $this->render();
+                $this->renderLayout("FooterApp");
+             }
 
             /**
              * this action not used.
@@ -77,15 +81,15 @@
                                                  * 'screen_name' => string 'Hazem13596846' (length=13)
                                                  * 'x_auth_expires' => string '0' (length=1)
                                                  */      
-                                        $this->userStatus($confirmUser['user_id'],$confirmUser['screen_name'],$confirmUser['oauth_token'],$confirmUser['oauth_token_secret']); 
+                                        $this->userStatus($confirmUser['user_id'],$confirmUser['screen_name'],$confirmUser['oauth_token'],$confirmUser['oauth_token_secret']);
                                         if($this->anyAppError() === true){        
                                                 //I Must handle this error.
                                                 $this->session->setSession('error',$this->error);
-                                                $this->rOut('tw_id','index/signin');
+                                                $this->rOut('tw_id','index');
                                         } 
                                 }else{        
                                         $this->session->setSession('error',$this->error);
-                                        $this->rOut('tw_id','index/signin');
+                                        $this->rOut('tw_id','index');
                                 }
                 }else{
                         echo json_encode(["code"=>403,'error'=>"Protected Area You Cannot Access."]);
@@ -133,7 +137,7 @@
                      * 1- Open Sessions To User. --Done.
                      * 2- Redirect User To seshatReader. --Done.
                      * */  
-                    $this->openSessionsToUser($userModel->getProperty('id'),$userModel->getProperty('tw_id'),
+                    $this->openSessionsToUser($userModel->getProperty('id'),$userModel->getProperty('email'),$userModel->getProperty('tw_id'),
                     $oauth_token,$oauth_token_secret,$userModel->getProperty('screen_name') , $userModel->getProperty('license_type'),$userModel->getProperty('license_name'),false,$userModel->getProperty('time_zone')); 
                     $this->rIn("tw_id","seshat/#!timeline");
             }
@@ -142,14 +146,14 @@
             /**
              * @method openSessionToUser Open The Important Session That App Need.
              */
-            private function openSessionsToUser(int $id,string $tw_id,string $oauth_token,string $oauth_token_secret,string $screen_name, int $license_type , string $license_name , bool $wizard = false, string $time_zone = 'UTC'){
+            private function openSessionsToUser(int $id,string $email,string $tw_id,string $oauth_token,string $oauth_token_secret,string $screen_name, int $license_type , string $license_name , bool $wizard = false, string $time_zone = 'UTC'){
                     if($wizard === true){
                         $this->session->setSession('wizard',$wizard);
                     }
                     $this->session->setSession('id',$id);
+                    $this->session->setSession('email',$email);
                     $this->session->setSession('license_type',$license_type);
                     $this->session->setSession('license_name',$license_name);
-                    $this->session->setSession('id',$id);
                     $this->session->setSession('time_zone',$time_zone);
                     $this->session->setSession('tw_id',$tw_id);
                     $this->session->setSession('userAgent',$_SERVER['HTTP_USER_AGENT']);

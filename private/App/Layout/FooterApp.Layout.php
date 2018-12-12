@@ -75,6 +75,17 @@ if(isset($error) && is_object($error) === false && is_array($error) && !empty($e
 <?php    
 endif;
 ?>
-
+<?php
+//Notify if user paid successfully.
+if($this->session->getSession("paid")):
+?>
+<input type="hidden" id="paid_msg" value="<?=PAID;?>"/>
+<script>
+globalMethod.showNotification("success","top","Right",$("#paid_msg").val(),"body",200000);
+</script>
+<?php
+$this->session->unsetSession("paid");
+endif;
+?>
 </html>
     

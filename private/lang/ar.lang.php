@@ -48,6 +48,8 @@ define("NEW_POST","New Post");
 define("CHECK_FREINDS","Check Relation between two accounts.");
 define("TRACK_HASHTAG","Track Hashtags.");
 define("UPGRADE_BUTTON","ترقيه");
+define("PRICE","الاسعار");
+define("PAID","تمت عمليه الترقيه بنجاح احتاج الي بعض الوقت لكي تتم ترقيتي الي المستوي التالي في العاده تاخد هذه العمليه دقيقتين");
 //End Nav.
 
 
