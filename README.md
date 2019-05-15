@@ -1,2 +1,2 @@
 # Seshat
-# Complete Beta Version.
+# Completed Beta Version.
